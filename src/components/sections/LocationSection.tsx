@@ -1,8 +1,19 @@
 import React from 'react';
 import { useAppLanguage } from '../../context/AppContext';
+import { useScrollAnimation, useStaggeredScrollAnimation } from '../../hooks/useScrollAnimation';
 
 const LocationSection: React.FC = () => {
   const { language } = useAppLanguage();
+  
+  // Animations au scroll
+  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation({ threshold: 0.3 });
+  const { elementRef: textRef, isVisible: textVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { elementRef: mapRef, isVisible: mapVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { containerRef: statsRef, visibleItems: statsVisible } = useStaggeredScrollAnimation(4, 150);
+  const { elementRef: backgroundRef, isVisible: backgroundVisible } = useScrollAnimation({ 
+    threshold: 0.1, 
+    rootMargin: '0px 0px -5% 0px' 
+  });
 
   const sectionData = {
     fr: {
@@ -30,47 +41,70 @@ const LocationSection: React.FC = () => {
   };
 
   return (
-    <section className="relative py-20 lg:py-32 overflow-hidden">
-      {/* Background Image */}
+    <section 
+      ref={backgroundRef as React.RefObject<HTMLElement>}
+      className="relative py-20 lg:py-32 overflow-hidden"
+    >
+      {/* Background Image avec animation */}
       <div className="absolute inset-0">
         <img 
           src="/assets/photo-2-plage.jpg" 
           alt="Plage paradisiaque de Nosy Be"
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-all duration-1500 ease-out ${
+            backgroundVisible ? 'bg-slide-up visible' : 'bg-slide-up'
+          }`}
         />
-        {/* Overlay pour lisibilité */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
+        {/* Overlay pour lisibilité avec animation légère */}
+        <div className={`absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/50 transition-opacity duration-1000 ${
+          backgroundVisible ? 'opacity-100' : 'opacity-70'
+        }`} />
+        <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 transition-opacity duration-1200 delay-300 ${
+          backgroundVisible ? 'opacity-100' : 'opacity-80'
+        }`} />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           {/* Contenu textuel */}
-          <div className="space-y-8 animate-fade-in-up">
+          <div className="space-y-8">
             <div className="space-y-6">
-              <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
+              <h2 
+                ref={titleRef as React.RefObject<HTMLHeadingElement>}
+                className={`text-4xl lg:text-6xl font-bold leading-tight transition-all duration-800 ${
+                  titleVisible ? 'scroll-slide-left visible' : 'scroll-slide-left'
+                }`}
+              >
                 <span className="bg-gradient-to-r from-white via-blue-100 to-green-100 bg-clip-text text-transparent drop-shadow-lg">
                   {sectionData[language].title}
                 </span>
               </h2>
               
-              <div className="space-y-6 text-white/95 text-lg lg:text-xl leading-relaxed">
-                <p className="animate-fade-in-up drop-shadow-md" style={{ animationDelay: '0.2s' }}>
+              <div 
+                ref={textRef as React.RefObject<HTMLDivElement>}
+                className={`space-y-6 text-white/95 text-lg lg:text-xl leading-relaxed transition-all duration-800 delay-200 ${
+                  textVisible ? 'scroll-hidden scroll-visible' : 'scroll-hidden'
+                }`}
+              >
+                <p className="drop-shadow-md">
                   {sectionData[language].description}
                 </p>
-                <p className="animate-fade-in-up drop-shadow-md" style={{ animationDelay: '0.4s' }}>
+                <p className="drop-shadow-md">
                   {sectionData[language].secondDescription}
                 </p>
               </div>
             </div>
 
             {/* Statistiques avec design moderne adaptées au background */}
-            <div className="grid grid-cols-2 gap-6 pt-8">
+            <div 
+              ref={statsRef as React.RefObject<HTMLDivElement>}
+              className="grid grid-cols-2 gap-6 pt-8"
+            >
               {sectionData[language].stats.map((stat, index) => (
                 <div 
                   key={index}
-                  className="group relative glass-effect rounded-2xl p-6 border border-white/30 hover:border-white/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl animate-fade-in-scale"
-                  style={{ animationDelay: `${0.6 + index * 0.1}s` }}
+                  className={`group relative glass-effect rounded-2xl p-6 border border-white/30 hover:border-white/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl ${
+                    statsVisible[index] ? 'scroll-zoom visible' : 'scroll-zoom'
+                  }`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-blue-100/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative z-10">
@@ -92,7 +126,12 @@ const LocationSection: React.FC = () => {
           </div>
 
           {/* Carte interactive avec fond adapté */}
-          <div className="relative animate-fade-in-scale" style={{ animationDelay: '0.3s' }}>
+          <div 
+            ref={mapRef as React.RefObject<HTMLDivElement>}
+            className={`relative transition-all duration-1000 ${
+              mapVisible ? 'scroll-slide-right visible' : 'scroll-slide-right'
+            }`}
+          >
             <div className="relative group">
               {/* Container avec glassmorphism renforcé */}
               <div className="relative glass-effect rounded-3xl p-8 lg:p-12 shadow-2xl border border-white/40 backdrop-blur-2xl">
@@ -151,11 +190,6 @@ const LocationSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Scroll transition effect optimisé */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-white/20 to-white pointer-events-none" />
-      
-      {/* Parallax scroll effect subtil */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30 opacity-0 hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
     </section>
   );
 };

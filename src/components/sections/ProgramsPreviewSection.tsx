@@ -1,10 +1,19 @@
 import React, { useRef, useEffect } from 'react';
 import { useAppLanguage } from '../../context/AppContext';
+import { useScrollAnimation, useStaggeredScrollAnimation } from '../../hooks/useScrollAnimation';
 
 const ProgramsPreviewSection: React.FC = () => {
   const { language } = useAppLanguage();
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
+
+  // Animations au scroll
+  const { elementRef: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.3 });
+  const { containerRef: cardsRef, visibleItems: cardsVisible } = useStaggeredScrollAnimation(3, 200);
+  const { elementRef: infoRef, isVisible: infoVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { elementRef: passotBgRef, isVisible: passotBgVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { elementRef: lake1BgRef, isVisible: lake1BgVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { elementRef: lake2BgRef, isVisible: lake2BgVisible } = useScrollAnimation({ threshold: 0.2 });
 
   const sectionData = {
     fr: {
@@ -89,10 +98,15 @@ const ProgramsPreviewSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="relative py-20 lg:py-32 bg-gradient-to-b from-white via-gray-50/30 to-white">
+    <section className="relative py-20 lg:py-32 bg-gradient-to-b from-slate-50 via-gray-50/30 to-white">
       <div className="container mx-auto px-4">
         {/* Header de section */}
-        <div className="text-center mb-16 lg:mb-24 animate-fade-in-up">
+        <div 
+          ref={headerRef as React.RefObject<HTMLDivElement>}
+          className={`text-center mb-16 lg:mb-24 transition-all duration-1000 ${
+            headerVisible ? 'scroll-hidden scroll-visible' : 'scroll-hidden'
+          }`}
+        >
           <h2 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-green-700 bg-clip-text text-transparent">
               {sectionData[language].title}
@@ -104,20 +118,34 @@ const ProgramsPreviewSection: React.FC = () => {
         </div>
 
         {/* Grid des programmes */}
-        <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+        <div 
+          ref={cardsRef as React.RefObject<HTMLDivElement>}
+          className="grid lg:grid-cols-3 gap-8 lg:gap-12"
+        >
           
           {/* TAO PASSOT - Card principale avec interaction */}
-          <div className="lg:col-span-1 group relative animate-fade-in-scale" style={{ animationDelay: '0.2s' }}>
+          <div className={`lg:col-span-1 group relative transition-all duration-1000 ${
+            cardsVisible[0] ? 'scroll-zoom visible' : 'scroll-zoom'
+          }`}>
             <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 hover:scale-[1.02] cursor-pointer">
-              {/* Background Image */}
-              <div className="absolute inset-0">
+              {/* Background Image avec animation */}
+              <div 
+                ref={passotBgRef as React.RefObject<HTMLDivElement>}
+                className="absolute inset-0"
+              >
                 <img 
                   src={sectionData[language].programs[0].background}
                   alt="TAO PASSOT Villa"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className={`w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 ${
+                    passotBgVisible ? 'bg-zoom-in visible' : 'bg-zoom-in'
+                  }`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/20" />
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition-opacity duration-800 ${
+                  passotBgVisible ? 'opacity-100' : 'opacity-80'
+                }`} />
+                <div className={`absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/20 transition-opacity duration-1000 delay-200 ${
+                  passotBgVisible ? 'opacity-100' : 'opacity-70'
+                }`} />
               </div>
 
               {/* Contenu */}
@@ -176,26 +204,44 @@ const ProgramsPreviewSection: React.FC = () => {
           {[sectionData[language].lake1, sectionData[language].lake2].map((project, index) => (
             <div 
               key={index}
-              className="lg:col-span-1 relative animate-fade-in-scale" 
-              style={{ animationDelay: `${0.4 + index * 0.2}s` }}
+              className={`lg:col-span-1 relative transition-all duration-1000 delay-${index * 200} ${
+                cardsVisible[index + 1] ? 'scroll-slide-in-left visible' : 'scroll-slide-in-left'
+              }`}
             >
               <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-xl">
-                {/* Background Video */}
-                <video
-                  ref={index === 0 ? video1Ref : video2Ref}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
+                {/* Background Video avec animation */}
+                <div 
+                  ref={index === 0 ? lake1BgRef as React.RefObject<HTMLDivElement> : lake2BgRef as React.RefObject<HTMLDivElement>}
+                  className="absolute inset-0"
                 >
-                  <source src="/assets/vide_hero.mp4" type="video/mp4" />
-                </video>
+                  <video
+                    ref={index === 0 ? video1Ref : video2Ref}
+                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-1200 ${
+                      index === 0 
+                        ? (lake1BgVisible ? 'bg-fade-in visible' : 'bg-fade-in')
+                        : (lake2BgVisible ? 'bg-fade-in visible' : 'bg-fade-in')
+                    }`}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                  >
+                    <source src="/assets/vide_hero.mp4" type="video/mp4" />
+                  </video>
+                </div>
 
-                {/* Overlay pour les projets en développement */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
-                <div className="absolute inset-0 bg-blue-900/20" />
+                {/* Overlay pour les projets en développement avec animation */}
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30 transition-opacity duration-1000 ${
+                  index === 0 
+                    ? (lake1BgVisible ? 'opacity-100' : 'opacity-70')
+                    : (lake2BgVisible ? 'opacity-100' : 'opacity-70')
+                }`} />
+                <div className={`absolute inset-0 bg-blue-900/20 transition-opacity duration-1200 delay-300 ${
+                  index === 0 
+                    ? (lake1BgVisible ? 'opacity-100' : 'opacity-50')
+                    : (lake2BgVisible ? 'opacity-100' : 'opacity-50')
+                }`} />
 
                 {/* Badge développement */}
                 <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/60 to-transparent p-6">
@@ -255,7 +301,12 @@ const ProgramsPreviewSection: React.FC = () => {
         </div>
 
         {/* Section info globale inspirée d'AYANA */}
-        <div className="mt-20 lg:mt-32 text-center animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+        <div 
+          ref={infoRef as React.RefObject<HTMLDivElement>}
+          className={`mt-20 lg:mt-32 text-center transition-all duration-1000 ${
+            infoVisible ? 'scroll-hidden scroll-visible' : 'scroll-hidden'
+          }`}
+        >
           <div className="bg-gradient-to-r from-blue-50 via-white to-green-50 rounded-3xl p-12 lg:p-16 shadow-xl border border-gray-200/50">
             <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">
               {language === 'fr' ? 'INFORMATIONS PROGRAMME' : 'PROGRAM INFORMATION'}
@@ -303,6 +354,7 @@ const ProgramsPreviewSection: React.FC = () => {
           </div>
         </div>
       </div>
+
 
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-blue-400/10 to-green-400/10 rounded-full blur-3xl animate-pulse" />
