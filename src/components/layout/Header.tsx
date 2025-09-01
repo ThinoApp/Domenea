@@ -16,9 +16,11 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-white drop-shadow-lg">
-              TAO PASSOT
-            </h1>
+            <img 
+              src="/assets/Logo 1.png" 
+              alt="TAO PASSOT - Domenea"
+              className="h-12 w-auto drop-shadow-lg hover:scale-105 transition-transform duration-300"
+            />
           </div>
 
           {/* Navigation principale */}
