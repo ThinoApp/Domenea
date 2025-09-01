@@ -1,23 +1,23 @@
-import React from 'react';
-import { useAppLanguage } from '../../context/AppContext';
-import { contactInfo } from '../../data/mockData';
+import React from "react";
+import { useAppLanguage } from "../../context/AppContext";
+import { contactInfo } from "../../data/mockData";
 
 const Header: React.FC = () => {
   const { language, toggleLanguage } = useAppLanguage();
 
   const navigation = {
-    fr: ['PROGRAMMES', 'CONCEPT', 'CONTACT'],
-    en: ['PROGRAMS', 'CONCEPT', 'CONTACT']
+    fr: ["PROGRAMMES", "CONCEPT", "CONTACT"],
+    en: ["PROGRAMS", "CONCEPT", "CONTACT"],
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-effect border-0 shadow-lg/20">
+    <header className="fixed top-0 left-0 right-0 z-50 glass-effect-dark border-0 shadow-lg/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <img 
-              src="/assets/Logo 1.png" 
+            <img
+              src="/assets/Logo 1.png"
               alt="TAO PASSOT - Domenea"
               className="h-12 w-auto drop-shadow-lg hover:scale-105 transition-transform duration-300"
             />
