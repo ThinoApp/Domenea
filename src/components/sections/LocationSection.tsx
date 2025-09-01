@@ -5,14 +5,15 @@ import { useScrollAnimation, useStaggeredScrollAnimation } from '../../hooks/use
 const LocationSection: React.FC = () => {
   const { language } = useAppLanguage();
   
-  // Animations au scroll
-  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation({ threshold: 0.3 });
-  const { elementRef: textRef, isVisible: textVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { elementRef: mapRef, isVisible: mapVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { containerRef: statsRef, visibleItems: statsVisible } = useStaggeredScrollAnimation(4, 150);
+  // Animations au scroll - répétables
+  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation({ threshold: 0.3, triggerOnce: false });
+  const { elementRef: textRef, isVisible: textVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
+  const { elementRef: mapRef, isVisible: mapVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
+  const { containerRef: statsRef, visibleItems: statsVisible } = useStaggeredScrollAnimation(4, 150, false);
   const { elementRef: backgroundRef, isVisible: backgroundVisible } = useScrollAnimation({ 
     threshold: 0.1, 
-    rootMargin: '0px 0px -5% 0px' 
+    rootMargin: '0px 0px -5% 0px',
+    triggerOnce: false 
   });
 
   const sectionData = {

@@ -25,7 +25,8 @@ export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
           if (triggerOnce) {
             setHasTriggered(true);
           }
-        } else if (!triggerOnce && !hasTriggered) {
+        } else if (!triggerOnce) {
+          // Reset l'animation quand l'élément sort du viewport
           setIsVisible(false);
         }
       },
@@ -53,7 +54,7 @@ export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
   };
 };
 
-export const useStaggeredScrollAnimation = (itemCount: number, delay: number = 100) => {
+export const useStaggeredScrollAnimation = (itemCount: number, delay: number = 100, triggerOnce: boolean = true) => {
   const [visibleItems, setVisibleItems] = useState<boolean[]>(new Array(itemCount).fill(false));
   const containerRef = useRef<HTMLElement>(null);
 
@@ -71,6 +72,9 @@ export const useStaggeredScrollAnimation = (itemCount: number, delay: number = 1
               });
             }, i * delay);
           }
+        } else if (!triggerOnce) {
+          // Reset toutes les animations quand le container sort du viewport
+          setVisibleItems(new Array(itemCount).fill(false));
         }
       },
       {

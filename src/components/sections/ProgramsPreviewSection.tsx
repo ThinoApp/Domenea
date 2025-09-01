@@ -7,13 +7,13 @@ const ProgramsPreviewSection: React.FC = () => {
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
 
-  // Animations au scroll
-  const { elementRef: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.3 });
-  const { containerRef: cardsRef, visibleItems: cardsVisible } = useStaggeredScrollAnimation(3, 200);
-  const { elementRef: infoRef, isVisible: infoVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { elementRef: passotBgRef, isVisible: passotBgVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { elementRef: lake1BgRef, isVisible: lake1BgVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { elementRef: lake2BgRef, isVisible: lake2BgVisible } = useScrollAnimation({ threshold: 0.2 });
+  // Animations au scroll - répétables
+  const { elementRef: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.3, triggerOnce: false });
+  const { containerRef: cardsRef, visibleItems: cardsVisible } = useStaggeredScrollAnimation(3, 200, false);
+  const { elementRef: infoRef, isVisible: infoVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
+  const { elementRef: passotBgRef, isVisible: passotBgVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
+  const { elementRef: lake1BgRef, isVisible: lake1BgVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
+  const { elementRef: lake2BgRef, isVisible: lake2BgVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
 
   const sectionData = {
     fr: {
