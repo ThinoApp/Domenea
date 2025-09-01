@@ -17,7 +17,7 @@ const VillasSection: React.FC = () => {
   };
 
   return (
-    <section id="programmes" className="py-20 bg-gray-50">
+    <section id="programmes" className="py-20 bg-gradient-to-b from-gray-900 via-slate-50 to-white">
       <div className="container mx-auto px-4">
         {/* En-tête de section */}
         <div className="text-center mb-16">

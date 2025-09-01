@@ -98,7 +98,7 @@ const ProgramsPreviewSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="relative py-20 lg:py-32 bg-gradient-to-b from-slate-50 via-gray-50/30 to-white">
+    <section className="relative py-20 lg:py-32 bg-gradient-to-b from-gray-900 via-slate-800/95 to-gray-900">
       <div className="container mx-auto px-4">
         {/* Header de section */}
         <div 
@@ -107,12 +107,12 @@ const ProgramsPreviewSection: React.FC = () => {
             headerVisible ? 'scroll-hidden scroll-visible' : 'scroll-hidden'
           }`}
         >
-          <h2 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-green-700 bg-clip-text text-transparent">
+          <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            <span className="bg-gradient-to-r from-white via-blue-300 to-teal-300 bg-clip-text text-transparent">
               {sectionData[language].title}
             </span>
           </h2>
-          <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto font-light">
+          <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto font-light">
             {sectionData[language].subtitle}
           </p>
         </div>
