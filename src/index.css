@@ -242,6 +242,250 @@
   animation: showcase-float-in 2s ease-out forwards;
 }
 
+/* Villas Showcase animations */
+@keyframes villas-card-enter {
+  from {
+    transform: translateY(50px) scale(0.95);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.villas-card-enter {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  filter: blur(8px);
+}
+
+.villas-card-enter.visible {
+  animation: villas-card-enter 1.2s ease-out forwards;
+}
+
+/* Futuristic Villa Cards animations */
+@keyframes villas-futuristic-1 {
+  from {
+    transform: translateX(-100px) translateY(-50px) scale(0.8) rotate(-5deg);
+    opacity: 0;
+    filter: blur(12px);
+  }
+  to {
+    transform: translateX(0) translateY(0) scale(1) rotate(1deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes villas-futuristic-2 {
+  from {
+    transform: translateX(80px) translateY(-30px) scale(0.9) rotate(3deg);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    transform: translateX(0) translateY(4px) scale(1) rotate(-2deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes villas-futuristic-3 {
+  from {
+    transform: translateX(-60px) translateY(40px) scale(0.85) rotate(-3deg);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    transform: translateX(0) translateY(-2px) scale(1) rotate(3deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes villas-futuristic-4 {
+  from {
+    transform: translateX(70px) translateY(60px) scale(0.9) rotate(4deg);
+    opacity: 0;
+    filter: blur(15px);
+  }
+  to {
+    transform: translateX(0) translateY(2px) scale(1) rotate(-1deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.villas-futuristic-1,
+.villas-futuristic-2,
+.villas-futuristic-3,
+.villas-futuristic-4 {
+  opacity: 0;
+}
+
+.villas-futuristic-1.visible {
+  animation: villas-futuristic-1 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.villas-futuristic-2.visible {
+  animation: villas-futuristic-2 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.villas-futuristic-3.visible {
+  animation: villas-futuristic-3 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.villas-futuristic-4.visible {
+  animation: villas-futuristic-4 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Concept Reveal Animations */
+@keyframes concept-reveal-1 {
+  from {
+    transform: translateX(-80px) scale(0.9);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes concept-reveal-2 {
+  from {
+    transform: translateY(-60px) translateX(40px) scale(0.85);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes concept-reveal-3 {
+  from {
+    transform: translateY(80px) scale(0.95);
+    opacity: 0;
+    filter: blur(12px);
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes concept-text-overlay {
+  from {
+    transform: translateY(-30px) scale(0.8);
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.concept-reveal-1,
+.concept-reveal-2, 
+.concept-reveal-3 {
+  opacity: 0;
+}
+
+.concept-reveal-1.visible {
+  animation: concept-reveal-1 1.0s ease-out forwards;
+}
+
+.concept-reveal-2.visible {
+  animation: concept-reveal-2 1.3s ease-out forwards;
+}
+
+.concept-reveal-3.visible {
+  animation: concept-reveal-3 1.6s ease-out forwards;
+}
+
+@keyframes concept-reveal-4 {
+  from {
+    transform: translateX(60px) translateY(40px) scale(0.9);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.concept-reveal-4 {
+  opacity: 0;
+}
+
+.concept-reveal-4.visible {
+  animation: concept-reveal-4 1.4s ease-out forwards;
+}
+
+.concept-text-overlay {
+  opacity: 0;
+  transform: translateY(-30px) scale(0.8);
+  filter: blur(6px);
+}
+
+.concept-text-overlay.visible {
+  animation: concept-text-overlay 1.2s ease-out forwards;
+}
+
+/* Animation rotation lente */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Effets de profondeur 3D modernes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-gpu {
+  transform: translate3d(0, 0, 0);
+}
+
+.rotateX-1 {
+  transform: rotateX(1deg);
+}
+
+.rotateY-1 {
+  transform: rotateY(1deg);
+}
+
+.translateY-2 {
+  transform: translateY(2px);
+}
+
+/* Glassmorphism moderne */
+.glass-modern {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 /* Classes d'état pour animations au scroll */
 .scroll-hidden {
   opacity: 0;

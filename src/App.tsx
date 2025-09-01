@@ -5,6 +5,7 @@ import HeroSection from './components/sections/HeroSection';
 import LocationSection from './components/sections/LocationSection';
 import ProgramsPreviewSection from './components/sections/ProgramsPreviewSection';
 import ResidenceShowcaseSection from './components/sections/ResidenceShowcaseSection';
+import VillasShowcaseSection from './components/sections/VillasShowcaseSection';
 import VillasSection from './components/sections/VillasSection';
 import ContactSection from './components/sections/ContactSection';
 import ROICalculatorWidget from './components/roi/ROICalculatorWidget';
@@ -31,6 +32,9 @@ function App() {
 
           {/* Section Résidence Showcase */}
           <ResidenceShowcaseSection />
+
+          {/* Section Villas Showcase */}
+          <VillasShowcaseSection />
 
           {/* Section Programmes - Villas */}
           <VillasSection />
