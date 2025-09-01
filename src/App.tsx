@@ -2,6 +2,7 @@ import { AppProvider } from './context/AppContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import HeroSection from './components/sections/HeroSection';
+import LocationSection from './components/sections/LocationSection';
 import VillasSection from './components/sections/VillasSection';
 import ContactSection from './components/sections/ContactSection';
 import ROICalculatorWidget from './components/roi/ROICalculatorWidget';
@@ -19,6 +20,9 @@ function App() {
         <main>
           {/* Hero Section avec vidéo et messages émotionnels */}
           <HeroSection />
+
+          {/* Section Localisation avec carte interactive */}
+          <LocationSection />
 
           {/* Section Programmes - Villas */}
           <VillasSection />
