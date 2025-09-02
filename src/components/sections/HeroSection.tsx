@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppLanguage } from "../../context/AppContext";
 import { emotionalMessages, callToActions } from "../../data/mockData";
 
 const HeroSection: React.FC = () => {
   const { language } = useAppLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const heroTitle = {
     fr: "OÙ LA VIE TROUVE SON RYTHME",
@@ -19,25 +21,68 @@ const HeroSection: React.FC = () => {
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      video.play().catch(console.error);
+      // Gérer le chargement des données vidéo
+      const handleLoadedData = () => {
+        setIsVideoLoaded(true);
+      };
+
+      // Gérer quand la vidéo peut commencer à jouer
+      const handleCanPlay = () => {
+        setIsVideoReady(true);
+        video.play().catch(console.error);
+      };
+
+      // Gérer les erreurs de chargement
+      const handleError = () => {
+        console.warn('Video failed to load, using fallback');
+        setIsVideoLoaded(true);
+        setIsVideoReady(true);
+      };
+
+      video.addEventListener('loadeddata', handleLoadedData);
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('error', handleError);
+
+      // Force load
+      video.load();
+
+      return () => {
+        video.removeEventListener('loadeddata', handleLoadedData);
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('error', handleError);
+      };
     }
   }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      {/* Elegant Image Fallback - Always visible until video is ready */}
+      <div 
+        className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+          isVideoReady && isVideoLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          backgroundImage: 'url(/assets/Photo 8-3.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+
       {/* Background Video */}
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+          isVideoReady && isVideoLoaded ? 'opacity-100' : 'opacity-0'
+        }`}
         autoPlay
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
+        poster="/assets/Photo 8-3.jpeg"
       >
-        <source src="/assets/vide_hero.mp4" type="video/mp4" />
-        {/* Fallback gradient si la vidéo ne charge pas */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-blue-800 to-green-800" />
+        <source src="/assets/Vide_hero.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay moderne avec gradient sophistiqué */}
