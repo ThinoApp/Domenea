@@ -35,7 +35,7 @@ function App() {
       "/assets/photo-2-plage.jpg", // CONCEPT card
     ],
     videos: [
-      "/assets/Vide_hero.mp4", // Hero background video
+      "/assets/vide_hero.mp4", // Hero background video
     ],
   };
 
