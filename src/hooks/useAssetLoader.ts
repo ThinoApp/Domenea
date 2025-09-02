@@ -30,8 +30,8 @@ export const useAssetLoader = ({
 
     let loadedCount = 0;
 
-    const handleAssetLoad = () => {
-      console.log("Called");
+    const handleAssetLoad = (type: string) => {
+      console.log("Called", type);
       loadedCount++;
       setLoadedAssets(loadedCount);
 
@@ -52,16 +52,16 @@ export const useAssetLoader = ({
     // Précharger les images
     images.forEach((src) => {
       const img = new Image();
-      img.onload = handleAssetLoad;
-      img.onerror = handleAssetLoad; // Même en cas d'erreur, on continue
+      img.onload = () => handleAssetLoad("image");
+      img.onerror = () => handleAssetLoad("image error"); // Même en cas d'erreur, on continue
       img.src = src;
     });
 
     // Précharger les vidéos
     videos.forEach((src) => {
       const video = document.createElement("video");
-      video.onloadeddata = handleAssetLoad;
-      video.onerror = handleAssetLoad;
+      video.onloadeddata = () => handleAssetLoad("video");
+      video.onerror = () => handleAssetLoad("video error");
       video.src = src;
       video.preload = "metadata";
     });
