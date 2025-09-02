@@ -98,7 +98,7 @@ const ResidenceShowcaseSection: React.FC = () => {
             >
               {/* Title avec effet typographique */}
               <div className="space-y-4">
-                <h2 className="text-4xl lg:text-6xl font-bold text-white leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
                   <span className="block">
                     {sectionData[language].title
                       .split(" ")
@@ -112,7 +112,7 @@ const ResidenceShowcaseSection: React.FC = () => {
 
                 {/* Metric highlight avec animation */}
                 <div className="flex items-baseline space-x-3">
-                  <span className="text-8xl lg:text-9xl font-black text-white/95 tracking-tight">
+                  <span className="text-8xl lg:text-8xl font-black text-white/95 tracking-tight">
                     {sectionData[language].highlight}
                   </span>
                   <div className="space-y-1">
