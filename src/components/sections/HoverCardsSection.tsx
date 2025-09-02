@@ -35,7 +35,7 @@ const HoverCardsSection: React.FC = () => {
           title: "PRESTIGE",
           description: "Villa 4 chambres",
           image: "/assets/Photo 13.jpg",
-          hoverEffect: "blur",
+          hoverEffect: "fade",
         },
         {
           id: "concept",
@@ -67,7 +67,7 @@ const HoverCardsSection: React.FC = () => {
           title: "PRESTIGE",
           description: "4 bedroom villa",
           image: "/assets/Photo 13.jpg",
-          hoverEffect: "blur",
+          hoverEffect: "brightness",
         },
         {
           id: "concept",

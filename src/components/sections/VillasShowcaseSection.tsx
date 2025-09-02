@@ -9,7 +9,7 @@ const VillasShowcaseSection: React.FC = () => {
 
   // Animations au scroll - répétables
   const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation({
-    threshold: 0.3,
+    threshold: 0.2,
     triggerOnce: false,
   });
 
@@ -26,7 +26,9 @@ const VillasShowcaseSection: React.FC = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % sectionData[language].experiences.length);
+      setCurrentSlide(
+        (prev) => (prev + 1) % sectionData[language].experiences.length
+      );
       setIsTransitioning(false);
     }, 300);
   };
@@ -35,7 +37,7 @@ const VillasShowcaseSection: React.FC = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentSlide((prev) => 
+      setCurrentSlide((prev) =>
         prev === 0 ? sectionData[language].experiences.length - 1 : prev - 1
       );
       setIsTransitioning(false);
@@ -129,12 +131,14 @@ const VillasShowcaseSection: React.FC = () => {
   };
 
   return (
-    <section className="relative">
+    <section
+      className="relative"
+      ref={titleRef as React.RefObject<HTMLDivElement>}
+    >
       {/* Header de section */}
       <div className="relative z-20 py-12 bg-white">
         <div className="container mx-auto px-4">
           <div
-            ref={titleRef as React.RefObject<HTMLDivElement>}
             className={`text-center transition-all duration-1000 ${
               titleVisible
                 ? "showcase-slide-in-up visible"
@@ -164,10 +168,10 @@ const VillasShowcaseSection: React.FC = () => {
               alt={experience.title}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            
+
             {/* Dark Overlay */}
             <div className="absolute inset-0 bg-black/40"></div>
-            
+
             {/* Content Overlay */}
             <div className="relative z-10 h-full flex items-center justify-center">
               <div className="text-center text-white space-y-8 px-4">
@@ -175,7 +179,7 @@ const VillasShowcaseSection: React.FC = () => {
                 <div className="inline-block bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full text-white font-medium text-sm tracking-wide">
                   {experience.tag}
                 </div>
-                
+
                 {/* Main Content */}
                 <div className="space-y-4">
                   <h3 className="text-6xl lg:text-8xl font-bold leading-tight tracking-wide">
@@ -185,7 +189,7 @@ const VillasShowcaseSection: React.FC = () => {
                     {experience.subtitle}
                   </h4>
                 </div>
-                
+
                 {/* Decorative Line */}
                 <div className="w-24 h-1 bg-gradient-to-r from-sky-400 to-blue-500 rounded-full mx-auto"></div>
               </div>
@@ -199,8 +203,18 @@ const VillasShowcaseSection: React.FC = () => {
           disabled={isTransitioning}
           className="absolute left-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full shadow-lg transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center z-20"
         >
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-8 h-8 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         </button>
 
@@ -209,8 +223,18 @@ const VillasShowcaseSection: React.FC = () => {
           disabled={isTransitioning}
           className="absolute right-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full shadow-lg transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center z-20"
         >
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            className="w-8 h-8 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
 
@@ -234,9 +258,27 @@ const VillasShowcaseSection: React.FC = () => {
         <div className="absolute top-8 left-8 pointer-events-none z-20">
           <svg className="w-20 h-20 text-white/20" viewBox="0 0 80 80">
             <g fill="currentColor" className="opacity-60">
-              <rect x="5" y="25" width="3" height="10" className="animate-pulse delay-100" />
-              <rect x="10" y="20" width="3" height="20" className="animate-pulse delay-200" />
-              <rect x="15" y="15" width="3" height="30" className="animate-pulse delay-300" />
+              <rect
+                x="5"
+                y="25"
+                width="3"
+                height="10"
+                className="animate-pulse delay-100"
+              />
+              <rect
+                x="10"
+                y="20"
+                width="3"
+                height="20"
+                className="animate-pulse delay-200"
+              />
+              <rect
+                x="15"
+                y="15"
+                width="3"
+                height="30"
+                className="animate-pulse delay-300"
+              />
             </g>
           </svg>
         </div>
