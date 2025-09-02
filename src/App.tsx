@@ -8,10 +8,10 @@ import ResidenceShowcaseSection from "./components/sections/ResidenceShowcaseSec
 import VillasShowcaseSection from "./components/sections/VillasShowcaseSection";
 import FeaturesGridSection from "./components/sections/FeaturesGridSection";
 import HoverCardsSection from "./components/sections/HoverCardsSection";
-import VillasSection from "./components/sections/VillasSection";
-import ContactSection from "./components/sections/ContactSection";
-import ROICalculatorWidget from "./components/roi/ROICalculatorWidget";
-import DownloadsCenter from "./components/downloads/DownloadsCenter";
+// import VillasSection from "./components/sections/VillasSection";
+// import ContactSection from "./components/sections/ContactSection";
+// import ROICalculatorWidget from "./components/roi/ROICalculatorWidget";
+// import DownloadsCenter from "./components/downloads/DownloadsCenter";
 import "./App.css";
 
 function App() {
