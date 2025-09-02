@@ -86,7 +86,7 @@ naturellement
     <section className="py-20 lg:py-32 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
         {/* Section Title */}
-        {/* <div
+        <div
           ref={sectionRef as React.RefObject<HTMLDivElement>}
           className={`text-center mb-16 lg:mb-24 transition-all duration-1000 ${
             sectionVisible
@@ -94,10 +94,10 @@ naturellement
               : "opacity-0 translate-y-10"
           }`}
         >
-          <h2 className="text-5xl lg:text-7xl font-bold text-gray-700 mb-6 tracking-wide">
+          {/* <h2 className="text-5xl lg:text-7xl font-bold text-gray-700 mb-6 tracking-wide">
             {sectionData[language].title}
-          </h2>
-        </div> */}
+          </h2> */}
+        </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-8 lg:gap-12 max-w-7xl mx-auto">
@@ -161,7 +161,7 @@ naturellement
             </div>
           </div>
 
-          {/* Column 3 - Card format with key points - Larger */}
+          {/* Column 3 - Image background with overlay text - Larger */}
           <div
             className={`lg:col-span-3 transition-all duration-700 delay-600 ${
               sectionVisible
@@ -169,11 +169,21 @@ naturellement
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="bg-white rounded-2xl transition-all duration-500 overflow-hidden h-full">
-              <div className="flex flex-col lg:flex-row h-full">
-                {/* Text Section */}
-                <div className="lg:w-2/3 p-8 lg:p-12 flex flex-col justify-center">
-                  <h3 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-6 leading-tight">
+            <div className="bg-white  transition-all duration-500 overflow-hidden h-full min-h-[500px] relative">
+              {/* Background Image */}
+              <img
+                src={sectionData[language].features[2].image}
+                alt={sectionData[language].features[2].title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30"></div>
+
+              {/* Content Overlay */}
+              <div className="relative z-10 h-full flex flex-col justify-center p-8 lg:p-12">
+                <div className="text-white space-y-8">
+                  <h3 className="text-3xl lg:text-4xl font-bold mb-6 leading-tight">
                     {sectionData[language].features[2].title}
                   </h3>
 
@@ -182,10 +192,10 @@ naturellement
                     <div className="flex items-start space-x-4">
                       <div className="flex-shrink-0 w-3 h-3 bg-sky-400 rounded-full mt-2"></div>
                       <div>
-                        <h4 className="font-semibold text-gray-800 mb-2">
+                        <h4 className="font-semibold text-white mb-2">
                           Un cocon de sérénité
                         </h4>
-                        <p className="text-gray-600 leading-relaxed">
+                        <p className="text-white/90 leading-relaxed">
                           Chaque villa est bien plus qu'un lieu de vie, c'est un
                           véritable havre de paix.
                         </p>
@@ -195,10 +205,10 @@ naturellement
                     <div className="flex items-start space-x-4">
                       <div className="flex-shrink-0 w-3 h-3 bg-blue-400 rounded-full mt-2"></div>
                       <div>
-                        <h4 className="font-semibold text-gray-800 mb-2">
+                        <h4 className="font-semibold text-white mb-2">
                           Design harmonieux
                         </h4>
-                        <p className="text-gray-600 leading-relaxed">
+                        <p className="text-white/90 leading-relaxed">
                           Lumière naturelle, volumes ouverts, matériaux nobles
                           pour respirer et apaiser.
                         </p>
@@ -208,10 +218,10 @@ naturellement
                     <div className="flex items-start space-x-4">
                       <div className="flex-shrink-0 w-3 h-3 bg-sky-500 rounded-full mt-2"></div>
                       <div>
-                        <h4 className="font-semibold text-gray-800 mb-2">
+                        <h4 className="font-semibold text-white mb-2">
                           Art de vivre
                         </h4>
-                        <p className="text-gray-600 leading-relaxed">
+                        <p className="text-white/90 leading-relaxed">
                           Confort, élégance et sérénité au cœur de chaque projet
                           pour un intérieur où il fait bon vivre.
                         </p>
@@ -223,15 +233,6 @@ naturellement
                   <div className="mt-8">
                     <div className="w-20 h-1 bg-gradient-to-r from-sky-400 to-blue-500 rounded-full"></div>
                   </div>
-                </div>
-
-                {/* Image Section */}
-                <div className="lg:w-1/3 aspect-square lg:aspect-auto overflow-hidden">
-                  <img
-                    src={sectionData[language].features[2].image}
-                    alt={sectionData[language].features[2].title}
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                  />
                 </div>
               </div>
             </div>
