@@ -9,7 +9,7 @@ const HoverCardsSection: React.FC = () => {
   // Animations au scroll
   const { elementRef: sectionRef, isVisible: sectionVisible } =
     useScrollAnimation({
-      threshold: 0.2,
+      threshold: 0.1,
       triggerOnce: false,
     });
 
@@ -98,7 +98,7 @@ const HoverCardsSection: React.FC = () => {
   };
 
   return (
-    <section className="py-16 lg:py-20 bg-white">
+    <section className=" bg-slate-100">
       <div className="w-full">
         {/* Vertical Cards Container */}
         <div
@@ -130,13 +130,14 @@ const HoverCardsSection: React.FC = () => {
 
               {/* Background Color */}
               <div
-                className={`absolute inset-0 transition-all duration-500 ${
-                  hoveredCard === card.id
-                    ? "bg-black/40"
-                    : index % 2 === 0
-                    ? "bg-gray-100"
-                    : "bg-gray-200"
-                }`}
+                // className={`absolute inset-0 transition-all duration-500 ${
+                //   hoveredCard === card.id
+                //     ? "bg-black/40"
+                //     : index % 2 === 0
+                //     ? "bg-gray-100"
+                //     : "bg-gray-200"
+                // }`}
+                className={`absolute inset-0 transition-all duration-500 border-b-2 border-gray-200`}
               ></div>
 
               {/* Content */}
