@@ -107,7 +107,7 @@ const HoverCardsSection: React.FC = () => {
             sectionVisible ? "opacity-100" : "opacity-0"
           }`}
         >
-          {sectionData[language].cards.map((card, index) => (
+          {sectionData[language].cards.map((card) => (
             <div
               key={card.id}
               className="w-full h-[200px] relative overflow-hidden cursor-pointer group"
