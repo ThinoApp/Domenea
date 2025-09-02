@@ -50,6 +50,8 @@ function App() {
   };
 
   // Afficher le loader pendant le chargement
+
+  console.log(isLoading, isAppLoaded);
   if (isLoading || !isAppLoaded) {
     return (
       <AppProvider>

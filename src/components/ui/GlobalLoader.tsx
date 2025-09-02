@@ -22,30 +22,30 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
       "Loading architectures...",
       "Preparing villas...",
       "Finalizing paradise...",
-    ]
+    ],
   };
 
   useEffect(() => {
     const totalDuration = 3000; // 3 secondes
     const stepDuration = totalDuration / 100;
-    
+
     const interval = setInterval(() => {
-      setProgress(prev => {
-        const newProgress = prev + 1;
-        
+      setProgress((prev) => {
+        const newProgress = Math.min(prev + 1, 100);
+
         // Update step based on progress
         if (newProgress <= 25) setCurrentStep(0);
         else if (newProgress <= 50) setCurrentStep(1);
         else if (newProgress <= 75) setCurrentStep(2);
         else setCurrentStep(3);
-        
+
         if (newProgress >= 100) {
           clearInterval(interval);
           setTimeout(() => {
             onLoadingComplete();
           }, 500);
         }
-        
+
         return newProgress;
       });
     }, stepDuration);
@@ -57,11 +57,28 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
     <div className="fixed inset-0 z-[9999] bg-gradient-to-br from-slate-900 via-gray-900 to-black flex items-center justify-center overflow-hidden">
       {/* Elegant geometric background */}
       <div className="absolute inset-0 opacity-5">
-        <svg width="100%" height="100%" viewBox="0 0 200 200" className="w-full h-full">
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 200 200"
+          className="w-full h-full"
+        >
           <defs>
-            <pattern id="elegantGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <rect width="40" height="40" fill="none" stroke="#ffffff" strokeWidth="0.5" opacity="0.3"/>
-              <circle cx="20" cy="20" r="1" fill="#ffffff" opacity="0.2"/>
+            <pattern
+              id="elegantGrid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <rect
+                width="40"
+                height="40"
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="0.5"
+                opacity="0.3"
+              />
+              <circle cx="20" cy="20" r="1" fill="#ffffff" opacity="0.2" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#elegantGrid)" />
@@ -77,7 +94,7 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animation: 'drift 8s ease-in-out infinite',
+              animation: "drift 8s ease-in-out infinite",
               animationDelay: `${i * 0.7}s`,
             }}
           />
@@ -102,49 +119,55 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
             {/* Modern Villa Outline */}
             <svg viewBox="0 0 120 120" className="w-full h-full">
               <defs>
-                <linearGradient id="buildingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9"/>
-                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.4"/>
+                <linearGradient
+                  id="buildingGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.4" />
                 </linearGradient>
               </defs>
-              
+
               {/* Base Platform */}
-              <rect 
-                x="15" 
-                y="85" 
-                width="90" 
-                height="6" 
+              <rect
+                x="15"
+                y="85"
+                width="90"
+                height="6"
                 rx="3"
-                fill="url(#buildingGradient)" 
+                fill="url(#buildingGradient)"
                 style={{
                   opacity: progress >= 10 ? 0.8 : 0,
-                  transform: progress >= 10 ? 'scaleX(1)' : 'scaleX(0)',
-                  transition: 'all 1.5s cubic-bezier(0.23, 1, 0.32, 1)',
-                  transformOrigin: 'center'
+                  transform: progress >= 10 ? "scaleX(1)" : "scaleX(0)",
+                  transition: "all 1.5s cubic-bezier(0.23, 1, 0.32, 1)",
+                  transformOrigin: "center",
                 }}
               />
-              
+
               {/* Main Structure - Clean lines */}
-              <rect 
-                x="30" 
-                y="50" 
-                width="60" 
-                height="35" 
+              <rect
+                x="30"
+                y="50"
+                width="60"
+                height="35"
                 rx="2"
                 fill="none"
                 stroke="url(#buildingGradient)"
                 strokeWidth="1.5"
                 style={{
                   opacity: progress >= 25 ? 0.9 : 0,
-                  strokeDasharray: progress >= 25 ? '0' : '200',
-                  strokeDashoffset: progress >= 25 ? '0' : '200',
-                  transition: 'all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                  strokeDasharray: progress >= 25 ? "0" : "200",
+                  strokeDashoffset: progress >= 25 ? "0" : "200",
+                  transition: "all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 }}
               />
-              
+
               {/* Roof Line - Geometric */}
-              <path 
-                d="M25,50 L60,25 L95,50" 
+              <path
+                d="M25,50 L60,25 L95,50"
                 fill="none"
                 stroke="url(#buildingGradient)"
                 strokeWidth="2"
@@ -152,88 +175,90 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
                 strokeLinejoin="round"
                 style={{
                   opacity: progress >= 45 ? 1 : 0,
-                  strokeDasharray: progress >= 45 ? '0' : '150',
-                  strokeDashoffset: progress >= 45 ? '0' : '150',
-                  transition: 'all 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                  strokeDasharray: progress >= 45 ? "0" : "150",
+                  strokeDashoffset: progress >= 45 ? "0" : "150",
+                  transition: "all 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 }}
               />
-              
+
               {/* Window Frames */}
-              <rect 
-                x="40" 
-                y="60" 
-                width="12" 
-                height="12" 
+              <rect
+                x="40"
+                y="60"
+                width="12"
+                height="12"
                 rx="1"
                 fill="none"
                 stroke="url(#buildingGradient)"
                 strokeWidth="1"
                 style={{
                   opacity: progress >= 65 ? 0.7 : 0,
-                  transform: progress >= 65 ? 'scale(1)' : 'scale(0)',
-                  transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  transformOrigin: 'center'
+                  transform: progress >= 65 ? "scale(1)" : "scale(0)",
+                  transition:
+                    "all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                  transformOrigin: "center",
                 }}
               />
-              <rect 
-                x="68" 
-                y="60" 
-                width="12" 
-                height="12" 
+              <rect
+                x="68"
+                y="60"
+                width="12"
+                height="12"
                 rx="1"
                 fill="none"
                 stroke="url(#buildingGradient)"
                 strokeWidth="1"
                 style={{
                   opacity: progress >= 70 ? 0.7 : 0,
-                  transform: progress >= 70 ? 'scale(1)' : 'scale(0)',
-                  transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  transformOrigin: 'center'
+                  transform: progress >= 70 ? "scale(1)" : "scale(0)",
+                  transition:
+                    "all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                  transformOrigin: "center",
                 }}
               />
-              
+
               {/* Door Frame */}
-              <rect 
-                x="55" 
-                y="65" 
-                width="10" 
-                height="20" 
+              <rect
+                x="55"
+                y="65"
+                width="10"
+                height="20"
                 rx="1"
                 fill="none"
                 stroke="url(#buildingGradient)"
                 strokeWidth="1"
                 style={{
                   opacity: progress >= 80 ? 0.8 : 0,
-                  transform: progress >= 80 ? 'scale(1)' : 'scale(0)',
-                  transition: 'all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  transformOrigin: 'center bottom'
+                  transform: progress >= 80 ? "scale(1)" : "scale(0)",
+                  transition: "all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                  transformOrigin: "center bottom",
                 }}
               />
-              
+
               {/* Architectural Details */}
-              <line 
-                x1="30" 
-                y1="45" 
-                x2="90" 
-                y2="45" 
+              <line
+                x1="30"
+                y1="45"
+                x2="90"
+                y2="45"
                 stroke="url(#buildingGradient)"
                 strokeWidth="0.5"
                 style={{
                   opacity: progress >= 90 ? 0.6 : 0,
-                  strokeDasharray: progress >= 90 ? '0' : '60',
-                  strokeDashoffset: progress >= 90 ? '0' : '60',
-                  transition: 'all 1.2s ease-out'
+                  strokeDasharray: progress >= 90 ? "0" : "60",
+                  strokeDashoffset: progress >= 90 ? "0" : "60",
+                  transition: "all 1.2s ease-out",
                 }}
               />
             </svg>
-            
+
             {/* Elegant rotating ring */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div 
+              <div
                 className="w-36 h-36 border border-white/20 rounded-full"
                 style={{
-                  animation: 'rotate 6s linear infinite',
-                  opacity: 0.4
+                  animation: "rotate 6s linear infinite",
+                  opacity: 0.4,
                 }}
               >
                 <div className="absolute top-0 left-1/2 w-1 h-1 bg-white rounded-full transform -translate-x-1/2"></div>
@@ -250,7 +275,7 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
             <span>{progress}%</span>
           </div>
           <div className="w-full bg-gray-800/50 rounded-sm h-px overflow-hidden">
-            <div 
+            <div
               className="h-full bg-gradient-to-r from-white via-gray-300 to-white rounded-sm transition-all duration-500 ease-out"
               style={{ width: `${progress}%` }}
             />
@@ -263,10 +288,7 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
             {loadingSteps[language][currentStep]}
           </p>
           <p className="text-gray-400 text-xs font-light tracking-widest uppercase">
-            {language === 'fr' 
-              ? 'Expérience Premium' 
-              : 'Premium Experience'
-            }
+            {language === "fr" ? "Expérience Premium" : "Premium Experience"}
           </p>
         </div>
 
@@ -286,13 +308,13 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
 
         {/* Elegant center accent */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-10">
-          <div 
+          <div
             className="w-96 h-96 border border-white/5 rounded-full"
-            style={{ animation: 'rotate 20s linear infinite' }}
+            style={{ animation: "rotate 20s linear infinite" }}
           >
-            <div 
+            <div
               className="absolute inset-4 border border-white/3 rounded-full"
-              style={{ animation: 'rotate 15s linear infinite reverse' }}
+              style={{ animation: "rotate 15s linear infinite reverse" }}
             />
           </div>
         </div>
