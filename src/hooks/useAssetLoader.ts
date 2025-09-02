@@ -35,6 +35,8 @@ export const useAssetLoader = ({
       loadedCount++;
       setLoadedAssets(loadedCount);
 
+      console.log("loadedCount", loadedCount);
+      console.log("allAssets.length", allAssets.length);
       if (loadedCount === allAssets.length) {
         const elapsedTime = Date.now() - startTime;
         const remainingTime = Math.max(0, minimumLoadTime - elapsedTime);
