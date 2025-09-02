@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { useAppLanguage } from '../../context/AppContext';
-import { emotionalMessages, callToActions } from '../../data/mockData';
+import React, { useEffect, useRef } from "react";
+import { useAppLanguage } from "../../context/AppContext";
+import { emotionalMessages, callToActions } from "../../data/mockData";
 
 const HeroSection: React.FC = () => {
   const { language } = useAppLanguage();
@@ -8,12 +8,12 @@ const HeroSection: React.FC = () => {
 
   const heroTitle = {
     fr: "OÙ LA VIE TROUVE SON RYTHME",
-    en: "WHERE LIFE FINDS ITS RHYTHM"
+    en: "WHERE LIFE FINDS ITS RHYTHM",
   };
 
   const heroSubtitle = {
     fr: "Mont Passot, Nosy Be, Madagascar",
-    en: "Mont Passot, Nosy Be, Madagascar"
+    en: "Mont Passot, Nosy Be, Madagascar",
   };
 
   useEffect(() => {
@@ -54,13 +54,13 @@ const HeroSection: React.FC = () => {
               <p
                 key={index}
                 className={`font-light leading-relaxed tracking-wide ${
-                  index === 0 
-                    ? 'text-lg md:text-xl lg:text-2xl opacity-90' 
-                    : 'text-base md:text-lg lg:text-xl opacity-75'
+                  index === 0
+                    ? "text-lg md:text-xl lg:text-2xl opacity-90"
+                    : "text-base md:text-lg lg:text-xl opacity-75"
                 }`}
                 style={{
                   animationDelay: `${index * 0.3}s`,
-                  fontFamily: "'Inter', system-ui, sans-serif"
+                  fontFamily: "'Inter', system-ui, sans-serif",
                 }}
               >
                 {message}
@@ -75,7 +75,7 @@ const HeroSection: React.FC = () => {
                 {heroTitle[language]}
               </span>
             </h1>
-            
+
             {/* Sous-titre avec style minimaliste */}
             <p className="text-xl md:text-2xl lg:text-3xl font-light opacity-90 tracking-wide">
               {heroSubtitle[language]}
@@ -85,12 +85,16 @@ const HeroSection: React.FC = () => {
           {/* Call-to-action moderne avec glassmorphism */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
             <button className="group relative overflow-hidden bg-white/95 backdrop-blur-sm text-gray-900 px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-500 hover:bg-white hover:scale-105 shadow-2xl hover:shadow-3xl">
-              <span className="relative z-10">{callToActions.primary[language]}</span>
+              <span className="relative z-10">
+                {callToActions.primary[language]}
+              </span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-green-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
             </button>
-            
+
             <button className="group relative overflow-hidden border-2 border-white/80 backdrop-blur-sm text-white px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-500 hover:bg-white hover:text-gray-900 hover:scale-105 shadow-xl">
-              <span className="relative z-10">{callToActions.secondary[language]}</span>
+              <span className="relative z-10">
+                {callToActions.secondary[language]}
+              </span>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </button>
           </div>
@@ -98,12 +102,25 @@ const HeroSection: React.FC = () => {
           {/* Indicateurs visuels modernes avec glassmorphism */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { value: "20 000m²", label: language === 'fr' ? 'Terrain Sécurisé' : 'Secured Land' },
-              { value: "3", label: language === 'fr' ? 'Types de Villas' : 'Villa Types' },
-              { value: "20+", label: language === 'fr' ? 'Parcelles Premium' : 'Premium Plots' },
-              { value: "2025", label: language === 'fr' ? 'Livraison' : 'Delivery' }
+              {
+                value: "20 000m²",
+                label: language === "fr" ? "Terrain Sécurisé" : "Secured Land",
+              },
+              {
+                value: "3",
+                label: language === "fr" ? "Types de Villas" : "Villa Types",
+              },
+              {
+                value: "20+",
+                label:
+                  language === "fr" ? "Parcelles Premium" : "Premium Plots",
+              },
+              {
+                value: "2025",
+                label: language === "fr" ? "Livraison" : "Delivery",
+              },
             ].map((item, index) => (
-              <div 
+              <div
                 key={index}
                 className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:border-white/40"
                 style={{ animationDelay: `${index * 0.1}s` }}
@@ -137,12 +154,11 @@ const HeroSection: React.FC = () => {
               left: `${20 + i * 30}%`,
               top: `${30 + i * 20}%`,
               animationDelay: `${i * 2}s`,
-              animationDuration: '4s'
+              animationDuration: "4s",
             }}
           />
         ))}
       </div>
-
     </section>
   );
 };

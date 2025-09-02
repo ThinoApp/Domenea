@@ -54,312 +54,268 @@ const GlobalLoader: React.FC<GlobalLoaderProps> = ({ onLoadingComplete }) => {
   }, [onLoadingComplete]);
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 flex items-center justify-center overflow-hidden">
-      {/* Ocean waves background */}
-      <div className="absolute inset-0">
-        <svg width="100%" height="100%" viewBox="0 0 400 300" className="w-full h-full opacity-30">
+    <div className="fixed inset-0 z-[9999] bg-gradient-to-br from-slate-900 via-gray-900 to-black flex items-center justify-center overflow-hidden">
+      {/* Elegant geometric background */}
+      <div className="absolute inset-0 opacity-5">
+        <svg width="100%" height="100%" viewBox="0 0 200 200" className="w-full h-full">
           <defs>
-            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.8"/>
-              <stop offset="100%" stopColor="#0284c7" stopOpacity="0.3"/>
-            </linearGradient>
+            <pattern id="elegantGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <rect width="40" height="40" fill="none" stroke="#ffffff" strokeWidth="0.5" opacity="0.3"/>
+              <circle cx="20" cy="20" r="1" fill="#ffffff" opacity="0.2"/>
+            </pattern>
           </defs>
-          {/* Animated waves */}
-          <path 
-            d="M0,150 Q100,120 200,150 T400,150 L400,300 L0,300 Z"
-            fill="url(#waveGradient)"
-            className="animate-pulse"
-            style={{ animationDuration: '4s' }}
-          />
-          <path 
-            d="M0,180 Q150,160 300,180 T600,180 L600,300 L0,300 Z"
-            fill="url(#waveGradient)"
-            opacity="0.6"
-            className="animate-pulse"
-            style={{ animationDuration: '6s', animationDelay: '1s' }}
-          />
+          <rect width="100%" height="100%" fill="url(#elegantGrid)" />
         </svg>
       </div>
 
-      {/* Floating clouds */}
-      <div className="absolute top-10 left-10 opacity-40">
-        <div className="w-16 h-8 bg-white/30 rounded-full animate-pulse" style={{ animationDuration: '3s' }}></div>
-      </div>
-      <div className="absolute top-20 right-20 opacity-30">
-        <div className="w-12 h-6 bg-white/20 rounded-full animate-pulse" style={{ animationDuration: '4s', animationDelay: '1s' }}></div>
-      </div>
-      <div className="absolute top-32 left-1/3 opacity-20">
-        <div className="w-20 h-10 bg-white/25 rounded-full animate-pulse" style={{ animationDuration: '5s', animationDelay: '2s' }}></div>
+      {/* Subtle ambient particles */}
+      <div className="absolute inset-0">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-px h-px bg-white rounded-full opacity-20"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: 'drift 8s ease-in-out infinite',
+              animationDelay: `${i * 0.7}s`,
+            }}
+          />
+        ))}
       </div>
 
       <div className="relative z-10 text-center">
         {/* Logo/Brand Area */}
-        <div className="mb-12">
-          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-2 tracking-wide">
+        <div className="mb-16">
+          <h1 className="text-4xl lg:text-6xl font-light text-white mb-3 tracking-widest">
             TAO PASSOT
           </h1>
-          <p className="text-blue-200 text-lg lg:text-xl font-light tracking-wider">
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto mb-3"></div>
+          <p className="text-gray-300 text-sm lg:text-base font-light tracking-[0.3em] uppercase">
             RÉSIDENCE
           </p>
         </div>
 
-        {/* Tropical Villa Animation */}
-        <div className="mb-8 flex items-center justify-center">
-          <div className="relative w-40 h-40">
-            {/* Island Base */}
-            <svg viewBox="0 0 140 140" className="w-full h-full">
-              {/* Sand Island */}
-              <ellipse 
-                cx="70" 
-                cy="110" 
-                rx="65" 
-                ry="25" 
-                fill="currentColor" 
-                className="text-amber-200"
+        {/* Minimalist Architectural Animation */}
+        <div className="mb-12 flex items-center justify-center">
+          <div className="relative w-32 h-32">
+            {/* Modern Villa Outline */}
+            <svg viewBox="0 0 120 120" className="w-full h-full">
+              <defs>
+                <linearGradient id="buildingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9"/>
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.4"/>
+                </linearGradient>
+              </defs>
+              
+              {/* Base Platform */}
+              <rect 
+                x="15" 
+                y="85" 
+                width="90" 
+                height="6" 
+                rx="3"
+                fill="url(#buildingGradient)" 
                 style={{
-                  opacity: progress >= 5 ? 1 : 0,
-                  transform: progress >= 5 ? 'scale(1)' : 'scale(0.3)',
-                  transition: 'all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  opacity: progress >= 10 ? 0.8 : 0,
+                  transform: progress >= 10 ? 'scaleX(1)' : 'scaleX(0)',
+                  transition: 'all 1.5s cubic-bezier(0.23, 1, 0.32, 1)',
                   transformOrigin: 'center'
                 }}
               />
               
-              {/* Villa Foundation */}
+              {/* Main Structure - Clean lines */}
               <rect 
-                x="25" 
-                y="85" 
-                width="90" 
-                height="25" 
-                rx="3"
-                fill="currentColor" 
-                className="text-stone-300"
+                x="30" 
+                y="50" 
+                width="60" 
+                height="35" 
+                rx="2"
+                fill="none"
+                stroke="url(#buildingGradient)"
+                strokeWidth="1.5"
                 style={{
-                  opacity: progress >= 15 ? 1 : 0,
-                  transform: progress >= 15 ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.8)',
+                  opacity: progress >= 25 ? 0.9 : 0,
+                  strokeDasharray: progress >= 25 ? '0' : '200',
+                  strokeDashoffset: progress >= 25 ? '0' : '200',
+                  transition: 'all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                }}
+              />
+              
+              {/* Roof Line - Geometric */}
+              <path 
+                d="M25,50 L60,25 L95,50" 
+                fill="none"
+                stroke="url(#buildingGradient)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  opacity: progress >= 45 ? 1 : 0,
+                  strokeDasharray: progress >= 45 ? '0' : '150',
+                  strokeDashoffset: progress >= 45 ? '0' : '150',
+                  transition: 'all 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                }}
+              />
+              
+              {/* Window Frames */}
+              <rect 
+                x="40" 
+                y="60" 
+                width="12" 
+                height="12" 
+                rx="1"
+                fill="none"
+                stroke="url(#buildingGradient)"
+                strokeWidth="1"
+                style={{
+                  opacity: progress >= 65 ? 0.7 : 0,
+                  transform: progress >= 65 ? 'scale(1)' : 'scale(0)',
+                  transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                  transformOrigin: 'center'
+                }}
+              />
+              <rect 
+                x="68" 
+                y="60" 
+                width="12" 
+                height="12" 
+                rx="1"
+                fill="none"
+                stroke="url(#buildingGradient)"
+                strokeWidth="1"
+                style={{
+                  opacity: progress >= 70 ? 0.7 : 0,
+                  transform: progress >= 70 ? 'scale(1)' : 'scale(0)',
+                  transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                  transformOrigin: 'center'
+                }}
+              />
+              
+              {/* Door Frame */}
+              <rect 
+                x="55" 
+                y="65" 
+                width="10" 
+                height="20" 
+                rx="1"
+                fill="none"
+                stroke="url(#buildingGradient)"
+                strokeWidth="1"
+                style={{
+                  opacity: progress >= 80 ? 0.8 : 0,
+                  transform: progress >= 80 ? 'scale(1)' : 'scale(0)',
                   transition: 'all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                   transformOrigin: 'center bottom'
                 }}
               />
               
-              {/* Main Villa Structure */}
-              <rect 
-                x="35" 
-                y="55" 
-                width="70" 
-                height="30" 
-                rx="2"
-                fill="currentColor" 
-                className="text-stone-100"
+              {/* Architectural Details */}
+              <line 
+                x1="30" 
+                y1="45" 
+                x2="90" 
+                y2="45" 
+                stroke="url(#buildingGradient)"
+                strokeWidth="0.5"
                 style={{
-                  opacity: progress >= 30 ? 1 : 0,
-                  transform: progress >= 30 ? 'translateY(0) scale(1)' : 'translateY(-15px) scale(0.9)',
-                  transition: 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                  transformOrigin: 'center bottom'
-                }}
-              />
-              
-              {/* Tropical Roof */}
-              <path 
-                d="M25,55 Q70,20 115,55 L105,50 Q70,25 35,50 Z" 
-                fill="currentColor" 
-                className="text-amber-700"
-                style={{
-                  opacity: progress >= 45 ? 1 : 0,
-                  transform: progress >= 45 ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0)',
-                  transition: 'all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-                  transformOrigin: 'center bottom'
-                }}
-              />
-              
-              {/* Terrace */}
-              <rect 
-                x="20" 
-                y="80" 
-                width="100" 
-                height="8" 
-                rx="4"
-                fill="currentColor" 
-                className="text-teal-200"
-                style={{
-                  opacity: progress >= 55 ? 1 : 0,
-                  transform: progress >= 55 ? 'scale(1)' : 'scale(0)',
-                  transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  transformOrigin: 'center'
-                }}
-              />
-              
-              {/* Windows with glow */}
-              <rect 
-                x="45" 
-                y="65" 
-                width="10" 
-                height="12" 
-                rx="1"
-                fill="currentColor" 
-                className="text-yellow-200"
-                style={{
-                  opacity: progress >= 65 ? 1 : 0,
-                  transform: progress >= 65 ? 'scale(1)' : 'scale(0)',
-                  transition: 'all 0.6s ease-out',
-                  filter: progress >= 65 ? 'drop-shadow(0 0 8px rgba(255, 255, 0, 0.3))' : 'none'
-                }}
-              />
-              <rect 
-                x="85" 
-                y="65" 
-                width="10" 
-                height="12" 
-                rx="1"
-                fill="currentColor" 
-                className="text-yellow-200"
-                style={{
-                  opacity: progress >= 70 ? 1 : 0,
-                  transform: progress >= 70 ? 'scale(1)' : 'scale(0)',
-                  transition: 'all 0.6s ease-out',
-                  transformOrigin: 'center',
-                  filter: progress >= 70 ? 'drop-shadow(0 0 8px rgba(255, 255, 0, 0.3))' : 'none'
-                }}
-              />
-              
-              {/* Front Door */}
-              <rect 
-                x="65" 
-                y="70" 
-                width="10" 
-                height="15" 
-                rx="5"
-                fill="currentColor" 
-                className="text-amber-600"
-                style={{
-                  opacity: progress >= 75 ? 1 : 0,
-                  transform: progress >= 75 ? 'scale(1)' : 'scale(0)',
-                  transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  transformOrigin: 'center bottom'
-                }}
-              />
-              
-              {/* Palm Trees */}
-              <g style={{
-                opacity: progress >= 85 ? 1 : 0,
-                transform: progress >= 85 ? 'scale(1)' : 'scale(0)',
-                transition: 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-                transformOrigin: 'bottom'
-              }}>
-                {/* Left Palm */}
-                <line x1="15" y1="105" x2="15" y2="75" stroke="currentColor" strokeWidth="3" className="text-amber-800"/>
-                <path d="M15,75 Q10,70 5,75 M15,75 Q20,70 25,75 M15,75 Q12,68 8,72 M15,75 Q18,68 22,72" 
-                      stroke="currentColor" strokeWidth="2" fill="none" className="text-green-500"/>
-                
-                {/* Right Palm */}
-                <line x1="125" y1="105" x2="125" y2="78" stroke="currentColor" strokeWidth="3" className="text-amber-800"/>
-                <path d="M125,78 Q120,73 115,78 M125,78 Q130,73 135,78 M125,78 Q122,71 118,75 M125,78 Q128,71 132,75" 
-                      stroke="currentColor" strokeWidth="2" fill="none" className="text-green-500"/>
-              </g>
-              
-              {/* Coconuts falling */}
-              <circle 
-                cx="22" 
-                cy="72" 
-                r="2" 
-                fill="currentColor" 
-                className="text-amber-600"
-                style={{
-                  opacity: progress >= 90 ? 1 : 0,
-                  transform: progress >= 90 ? 'translateY(0)' : 'translateY(-10px)',
-                  transition: 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-                }}
-              />
-              <circle 
-                cx="118" 
-                cy="75" 
-                r="2" 
-                fill="currentColor" 
-                className="text-amber-600"
-                style={{
-                  opacity: progress >= 95 ? 1 : 0,
-                  transform: progress >= 95 ? 'translateY(0)' : 'translateY(-10px)',
-                  transition: 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                  opacity: progress >= 90 ? 0.6 : 0,
+                  strokeDasharray: progress >= 90 ? '0' : '60',
+                  strokeDashoffset: progress >= 90 ? '0' : '60',
+                  transition: 'all 1.2s ease-out'
                 }}
               />
             </svg>
             
-            {/* Floating tropical particles */}
-            <div className="absolute inset-0">
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`absolute w-1 h-1 rounded-full ${
-                    i % 3 === 0 ? 'bg-yellow-300' : i % 3 === 1 ? 'bg-green-300' : 'bg-blue-300'
-                  }`}
-                  style={{
-                    left: `${15 + i * 10}%`,
-                    top: `${20 + (i % 3) * 15}%`,
-                    animation: 'float 3s ease-in-out infinite',
-                    animationDelay: `${i * 0.3}s`,
-                    opacity: 0.7
-                  }}
-                />
-              ))}
+            {/* Elegant rotating ring */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div 
+                className="w-36 h-36 border border-white/20 rounded-full"
+                style={{
+                  animation: 'rotate 6s linear infinite',
+                  opacity: 0.4
+                }}
+              >
+                <div className="absolute top-0 left-1/2 w-1 h-1 bg-white rounded-full transform -translate-x-1/2"></div>
+                <div className="absolute bottom-0 left-1/2 w-1 h-1 bg-white rounded-full transform -translate-x-1/2"></div>
+              </div>
             </div>
           </div>
         </div>
 
-        <style>{`
-          @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(180deg); }
-          }
-        `}</style>
-
         {/* Progress Bar */}
-        <div className="mb-6 max-w-md mx-auto">
-          <div className="flex justify-between text-sm text-blue-200 mb-2">
-            <span>Progress</span>
+        <div className="mb-8 max-w-lg mx-auto">
+          <div className="flex justify-between text-xs text-gray-400 mb-3 font-light tracking-wider">
+            <span>LOADING</span>
             <span>{progress}%</span>
           </div>
-          <div className="w-full bg-blue-900/50 rounded-full h-2 overflow-hidden">
+          <div className="w-full bg-gray-800/50 rounded-sm h-px overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-300 rounded-full transition-all duration-300 ease-out relative"
+              className="h-full bg-gradient-to-r from-white via-gray-300 to-white rounded-sm transition-all duration-500 ease-out"
               style={{ width: `${progress}%` }}
-            >
-              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-            </div>
+            />
           </div>
         </div>
 
         {/* Loading Message */}
         <div className="text-center">
-          <p className="text-white text-lg font-medium mb-2">
+          <p className="text-white text-base font-light mb-2 tracking-wide">
             {loadingSteps[language][currentStep]}
           </p>
-          <p className="text-blue-200 text-sm">
+          <p className="text-gray-400 text-xs font-light tracking-widest uppercase">
             {language === 'fr' 
-              ? 'Préparation de votre expérience immersive...' 
-              : 'Preparing your immersive experience...'
+              ? 'Expérience Premium' 
+              : 'Premium Experience'
             }
           </p>
         </div>
 
-        {/* Decorative Elements */}
-        <div className="absolute top-8 right-8 opacity-20">
-          <div className="w-16 h-16 border-2 border-blue-400 rounded-full animate-spin" style={{ animationDuration: '3s' }}>
-            <div className="w-full h-full border-2 border-transparent border-t-blue-300 rounded-full animate-spin" style={{ animationDuration: '1.5s', animationDirection: 'reverse' }}></div>
-          </div>
+        {/* Minimal Corner Elements */}
+        <div className="absolute top-8 left-8 opacity-30">
+          <div className="w-8 h-8 border-l border-t border-white/40"></div>
+        </div>
+        <div className="absolute top-8 right-8 opacity-30">
+          <div className="w-8 h-8 border-r border-t border-white/40"></div>
+        </div>
+        <div className="absolute bottom-8 left-8 opacity-30">
+          <div className="w-8 h-8 border-l border-b border-white/40"></div>
+        </div>
+        <div className="absolute bottom-8 right-8 opacity-30">
+          <div className="w-8 h-8 border-r border-b border-white/40"></div>
         </div>
 
-        <div className="absolute bottom-8 left-8 opacity-20">
-          <div className="flex space-x-1">
-            {[...Array(3)].map((_, i) => (
-              <div
-                key={i}
-                className="w-2 h-6 bg-blue-400 rounded animate-pulse"
-                style={{ animationDelay: `${i * 0.2}s` }}
-              />
-            ))}
+        {/* Elegant center accent */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-10">
+          <div 
+            className="w-96 h-96 border border-white/5 rounded-full"
+            style={{ animation: 'rotate 20s linear infinite' }}
+          >
+            <div 
+              className="absolute inset-4 border border-white/3 rounded-full"
+              style={{ animation: 'rotate 15s linear infinite reverse' }}
+            />
           </div>
         </div>
       </div>
 
+      {/* Professional CSS Animations */}
+      <style>{`
+        @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        @keyframes drift {
+          0%, 100% { 
+            transform: translateY(0px) translateX(0px); 
+            opacity: 0.3;
+          }
+          50% { 
+            transform: translateY(-20px) translateX(10px); 
+            opacity: 0.7;
+          }
+        }
+      `}</style>
     </div>
   );
 };
