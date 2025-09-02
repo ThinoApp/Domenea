@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAppLanguage } from "../../context/AppContext";
 import { contactInfo } from "../../data/mockData";
 
 const Header: React.FC = () => {
   const { language, toggleLanguage } = useAppLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = {
     fr: ["PROGRAMMES", "CONCEPT", "CONTACT"],
@@ -55,16 +56,60 @@ const Header: React.FC = () => {
             </div>
 
             {/* Menu mobile */}
-            <button className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-all duration-300">
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-all duration-300"
+            >
               <span className="sr-only">Menu</span>
               <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-                <div className="w-full h-0.5 bg-white drop-shadow-sm"></div>
-                <div className="w-full h-0.5 bg-white drop-shadow-sm"></div>
-                <div className="w-full h-0.5 bg-white drop-shadow-sm"></div>
+                <div className={`w-full h-0.5 bg-white drop-shadow-sm transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
+                <div className={`w-full h-0.5 bg-white drop-shadow-sm transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></div>
+                <div className={`w-full h-0.5 bg-white drop-shadow-sm transition-transform duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
               </div>
             </button>
           </div>
         </div>
+
+        {/* Menu mobile déroulant */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden glass-effect-dark border-t border-white/10">
+            <div className="px-4 py-6 space-y-4">
+              {/* Navigation mobile */}
+              {navigation[language].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block text-white/90 hover:text-white font-medium py-3 px-2 rounded-lg hover:bg-white/10 transition-all duration-300"
+                >
+                  {item}
+                </a>
+              ))}
+              
+              {/* Séparateur */}
+              <div className="border-t border-white/20 my-4"></div>
+              
+              {/* Contact mobile */}
+              <div className="flex items-center space-x-2 text-sm text-white/90 px-2">
+                <span>📞</span>
+                <span className="drop-shadow-sm">{contactInfo.phone}</span>
+              </div>
+              
+              {/* Langue mobile */}
+              <button
+                onClick={() => {
+                  toggleLanguage();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-center space-x-1 px-4 py-3 rounded-xl border border-white/30 hover:bg-white/20 transition-all duration-300 backdrop-blur-sm"
+              >
+                <span className="text-sm font-medium text-white">
+                  {language === 'fr' ? '🇬🇧 English' : '🇫🇷 Français'}
+                </span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
