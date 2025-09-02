@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface UseAssetLoaderProps {
   images?: string[];
@@ -9,7 +9,7 @@ interface UseAssetLoaderProps {
 export const useAssetLoader = ({
   images = [],
   videos = [],
-  minimumLoadTime = 2000
+  minimumLoadTime = 2000,
 }: UseAssetLoaderProps = {}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedAssets, setLoadedAssets] = useState(0);
@@ -37,7 +37,9 @@ export const useAssetLoader = ({
       if (loadedCount === allAssets.length) {
         const elapsedTime = Date.now() - startTime;
         const remainingTime = Math.max(0, minimumLoadTime - elapsedTime);
-        
+        console.log("remainingTime", remainingTime);
+        console.log("elapsedTime", elapsedTime);
+
         setTimeout(() => {
           setIsLoading(false);
         }, remainingTime);
@@ -45,7 +47,7 @@ export const useAssetLoader = ({
     };
 
     // Précharger les images
-    images.forEach(src => {
+    images.forEach((src) => {
       const img = new Image();
       img.onload = handleAssetLoad;
       img.onerror = handleAssetLoad; // Même en cas d'erreur, on continue
@@ -53,14 +55,13 @@ export const useAssetLoader = ({
     });
 
     // Précharger les vidéos
-    videos.forEach(src => {
-      const video = document.createElement('video');
+    videos.forEach((src) => {
+      const video = document.createElement("video");
       video.onloadeddata = handleAssetLoad;
       video.onerror = handleAssetLoad;
       video.src = src;
-      video.preload = 'metadata';
+      video.preload = "metadata";
     });
-
   }, [images, videos, minimumLoadTime]);
 
   const progress = totalAssets > 0 ? (loadedAssets / totalAssets) * 100 : 100;
@@ -69,6 +70,6 @@ export const useAssetLoader = ({
     isLoading,
     progress,
     loadedAssets,
-    totalAssets
+    totalAssets,
   };
 };
