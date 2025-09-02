@@ -31,6 +31,7 @@ export const useAssetLoader = ({
     let loadedCount = 0;
 
     const handleAssetLoad = () => {
+      console.log("Called");
       loadedCount++;
       setLoadedAssets(loadedCount);
 
