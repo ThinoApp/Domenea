@@ -107,13 +107,46 @@ export const useAssetLoader = ({
     videos.forEach((src, index) => {
       console.log(`🎥 Loading video ${index + 1}/${videos.length}:`, src);
       const video = document.createElement("video");
-      video.onloadeddata = () => handleAssetLoad("video", src, true);
-      video.onerror = (error) => {
-        console.error("❌ Video load error:", src, error);
-        handleAssetLoad("video", src, false);
+      
+      // Multiple événements pour s'assurer qu'on détecte le chargement
+      let videoLoaded = false;
+      
+      const markVideoLoaded = () => {
+        if (!videoLoaded) {
+          videoLoaded = true;
+          handleAssetLoad("video", src, true);
+        }
       };
-      video.src = src;
+      
+      const markVideoFailed = (error: any) => {
+        if (!videoLoaded) {
+          videoLoaded = true;
+          console.error("❌ Video load error:", src, error);
+          handleAssetLoad("video", src, false);
+        }
+      };
+      
+      // Essayer plusieurs événements
+      video.onloadeddata = markVideoLoaded;
+      video.oncanplay = markVideoLoaded;
+      video.onloadedmetadata = markVideoLoaded;
+      video.onerror = markVideoFailed;
+      video.onabort = markVideoFailed;
+      
+      // Timeout spécifique pour cette vidéo (5 secondes)
+      const videoTimeout = setTimeout(() => {
+        if (!videoLoaded) {
+          console.warn("⚠️ Video timeout:", src);
+          markVideoFailed("Timeout");
+        }
+      }, 5000);
+      
+      video.onload = () => clearTimeout(videoTimeout);
+      video.onerror = () => clearTimeout(videoTimeout);
+      
       video.preload = "metadata";
+      video.muted = true; // Important pour l'autoplay policy
+      video.src = src;
     });
 
     return () => {
