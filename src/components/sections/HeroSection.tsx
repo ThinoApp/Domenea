@@ -34,22 +34,22 @@ const HeroSection: React.FC = () => {
 
       // Gérer les erreurs de chargement
       const handleError = () => {
-        console.warn('Video failed to load, using fallback');
+        console.warn("Video failed to load, using fallback");
         setIsVideoLoaded(true);
         setIsVideoReady(true);
       };
 
-      video.addEventListener('loadeddata', handleLoadedData);
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
+      video.addEventListener("loadeddata", handleLoadedData);
+      video.addEventListener("canplay", handleCanPlay);
+      video.addEventListener("error", handleError);
 
       // Force load
       video.load();
 
       return () => {
-        video.removeEventListener('loadeddata', handleLoadedData);
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
+        video.removeEventListener("loadeddata", handleLoadedData);
+        video.removeEventListener("canplay", handleCanPlay);
+        video.removeEventListener("error", handleError);
       };
     }
   }, []);
@@ -57,15 +57,15 @@ const HeroSection: React.FC = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Elegant Image Fallback - Always visible until video is ready */}
-      <div 
+      <div
         className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-          isVideoReady && isVideoLoaded ? 'opacity-0' : 'opacity-100'
+          isVideoReady && isVideoLoaded ? "opacity-0" : "opacity-100"
         }`}
         style={{
-          backgroundImage: 'url(/assets/Photo 8-3.jpeg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundImage: "url(/assets/Photo 8-3.jpeg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       />
 
@@ -73,7 +73,7 @@ const HeroSection: React.FC = () => {
       <video
         ref={videoRef}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-          isVideoReady && isVideoLoaded ? 'opacity-100' : 'opacity-0'
+          isVideoReady && isVideoLoaded ? "opacity-100" : "opacity-0"
         }`}
         autoPlay
         loop
@@ -82,7 +82,7 @@ const HeroSection: React.FC = () => {
         preload="auto"
         poster="/assets/Photo 8-3.jpeg"
       >
-        <source src="/assets/Vide_hero.mp4" type="video/mp4" />
+        <source src="/assets/vide_hero.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay moderne avec gradient sophistiqué */}
