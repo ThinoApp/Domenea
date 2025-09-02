@@ -133,13 +133,13 @@ export const useAssetLoader = ({
       video.onerror = markVideoFailed;
       video.onabort = markVideoFailed;
       
-      // Timeout spécifique pour cette vidéo (5 secondes)
+      // Timeout plus court pour les vidéos (3 secondes)
       const videoTimeout = setTimeout(() => {
         if (!videoLoaded) {
-          console.warn("⚠️ Video timeout:", src);
+          console.warn("⚠️ Video timeout:", src, "- continuing without video");
           markVideoFailed("Timeout");
         }
-      }, 5000);
+      }, 3000);
       
       video.onload = () => clearTimeout(videoTimeout);
       video.onerror = () => clearTimeout(videoTimeout);

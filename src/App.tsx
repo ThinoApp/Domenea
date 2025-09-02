@@ -10,7 +10,7 @@ import FeaturesGridSection from "./components/sections/FeaturesGridSection";
 import HoverCardsSection from "./components/sections/HoverCardsSection";
 import GlobalLoader from "./components/ui/GlobalLoader";
 import { useAssetLoader } from "./hooks/useAssetLoader";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 // import VillasSection from "./components/sections/VillasSection";
 // import ContactSection from "./components/sections/ContactSection";
 // import ROICalculatorWidget from "./components/roi/ROICalculatorWidget";
@@ -20,28 +20,22 @@ import "./App.css";
 function App() {
   const [isAppLoaded, setIsAppLoaded] = useState(false);
 
-  // Assets critiques à précharger
-  const criticalAssets = {
-    images: [
-      "/assets/Logo 2.png", // INTIMITÉ card
-      "/assets/Logo 1.png", // INTIMITÉ card
-      "/assets/Logo 3.png", // INTIMITÉ card
+  // Assets critiques à précharger (useMemo pour éviter la boucle infinie)
+  const criticalImages = useMemo(() => [
+    "/assets/Logo 2.png", // INTIMITÉ card
+    "/assets/Logo 1.png", // INTIMITÉ card
+    "/assets/Logo 3.png", // INTIMITÉ card
+    "/assets/Photo 8-3.jpeg", // Hero background
+    "/assets/Photo 8-1.jpeg", // HARMONIE card
+    "/assets/Photo 13.jpg", // PRESTIGE card
+    "/assets/Photo 14.jpg", // CONCEPT card
+    "/assets/Photo 16.jpg", // CONCEPT card
+    "/assets/photo-2-plage.jpg", // CONCEPT card
+  ], []);
 
-      "/assets/Photo 8-3.jpeg", // Hero background
-      "/assets/Photo 8-1.jpeg", // HARMONIE card
-      "/assets/Photo 13.jpg", // PRESTIGE card
-      "/assets/Photo 14.jpg", // CONCEPT card
-      "/assets/Photo 16.jpg", // CONCEPT card
-      "/assets/photo-2-plage.jpg", // CONCEPT card
-    ],
-    videos: [
-      "/assets/vide_hero.mp4", // Hero background video
-    ],
-  };
-
+  // Pas de vidéos dans le loader global - HeroSection gère son propre chargement
   const { isLoading } = useAssetLoader({
-    images: criticalAssets.images,
-    videos: criticalAssets.videos,
+    images: criticalImages,
     minimumLoadTime: 2500, // 2.5s minimum pour l'expérience
   });
 
