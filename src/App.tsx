@@ -7,6 +7,7 @@ import ProgramsPreviewSection from './components/sections/ProgramsPreviewSection
 import ResidenceShowcaseSection from './components/sections/ResidenceShowcaseSection';
 import VillasShowcaseSection from './components/sections/VillasShowcaseSection';
 import FeaturesGridSection from './components/sections/FeaturesGridSection';
+import HoverCardsSection from './components/sections/HoverCardsSection';
 import VillasSection from './components/sections/VillasSection';
 import ContactSection from './components/sections/ContactSection';
 import ROICalculatorWidget from './components/roi/ROICalculatorWidget';
@@ -39,6 +40,9 @@ function App() {
 
           {/* Section Features Grid */}
           <FeaturesGridSection />
+
+          {/* Section Hover Cards */}
+          <HoverCardsSection />
 
           {/* Section Programmes - Villas */}
           <VillasSection />
