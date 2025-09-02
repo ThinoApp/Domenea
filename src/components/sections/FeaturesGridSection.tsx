@@ -9,7 +9,7 @@ const FeaturesGridSection: React.FC = () => {
   const { elementRef: sectionRef, isVisible: sectionVisible } =
     useScrollAnimation({
       threshold: 0.2,
-      triggerOnce: false,
+      triggerOnce: true,
     });
 
   const sectionData = {
