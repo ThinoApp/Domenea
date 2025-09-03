@@ -9,6 +9,7 @@ import VillasShowcaseSection from "./components/sections/VillasShowcaseSection";
 import FeaturesGridSection from "./components/sections/FeaturesGridSection";
 import HoverCardsSection from "./components/sections/HoverCardsSection";
 import LifestylePresentationSection from "./components/sections/LifestylePresentationSection";
+import InvestmentOpportunitySection from "./components/sections/InvestmentOpportunitySection";
 import GlobalLoader from "./components/ui/GlobalLoader";
 import { useAssetLoader } from "./hooks/useAssetLoader";
 import { useState, useMemo } from "react";
@@ -84,36 +85,14 @@ function App() {
 
           {/* Section Hover Cards */}
           <HoverCardsSection />
-
-          {/* Section Lifestyle Presentation */}
           <LifestylePresentationSection />
+          <InvestmentOpportunitySection />
 
-          {/* Section Programmes - Villas */}
-          {/* <VillasSection /> */}
-
-          {/* Section Concept avec calculateur ROI */}
-          {/* <section id="concept" className="py-20 bg-white">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                  L'Art de Vivre TAO
-                </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-12">
-                  Le bien-être n'est pas un simple luxe, c'est un mode de vie.
-                  Matériaux, espaces privés et partagés favorisent la connexion,
-                  le mouvement et la quiétude.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start"> */}
           {/* Calculateur ROI */}
           {/* <ROICalculatorWidget /> */}
 
           {/* Centre de téléchargement */}
           {/* <DownloadsCenter /> */}
-          {/* </div>
-            </div>
-          </section> */}
 
           {/* Section Contact */}
           {/* <ContactSection /> */}
