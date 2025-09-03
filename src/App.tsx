@@ -8,6 +8,7 @@ import ResidenceShowcaseSection from "./components/sections/ResidenceShowcaseSec
 import VillasShowcaseSection from "./components/sections/VillasShowcaseSection";
 import FeaturesGridSection from "./components/sections/FeaturesGridSection";
 import HoverCardsSection from "./components/sections/HoverCardsSection";
+import LifestylePresentationSection from "./components/sections/LifestylePresentationSection";
 import GlobalLoader from "./components/ui/GlobalLoader";
 import { useAssetLoader } from "./hooks/useAssetLoader";
 import { useState, useMemo } from "react";
@@ -27,10 +28,11 @@ function App() {
     "/assets/Logo 3.png", // INTIMITÉ card
     "/assets/Photo 8-3.jpeg", // Hero background
     "/assets/Photo 8-1.jpeg", // HARMONIE card
-    "/assets/Photo 13.jpg", // PRESTIGE card
+    "/assets/Photo 8-2.jpg", // LifestylePresentationSection - Architecture moderne
     "/assets/Photo 14.jpg", // CONCEPT card
     "/assets/Photo 16.jpg", // CONCEPT card
     "/assets/photo-2-plage.jpg", // CONCEPT card
+    "/assets/Photo 12.jpg", // LifestylePresentationSection - Vue aérienne
   ], []);
 
   // Pas de vidéos dans le loader global - HeroSection gère son propre chargement
@@ -82,6 +84,9 @@ function App() {
 
           {/* Section Hover Cards */}
           <HoverCardsSection />
+
+          {/* Section Lifestyle Presentation */}
+          <LifestylePresentationSection />
 
           {/* Section Programmes - Villas */}
           {/* <VillasSection /> */}
