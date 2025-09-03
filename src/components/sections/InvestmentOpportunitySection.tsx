@@ -57,6 +57,18 @@ const InvestmentOpportunitySection: React.FC = () => {
     };
   }, []);
 
+  // Préchargement des images pour de meilleures performances
+  useEffect(() => {
+    const preloadImages = () => {
+      carouselImages.forEach((imageSrc) => {
+        const img = new Image();
+        img.src = imageSrc;
+      });
+    };
+
+    preloadImages();
+  }, []);
+
   // Carousel automatique
   useEffect(() => {
     const interval = setInterval(() => {
@@ -180,28 +192,43 @@ const InvestmentOpportunitySection: React.FC = () => {
             onMouseLeave={() => setDiamondHovered(false)}
           ></div>
 
-          {/* Background expandable au hover */}
-          <div
-            className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out origin-center ${
-              diamondHovered ? "opacity-70 scale-100" : "opacity-0 scale-125"
-            }`}
-            style={{
-              backgroundImage: `url('${carouselImages[currentImageIndex]}')`,
-              filter: "brightness(0.8)",
-            }}
-          ></div>
+          {/* Background expandable au hover - Optimisé pour les performances */}
+          {carouselImages.map((image, index) => (
+            <div
+              key={image}
+              className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out origin-center will-change-transform ${
+                diamondHovered ? "scale-100" : "scale-125"
+              } ${
+                index === currentImageIndex && diamondHovered
+                  ? "opacity-70"
+                  : "opacity-0"
+              }`}
+              style={{
+                backgroundImage: `url('${image}')`,
+                filter: "brightness(0.8)",
+                transform: `translateZ(0)`, // Force GPU acceleration
+              }}
+            />
+          ))}
 
           {/* Effet géométrique - forme losange statique */}
           <div className="absolute inset-0 opacity-100 z-5">
             {/* Forme losange qui reste en place */}
             <div className="absolute top-1/4 right-1/4 w-64 h-64 rotate-45 rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 group/diamond">
               <div className="absolute inset-0 bg-gradient-to-br from-slate-400/40 via-blue-500/30 to-slate-600/40"></div>
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-100 -rotate-45 scale-150 transition-all duration-500"
-                style={{
-                  backgroundImage: `url('${carouselImages[currentImageIndex]}')`,
-                }}
-              ></div>
+              {/* Images préchargées dans le losange */}
+              {carouselImages.map((image, index) => (
+                <div
+                  key={`diamond-${image}`}
+                  className={`absolute inset-0 bg-cover bg-center -rotate-45 transition-all duration-500 will-change-transform ${
+                    index === currentImageIndex ? "opacity-100" : "opacity-0"
+                  }`}
+                  style={{
+                    backgroundImage: `url('${image}')`,
+                    transform: `translateZ(0) scale(1.5)`, // Pas de rotation - image reste horizontale
+                  }}
+                />
+              ))}
 
               {/* Bordure avec effet de brillance animée */}
               <div className="absolute inset-0 rounded-lg overflow-hidden">
