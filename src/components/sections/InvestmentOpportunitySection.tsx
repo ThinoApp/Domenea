@@ -182,8 +182,8 @@ const InvestmentOpportunitySection: React.FC = () => {
 
           {/* Background expandable au hover */}
           <div
-            className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out origin-bottom ${
-              diamondHovered ? "opacity-70" : "opacity-0"
+            className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out origin-center ${
+              diamondHovered ? "opacity-70 scale-100" : "opacity-0 scale-125"
             }`}
             style={{
               backgroundImage: `url('${carouselImages[currentImageIndex]}')`,
