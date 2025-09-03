@@ -14,13 +14,13 @@ const InvestmentOpportunitySection: React.FC = () => {
   const [investmentVisible, setInvestmentVisible] = useState(false);
   const [opportunityVisible, setOpportunityVisible] = useState(false);
   const [diamondHovered, setDiamondHovered] = useState(false);
-  
+
   // Carousel d'images
   const carouselImages = [
     "/assets/Photo 8-1.jpeg",
-    "/assets/Photo 12.jpg", 
+    "/assets/Photo 12.jpg",
     "/assets/Photo 8-2.jpg",
-    "/assets/Photo 16.jpg"
+    "/assets/Photo 16.jpg",
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -60,8 +60,8 @@ const InvestmentOpportunitySection: React.FC = () => {
   // Carousel automatique
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        (prevIndex + 1) % carouselImages.length
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex + 1) % carouselImages.length
       );
     }, 4000); // Change d'image toutes les 4 secondes
 
@@ -183,9 +183,7 @@ const InvestmentOpportunitySection: React.FC = () => {
           {/* Background expandable au hover */}
           <div
             className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out origin-bottom ${
-              diamondHovered
-                ? "opacity-70 scale-100 scale-y-full"
-                : "opacity-0 scale-y-0"
+              diamondHovered ? "opacity-70" : "opacity-0"
             }`}
             style={{
               backgroundImage: `url('${carouselImages[currentImageIndex]}')`,
@@ -204,7 +202,7 @@ const InvestmentOpportunitySection: React.FC = () => {
                   backgroundImage: `url('${carouselImages[currentImageIndex]}')`,
                 }}
               ></div>
-              
+
               {/* Bordure avec effet de brillance animée */}
               <div className="absolute inset-0 rounded-lg overflow-hidden">
                 <div className="absolute inset-0 border-2 border-white/40 rounded-lg"></div>
@@ -212,22 +210,34 @@ const InvestmentOpportunitySection: React.FC = () => {
                 {/* Effet de brillance qui se déplace */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-lg transform -translate-x-full animate-[slide_3s_ease-in-out_infinite] delay-1000"></div>
               </div>
-              
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              
+
               {/* Indicateur de hover subtil */}
               <div className="absolute -top-3 -right-3 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-bounce opacity-70 -rotate-45 shadow-lg">
                 <div className="absolute inset-1 bg-white/20 rounded-full animate-ping"></div>
                 <div className="absolute inset-2 bg-white rounded-full opacity-80"></div>
               </div>
             </div>
-            
+
             {/* Particules d'attraction autour du losange */}
             <div className="absolute top-1/4 right-1/4 w-64 h-64 pointer-events-none">
-              <div className="absolute -top-4 left-1/2 w-2 h-2 bg-cyan-400/60 rounded-full animate-pulse" style={{animationDelay: "0s"}}></div>
-              <div className="absolute top-1/2 -right-4 w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-pulse" style={{animationDelay: "1s"}}></div>
-              <div className="absolute -bottom-4 left-1/3 w-1 h-1 bg-white/40 rounded-full animate-pulse" style={{animationDelay: "2s"}}></div>
-              <div className="absolute top-1/3 -left-4 w-1.5 h-1.5 bg-cyan-300/40 rounded-full animate-pulse" style={{animationDelay: "1.5s"}}></div>
+              <div
+                className="absolute -top-4 left-1/2 w-2 h-2 bg-cyan-400/60 rounded-full animate-pulse"
+                style={{ animationDelay: "0s" }}
+              ></div>
+              <div
+                className="absolute top-1/2 -right-4 w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-pulse"
+                style={{ animationDelay: "1s" }}
+              ></div>
+              <div
+                className="absolute -bottom-4 left-1/3 w-1 h-1 bg-white/40 rounded-full animate-pulse"
+                style={{ animationDelay: "2s" }}
+              ></div>
+              <div
+                className="absolute top-1/3 -left-4 w-1.5 h-1.5 bg-cyan-300/40 rounded-full animate-pulse"
+                style={{ animationDelay: "1.5s" }}
+              ></div>
             </div>
 
             {/* Petite forme avec texture */}
