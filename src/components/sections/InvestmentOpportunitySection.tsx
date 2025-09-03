@@ -14,6 +14,15 @@ const InvestmentOpportunitySection: React.FC = () => {
   const [investmentVisible, setInvestmentVisible] = useState(false);
   const [opportunityVisible, setOpportunityVisible] = useState(false);
   const [diamondHovered, setDiamondHovered] = useState(false);
+  
+  // Carousel d'images
+  const carouselImages = [
+    "/assets/Photo 8-1.jpeg",
+    "/assets/Photo 12.jpg", 
+    "/assets/Photo 8-2.jpg",
+    "/assets/Photo 16.jpg"
+  ];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Intersection Observer pour les animations d'entrée
   useEffect(() => {
@@ -47,6 +56,17 @@ const InvestmentOpportunitySection: React.FC = () => {
       refs.forEach((ref) => ref && observer.unobserve(ref));
     };
   }, []);
+
+  // Carousel automatique
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        (prevIndex + 1) % carouselImages.length
+      );
+    }, 4000); // Change d'image toutes les 4 secondes
+
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
 
   const content = {
     fr: {
@@ -150,40 +170,64 @@ const InvestmentOpportunitySection: React.FC = () => {
         <div className="absolute inset-0 overflow-hidden">
           {/* Fond abstrait en attendant Photo 15 */}
           <div className="w-full h-full bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800"></div>
-          
-          {/* Image de fond au hover du losange */}
-          <div 
-            className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ${
-              diamondHovered ? "opacity-60" : "opacity-0"
-            }`}
-            style={{
-              backgroundImage: "url('/assets/Photo 8-1.jpeg')",
-              filter: "blur(3px) brightness(0.8)"
-            }}
-          ></div>
-          
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/30"></div>
 
-          {/* Effet géométrique avec images de fond */}
-          <div className="absolute inset-0 opacity-100">
-            {/* Grande forme losange avec image */}
-            <div
-              className="absolute top-1/4 right-1/4 w-64 h-64 rotate-45 rounded-lg overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-110"
-              style={{ animationDelay: "0s", animationDuration: "4s" }}
-              onMouseEnter={() => setDiamondHovered(true)}
-              onMouseLeave={() => setDiamondHovered(false)}
-            >
+          {/* Zone de hover fixe pour éviter les bugs */}
+          <div
+            className="absolute top-1/4 right-1/4 w-64 h-64 z-20 cursor-pointer"
+            onMouseEnter={() => setDiamondHovered(true)}
+            onMouseLeave={() => setDiamondHovered(false)}
+          ></div>
+
+          {/* Background expandable au hover */}
+          <div
+            className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out origin-bottom ${
+              diamondHovered
+                ? "opacity-70 scale-100 scale-y-full"
+                : "opacity-0 scale-y-0"
+            }`}
+            style={{
+              backgroundImage: `url('${carouselImages[currentImageIndex]}')`,
+              filter: "brightness(0.8)",
+            }}
+          ></div>
+
+          {/* Effet géométrique - forme losange statique */}
+          <div className="absolute inset-0 opacity-100 z-5">
+            {/* Forme losange qui reste en place */}
+            <div className="absolute top-1/4 right-1/4 w-64 h-64 rotate-45 rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 group/diamond">
               <div className="absolute inset-0 bg-gradient-to-br from-slate-400/40 via-blue-500/30 to-slate-600/40"></div>
               <div
-                className="absolute inset-0 bg-cover bg-center opacity-100 -rotate-45"
+                className="absolute inset-0 bg-cover bg-center opacity-100 -rotate-45 scale-150 transition-all duration-500"
                 style={{
-                  backgroundImage: "url('/assets/Photo 8-1.jpeg')",
-                  // filter: "blur(1px) contrast(1.2)",
-                  transform: "scale(1.5)",
+                  backgroundImage: `url('${carouselImages[currentImageIndex]}')`,
                 }}
               ></div>
-              <div className="absolute inset-0 border-2 border-white/40 rounded-lg"></div>
+              
+              {/* Bordure avec effet de brillance animée */}
+              <div className="absolute inset-0 rounded-lg overflow-hidden">
+                <div className="absolute inset-0 border-2 border-white/40 rounded-lg"></div>
+                <div className="absolute inset-0 border-2 border-cyan-400/60 rounded-lg animate-pulse opacity-50"></div>
+                {/* Effet de brillance qui se déplace */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-lg transform -translate-x-full animate-[slide_3s_ease-in-out_infinite] delay-1000"></div>
+              </div>
+              
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              
+              {/* Indicateur de hover subtil */}
+              <div className="absolute -top-3 -right-3 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-bounce opacity-70 -rotate-45 shadow-lg">
+                <div className="absolute inset-1 bg-white/20 rounded-full animate-ping"></div>
+                <div className="absolute inset-2 bg-white rounded-full opacity-80"></div>
+              </div>
+            </div>
+            
+            {/* Particules d'attraction autour du losange */}
+            <div className="absolute top-1/4 right-1/4 w-64 h-64 pointer-events-none">
+              <div className="absolute -top-4 left-1/2 w-2 h-2 bg-cyan-400/60 rounded-full animate-pulse" style={{animationDelay: "0s"}}></div>
+              <div className="absolute top-1/2 -right-4 w-1.5 h-1.5 bg-blue-400/50 rounded-full animate-pulse" style={{animationDelay: "1s"}}></div>
+              <div className="absolute -bottom-4 left-1/3 w-1 h-1 bg-white/40 rounded-full animate-pulse" style={{animationDelay: "2s"}}></div>
+              <div className="absolute top-1/3 -left-4 w-1.5 h-1.5 bg-cyan-300/40 rounded-full animate-pulse" style={{animationDelay: "1.5s"}}></div>
             </div>
 
             {/* Petite forme avec texture */}
@@ -215,7 +259,7 @@ const InvestmentOpportunitySection: React.FC = () => {
         </div>
 
         {/* Overlay content */}
-        <div className="absolute inset-0 flex items-center">
+        <div className="absolute inset-0 flex items-center z-10 pointer-events-none">
           <div className="container mx-auto px-4">
             {/* Badge "METTRE PHOTO 15" en haut à gauche */}
             {/* <div
@@ -255,7 +299,7 @@ const InvestmentOpportunitySection: React.FC = () => {
 
             {/* Contenu principal à droite avec animation */}
             <div
-              className={`ml-auto max-w-lg mr-8 md:mr-16 transition-all duration-1000 ease-out ${
+              className={`ml-auto max-w-lg mr-8 md:mr-16 transition-all duration-1000 ease-out pointer-events-none ${
                 investmentVisible
                   ? "translate-x-0 opacity-100"
                   : "translate-x-12 opacity-0"

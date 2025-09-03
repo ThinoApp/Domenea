@@ -10,6 +10,7 @@ import FeaturesGridSection from "./components/sections/FeaturesGridSection";
 import HoverCardsSection from "./components/sections/HoverCardsSection";
 import LifestylePresentationSection from "./components/sections/LifestylePresentationSection";
 import InvestmentOpportunitySection from "./components/sections/InvestmentOpportunitySection";
+import BrochureRequestSection from "./components/sections/BrochureRequestSection";
 import GlobalLoader from "./components/ui/GlobalLoader";
 import { useAssetLoader } from "./hooks/useAssetLoader";
 import { useState, useMemo } from "react";
@@ -87,6 +88,7 @@ function App() {
           <HoverCardsSection />
           <LifestylePresentationSection />
           <InvestmentOpportunitySection />
+          <BrochureRequestSection />
 
           {/* Calculateur ROI */}
           {/* <ROICalculatorWidget /> */}
