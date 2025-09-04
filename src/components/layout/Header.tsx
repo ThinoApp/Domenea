@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useAppLanguage } from "../../context/AppContext";
 import { contactInfo } from "../../data/mockData";
+import VRTourButton from "../navigation/VRTourButton";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onOpenVRTour?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onOpenVRTour }) => {
   const { language, toggleLanguage } = useAppLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -39,6 +44,11 @@ const Header: React.FC = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
+            {/* VR Tour Button */}
+            {onOpenVRTour && (
+              <VRTourButton onOpenVRTour={onOpenVRTour} />
+            )}
+            
             {/* Sélecteur de langue */}
             <button
               onClick={toggleLanguage}

@@ -12,6 +12,7 @@ import LifestylePresentationSection from "./components/sections/LifestylePresent
 import InvestmentOpportunitySection from "./components/sections/InvestmentOpportunitySection";
 import BrochureRequestSection from "./components/sections/BrochureRequestSection";
 import GlobalLoader from "./components/ui/GlobalLoader";
+import VRTourPage from "./pages/VRTourPage";
 import { useAssetLoader } from "./hooks/useAssetLoader";
 import { useState, useMemo } from "react";
 // import VillasSection from "./components/sections/VillasSection";
@@ -22,6 +23,7 @@ import "./App.css";
 
 function App() {
   const [isAppLoaded, setIsAppLoaded] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'home' | 'vr-tour'>('home');
 
   // Assets critiques à précharger (useMemo pour éviter la boucle infinie)
   const criticalImages = useMemo(() => [
@@ -47,8 +49,16 @@ function App() {
     setIsAppLoaded(true);
   };
 
-  // Afficher le loader pendant le chargement
+  // Navigation handlers
+  const handleOpenVRTour = () => {
+    setCurrentPage('vr-tour');
+  };
 
+  const handleBackToHome = () => {
+    setCurrentPage('home');
+  };
+
+  // Afficher le loader pendant le chargement
   console.log(isLoading, isAppLoaded);
   if (isLoading || !isAppLoaded) {
     return (
@@ -58,11 +68,20 @@ function App() {
     );
   }
 
+  // Afficher la page VR Tour
+  if (currentPage === 'vr-tour') {
+    return (
+      <AppProvider>
+        <VRTourPage onBackToHome={handleBackToHome} />
+      </AppProvider>
+    );
+  }
+
   return (
     <AppProvider>
       <div className="min-h-screen bg-white">
         {/* Navigation */}
-        <Header />
+        <Header onOpenVRTour={handleOpenVRTour} />
 
         {/* Page d'accueil */}
         <main>
