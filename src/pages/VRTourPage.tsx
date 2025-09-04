@@ -132,19 +132,41 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         loadScript('/pano2vr/pano2vr_player.js'),
         loadScript('/pano2vr/skin.js')
       ]).then(() => {
-        initializePano2VR();
+        // Attendre que le DOM soit complètement prêt avec vérification
+        waitForContainer();
       }).catch((error) => {
         console.error('Erreur lors du chargement des scripts Pano2VR:', error);
         setIsLoading(false);
       });
     };
 
+    const waitForContainer = () => {
+      const checkContainer = () => {
+        const container = document.getElementById('pano2vr-container');
+        if (container && containerRef.current && window.pano2vrPlayer && window.pano2vrSkin) {
+          console.log('Container trouvé, initialisation de Pano2VR...');
+          initializePano2VR();
+        } else {
+          console.log('Container non trouvé, nouvelle tentative...');
+          setTimeout(checkContainer, 100);
+        }
+      };
+      checkContainer();
+    };
+
     const initializePano2VR = () => {
-      if (containerRef.current && window.pano2vrPlayer && window.pano2vrSkin) {
-        try {
-          // Créer le player Pano2VR
-          const pano = new window.pano2vrPlayer(containerRef.current);
-          pano.setQueryParameter("ts=90345204");
+      const container = document.getElementById('pano2vr-container');
+      if (!container) {
+        console.error('Container pano2vr-container introuvable dans le DOM');
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        console.log('Initialisation de Pano2VR avec container:', container);
+        // Créer le player Pano2VR avec l'ID du container (string)
+        const pano = new window.pano2vrPlayer("pano2vr-container");
+        pano.setQueryParameter("ts=90345204");
           
           // Créer le skin
           const skin = new window.pano2vrSkin(pano);
@@ -156,9 +178,12 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
           
           // Écouter les changements de nœud
           pano.addListener('nodechange', (event: any) => {
-            const newNodeIndex = getSceneIndexFromNodeId(event.target);
-            if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
-              setActiveScene(newNodeIndex);
+            console.log('Node change event:', event);
+            if (event && event.target) {
+              const newNodeIndex = getSceneIndexFromNodeId(event.target);
+              if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
+                setActiveScene(newNodeIndex);
+              }
             }
           });
           
