@@ -16,8 +16,8 @@ interface VRTourPageProps {
 const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const { language } = useAppLanguage();
   const [activeScene, setActiveScene] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [viewerOpacity, setViewerOpacity] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [imagesPreloaded, setImagesPreloaded] = useState(false);
   const panoramaRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<any>(null);
@@ -182,9 +182,8 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     preloadImages();
   }, []);
 
-  // Chargement de Pannellum - seulement au montage
+  // Initialisation de Pannellum une seule fois
   useEffect(() => {
-    // Ne rien faire si pas encore préchargé
     if (!imagesPreloaded) return;
 
     const loadPannellum = () => {
@@ -210,15 +209,10 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     };
 
     const initializePanorama = () => {
-      if (panoramaRef.current && window.pannellum) {
-        // Ne pas recréer le viewer s'il existe déjà
-        if (viewerRef.current) {
-          return;
-        }
-
+      if (panoramaRef.current && window.pannellum && !viewerRef.current) {
         const currentScene = vrScenes[activeScene];
         
-        // Configuration multi-scènes pour Pannellum
+        // Configuration avec toutes les scènes
         const sceneConfig: any = {
           default: {
             firstScene: currentScene.id,
@@ -230,16 +224,12 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
             autoRotate: -2,
             hfov: 100,
             minHfov: 50,
-            maxHfov: 120,
-            // Désactiver TOUS les loaders natifs
-            loadButtonLabel: '',
-            showLoadingBox: false,
-            orientationOnByDefault: false
+            maxHfov: 120
           },
           scenes: {}
         };
 
-        // Ajouter toutes les scènes à la configuration
+        // Ajouter toutes les scènes
         vrScenes.forEach((scene) => {
           sceneConfig.scenes[scene.id] = {
             type: 'equirectangular',
@@ -256,54 +246,49 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
           };
         });
         
-        // Créer le viewer avec toutes les scènes une seule fois
+        // Créer le viewer
         viewerRef.current = window.pannellum.viewer(panoramaRef.current, sceneConfig);
-
-        // Supprimer TOUS les loaders
-        setIsLoading(false);
         
-        // Aucun événement de loading - transitions instantanées
-        viewerRef.current.on('scenechange', () => {
-          // Rien - transition instantanée
+        // Fade in initial
+        viewerRef.current.on('load', () => {
+          setIsInitialized(true);
+          setViewerOpacity(1);
         });
       }
     };
 
     loadPannellum();
 
-    // Cleanup seulement au démontage du composant
     return () => {
       if (viewerRef.current) {
         viewerRef.current.destroy();
         viewerRef.current = null;
       }
     };
-  }, [imagesPreloaded]); // Seulement quand les images sont préchargées
+  }, [imagesPreloaded]);
 
   const handleSceneChange = (sceneIndex: number) => {
-    if (viewerRef.current && imagesPreloaded) {
+    if (viewerRef.current && isInitialized && sceneIndex !== activeScene) {
       const targetScene = vrScenes[sceneIndex];
       
-      // Transition personnalisée avec effet fade
-      setIsTransitioning(true);
+      // Effet de fade out
+      setViewerOpacity(0);
       
-      // Changement de scène instantané avec Pannellum
-      try {
-        viewerRef.current.loadScene(targetScene.id);
-        setActiveScene(sceneIndex);
-        
-        // Fin de transition après un court délai pour l'effet visuel
-        setTimeout(() => {
-          setIsTransitioning(false);
-        }, 300); // 300ms de transition fade
-        
-      } catch (error) {
-        console.error('Erreur lors du changement de scène:', error);
-        setActiveScene(sceneIndex);
-        setIsTransitioning(false);
-      }
-    } else {
-      setActiveScene(sceneIndex);
+      // Attendre la fin du fade out, puis changer de scène
+      setTimeout(() => {
+        try {
+          viewerRef.current.loadScene(targetScene.id);
+          setActiveScene(sceneIndex);
+          
+          // Fade in après changement
+          setTimeout(() => {
+            setViewerOpacity(1);
+          }, 50);
+        } catch (error) {
+          console.error('Erreur lors du changement de scène:', error);
+          setViewerOpacity(1); // Restore opacity even on error
+        }
+      }, 200); // Durée du fade out
     }
   };
 
@@ -405,25 +390,16 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
 
       {/* Viewer VR principal avec Pannellum */}
       <div className="w-full h-screen relative">
-        {/* Container Pannellum */}
+        {/* Container Pannellum avec transition opacity */}
         <div 
           ref={panoramaRef}
-          className="w-full h-full"
+          className="w-full h-full transition-opacity duration-200 ease-in-out"
+          style={{ opacity: viewerOpacity }}
           id="panorama-container"
         />
 
-        {/* Overlay de transition personnalisé */}
-        {isTransitioning && (
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 transition-all duration-300">
-            <div className="text-center animate-pulse">
-              <div className="w-16 h-16 border-2 border-white/40 rounded-full mb-4 mx-auto animate-ping"></div>
-              <p className="text-white/90 text-lg font-light tracking-wide">Transition...</p>
-            </div>
-          </div>
-        )}
-
-        {/* Overlay de chargement initial uniquement */}
-        {isLoading && !imagesPreloaded && (
+        {/* Overlay de chargement initial seulement */}
+        {!isInitialized && (
           <div className="absolute inset-0 bg-black flex items-center justify-center z-50">
             <div className="text-center">
               <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mb-4 mx-auto"></div>
