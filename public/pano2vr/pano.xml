@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tour apprev="20986" start="node1" appversion="7.1.8" hassounds="0">
+  <panorama id="node1">
+    <input overlap="1" levelbias="0.400" width="1806" levelingroll="0" height="1806" levelingpitch="0" leveltilesize="510" levelbiashidpi="1.000" leveltileurl="tiles/node1/cf_%c/l_%l/c_%x/tile_%y.jpg">
+      <level predecode="0" preload="0" width="1806" height="1806"/>
+      <level predecode="0" preload="0" width="903" height="903"/>
+      <level predecode="1" preload="1" width="451" height="451"/>
+      <preview color="0x808080" strip="1"/>
+    </input>
+    <view pannorth="0" fovmode="2">
+      <start pan="0" tilt="0" fov="100" projection="4"/>
+      <flyin pan="0" tilt="-90" fov="170" projection="9"/>
+      <min pan="-180" tilt="-48.1791" fovpixel="2"/>
+      <max pan="180" tilt="48.1791" fovstereographic="330" fovfisheye="360" fov="140"/>
+    </view>
+    <userdata datetime="" tags="Panoramapicture" source="" longitude="" author="" description="" heading="0" latitude="" title="Lac" nodeid="node1" copyright="" comment="" info="" customnodeid=""/>
+    <hotspots smoothmovement="0" wordwrap="1" width="180" height="20">
+      <label backgroundcolor="0xffffff" borderalpha="1" backgroundalpha="1" background="1" enabled="1" width="180" borderradius="1" textcolor="0x000000" height="20" wordwrap="1" bordercolor="0x000000" border="1" textalpha="1"/>
+      <polystyle backgroundcolor="0x0000ff" borderalpha="1" handcursor="1" bordercolor="0x0000ff" backgroundalpha="0.25098" mode="0"/>
+      <hotspot description="" pan="-358.37" tilt="-6.59" title="Espace Vert" target="" url="{node2}" id="Point01" skinid="ht_node"/>
+      <hotspot description="" pan="-339.56" tilt="10.43" title="Ville" target="" url="{node3}" id="Point02" skinid="ht_node"/>
+      <hotspot description="" pan="-255.99" tilt="5.07" title="Lac 2" target="" url="{node4}" id="Point03" skinid="ht_node"/>
+    </hotspots>
+    <media/>
+    <transition zoomafterinfov="140" type="crossdissolve" enabled="1" zoomin="0" blendtime="1" zoomoutpause="1" softedge="0" zoomspeed="2" zoomfov="40" blendcolor="0x000000" delay="none" zoomafteroutfov="40" zoomout="0"/>
+    <animation clipsrandom="0" useinautorotation="0" syncanimationwithvideo="0" animsequence="Animation01"/>
+    <control contextfullscreen="1" lockedwheel="0" invertwheel="0" sensitivity="8" contextprojections="0" rubberband="0" contextvr="1" lockedmouse="0" hideabout="0" lockedkeyboard="0" lockedkeyboardzoom="0" speedwheel="1" invertcontrol="1" zoomcentercursor="1" dblclickfullscreen="0" simulatemass="1"/>
+  </panorama>
+  <panorama id="node2">
+    <input overlap="1" levelbias="0.400" width="2470" levelingroll="0" height="2470" levelingpitch="0" leveltilesize="510" levelbiashidpi="1.000" leveltileurl="tiles/node2/cf_%c/l_%l/c_%x/tile_%y.jpg">
+      <level predecode="0" preload="0" width="2470" height="2470"/>
+      <level predecode="0" preload="0" width="1235" height="1235"/>
+      <level predecode="0" preload="0" width="617" height="617"/>
+      <level predecode="1" preload="1" width="308" height="308"/>
+      <preview color="0x808080" strip="1"/>
+    </input>
+    <view pannorth="0" fovmode="2">
+      <start pan="0" tilt="0" fov="100" projection="4"/>
+      <flyin pan="0" tilt="-90" fov="170" projection="9"/>
+      <min pan="-180" tilt="-53.0152" fovpixel="2"/>
+      <max pan="180" tilt="53.0152" fovstereographic="330" fovfisheye="360" fov="140"/>
+    </view>
+    <userdata datetime="" tags="Panoramapicture" source="" longitude="" author="" description="" heading="0" latitude="" title="Espace Vert" nodeid="node2" copyright="" comment="" info="" customnodeid=""/>
+    <hotspots smoothmovement="0" wordwrap="1" width="180" height="20">
+      <label backgroundcolor="0xffffff" borderalpha="1" backgroundalpha="1" background="1" enabled="1" width="180" borderradius="1" textcolor="0x000000" height="20" wordwrap="1" bordercolor="0x000000" border="1" textalpha="1"/>
+      <polystyle backgroundcolor="0x0000ff" borderalpha="1" handcursor="1" bordercolor="0x0000ff" backgroundalpha="0.25098" mode="0"/>
+      <hotspot description="" pan="-342.93" tilt="-27.31" title="Lac" target="" url="{node1}" id="Point01" skinid="ht_node"/>
+      <hotspot description="" pan="-16" tilt="-12.47" title="Ville" target="" url="{node3}" id="Point02" skinid="ht_node"/>
+    </hotspots>
+    <media/>
+    <transition zoomafterinfov="140" type="crossdissolve" enabled="1" zoomin="0" blendtime="1" zoomoutpause="1" softedge="0" zoomspeed="2" zoomfov="40" blendcolor="0x000000" delay="none" zoomafteroutfov="40" zoomout="0"/>
+    <animation clipsrandom="0" useinautorotation="0" syncanimationwithvideo="0" animsequence="Animation01"/>
+    <control contextfullscreen="1" lockedwheel="0" invertwheel="0" sensitivity="8" contextprojections="0" rubberband="0" contextvr="1" lockedmouse="0" hideabout="0" lockedkeyboard="0" lockedkeyboardzoom="0" speedwheel="1" invertcontrol="1" zoomcentercursor="1" dblclickfullscreen="0" simulatemass="1"/>
+  </panorama>
+  <panorama id="node3">
+    <input overlap="1" levelbias="0.400" width="2417" levelingroll="0" height="2417" levelingpitch="0" leveltilesize="510" levelbiashidpi="1.000" leveltileurl="tiles/node3/cf_%c/l_%l/c_%x/tile_%y.jpg">
+      <level predecode="0" preload="0" width="2417" height="2417"/>
+      <level predecode="0" preload="0" width="1208" height="1208"/>
+      <level predecode="0" preload="0" width="604" height="604"/>
+      <level predecode="1" preload="1" width="302" height="302"/>
+      <preview color="0x808080" strip="1"/>
+    </input>
+    <view pannorth="0" fovmode="2">
+      <start pan="0" tilt="0" fov="100" projection="4"/>
+      <flyin pan="0" tilt="-90" fov="170" projection="9"/>
+      <min pan="-180" tilt="-54.8249" fovpixel="2"/>
+      <max pan="180" tilt="54.8249" fovstereographic="330" fovfisheye="360" fov="140"/>
+    </view>
+    <userdata datetime="" tags="Panoramapicture" source="" longitude="" author="" description="" heading="0" latitude="" title="Ville" nodeid="node3" copyright="" comment="" info="" customnodeid=""/>
+    <hotspots smoothmovement="0" wordwrap="1" width="180" height="20">
+      <label backgroundcolor="0xffffff" borderalpha="1" backgroundalpha="1" background="1" enabled="1" width="180" borderradius="1" textcolor="0x000000" height="20" wordwrap="1" bordercolor="0x000000" border="1" textalpha="1"/>
+      <polystyle backgroundcolor="0x0000ff" borderalpha="1" handcursor="1" bordercolor="0x0000ff" backgroundalpha="0.25098" mode="0"/>
+      <hotspot description="" pan="-101.35" tilt="17.78" title="Lac 2" target="" url="{node4}" id="Point01" skinid="ht_node"/>
+      <hotspot description="" pan="-305.12" tilt="-15.35" title="Lac" target="" url="{node1}" id="Point02" skinid="ht_node"/>
+    </hotspots>
+    <media/>
+    <transition zoomafterinfov="140" type="crossdissolve" enabled="1" zoomin="0" blendtime="1" zoomoutpause="1" softedge="0" zoomspeed="2" zoomfov="40" blendcolor="0x000000" delay="none" zoomafteroutfov="40" zoomout="0"/>
+    <animation clipsrandom="0" useinautorotation="0" syncanimationwithvideo="0" animsequence="Animation01"/>
+    <control contextfullscreen="1" lockedwheel="0" invertwheel="0" sensitivity="8" contextprojections="0" rubberband="0" contextvr="1" lockedmouse="0" hideabout="0" lockedkeyboard="0" lockedkeyboardzoom="0" speedwheel="1" invertcontrol="1" zoomcentercursor="1" dblclickfullscreen="0" simulatemass="1"/>
+  </panorama>
+  <panorama id="node4">
+    <input overlap="1" levelbias="0.400" width="3000" levelingroll="0" height="3000" levelingpitch="0" leveltilesize="510" levelbiashidpi="1.000" leveltileurl="tiles/node4/cf_%c/l_%l/c_%x/tile_%y.jpg">
+      <level predecode="0" preload="0" width="3000" height="3000"/>
+      <level predecode="0" preload="0" width="1500" height="1500"/>
+      <level predecode="0" preload="0" width="750" height="750"/>
+      <level predecode="1" preload="1" width="375" height="375"/>
+      <preview color="0x808080" strip="1"/>
+    </input>
+    <view pannorth="0" fovmode="2">
+      <start pan="0" tilt="0" fov="100" projection="4"/>
+      <flyin pan="0" tilt="-90" fov="170" projection="9"/>
+      <min pan="0" tilt="-90" fovpixel="2"/>
+      <max pan="360" tilt="90" fovstereographic="330" fovfisheye="360" scaletofit="1" fov="140"/>
+    </view>
+    <userdata datetime="" tags="Panoramapicture" source="" longitude="" author="" description="" heading="0" latitude="" title="Lac 2" nodeid="node4" copyright="" comment="" info="" customnodeid=""/>
+    <hotspots smoothmovement="0" wordwrap="1" width="180" height="20">
+      <label backgroundcolor="0xffffff" borderalpha="1" backgroundalpha="1" background="1" enabled="1" width="180" borderradius="1" textcolor="0x000000" height="20" wordwrap="1" bordercolor="0x000000" border="1" textalpha="1"/>
+      <polystyle backgroundcolor="0x0000ff" borderalpha="1" handcursor="1" bordercolor="0x0000ff" backgroundalpha="0.25098" mode="0"/>
+      <hotspot description="" pan="-294.24" tilt="5.23" title="Espace Vert" target="" url="{node2}" id="Point01" skinid="ht_node"/>
+      <hotspot description="" pan="-198.12" tilt="-4.4" title="Lac" target="" url="{node1}" id="Point02" skinid="ht_node"/>
+      <hotspot description="" pan="-149.46" tilt="1.93" title="Ville" target="" url="{node3}" id="Point03" skinid="ht_node"/>
+    </hotspots>
+    <media/>
+    <transition zoomafterinfov="140" type="crossdissolve" enabled="1" zoomin="0" blendtime="1" zoomoutpause="1" softedge="0" zoomspeed="2" zoomfov="40" blendcolor="0x000000" delay="none" zoomafteroutfov="40" zoomout="0"/>
+    <animation clipsrandom="0" useinautorotation="0" syncanimationwithvideo="0" animsequence="Animation01"/>
+    <control contextfullscreen="1" lockedwheel="0" invertwheel="0" sensitivity="8" contextprojections="0" rubberband="0" contextvr="1" lockedmouse="0" hideabout="0" lockedkeyboard="0" lockedkeyboardzoom="0" speedwheel="1" invertcontrol="1" zoomcentercursor="1" dblclickfullscreen="0" simulatemass="1"/>
+  </panorama>
+  <masternode>
+    <userdata description="" title="" tags="" comment="" copyright="" author=""/>
+    <animationsequences>
+      <sequence title="Animation01"/>
+    </animationsequences>
+  </masternode>
+</tour>

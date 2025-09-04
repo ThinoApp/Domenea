@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppLanguage } from "../context/AppContext";
-import "../styles/pannellum-custom.css";
 
-// Déclaration des types pour Pannellum
+// Déclaration des types pour Pano2VR
 declare global {
   interface Window {
-    pannellum: any;
+    pano2vrPlayer: any;
+    pano2vrSkin: any;
+    pano: any;
+    skin: any;
   }
 }
 
@@ -16,112 +18,56 @@ interface VRTourPageProps {
 const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const { language } = useAppLanguage();
   const [activeScene, setActiveScene] = useState(0);
-  const [viewerAOpacity, setViewerAOpacity] = useState(1);
-  const [viewerBOpacity, setViewerBOpacity] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [imagesPreloaded, setImagesPreloaded] = useState(false);
-  const [activeViewer, setActiveViewer] = useState('A');
-  const panoramaARef = useRef<HTMLDivElement>(null);
-  const panoramaBRef = useRef<HTMLDivElement>(null);
-  const viewerARef = useRef<any>(null);
-  const viewerBRef = useRef<any>(null);
-  const preloadedImages = useRef<Set<string>>(new Set());
+  const [isLoading, setIsLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const panoRef = useRef<any>(null);
 
-  // Scènes VR avec images panoramiques temporaires
+  // Scènes VR basées sur le projet Pano2VR
   const vrScenes = [
     {
-      id: "aerial",
+      id: "node1",
       name: {
-        fr: "Vue Aérienne TAO",
-        en: "TAO Aerial View",
+        fr: "Lac TAO",
+        en: "TAO Lake",
       },
       description: {
-        fr: "Découvrez la résidence depuis les airs",
-        en: "Discover the residence from above",
+        fr: "Vue panoramique sur le lac",
+        en: "Panoramic lake view",
       },
-      panorama: "/assets/Panorama/marc-markstein-if4wsNq145o-unsplash.jpg", // Vue aérienne panoramique
-      hotspots: [
-        {
-          x: 0.2,
-          y: 0.1,
-          target: "villa-interior",
-          label: { fr: "Villa Intérieur", en: "Villa Interior" },
-        },
-        { x: 0.8, y: 0.3, target: "spa", label: { fr: "SPA", en: "SPA" } },
-      ],
     },
     {
-      id: "villa-interior",
+      id: "node2",
       name: {
-        fr: "Villa Intérieur",
-        en: "Villa Interior",
+        fr: "Espace Vert",
+        en: "Green Space",
       },
       description: {
-        fr: "Explorez nos villas luxueuses",
-        en: "Explore our luxurious villas",
+        fr: "Jardins et espaces verts",
+        en: "Gardens and green areas",
       },
-      panorama: "/assets/Panorama/alex-bdnr-nrQ86ujBqMs-unsplash.jpg", // Villa intérieur luxueux
-      hotspots: [
-        {
-          x: 0.1,
-          y: 0.2,
-          target: "aerial",
-          label: { fr: "Vue Aérienne", en: "Aerial View" },
-        },
-        { x: 0.9, y: 0.4, target: "spa", label: { fr: "SPA", en: "SPA" } },
-      ],
     },
     {
-      id: "spa",
+      id: "node3",
       name: {
-        fr: "SPA & Wellness",
-        en: "SPA & Wellness",
+        fr: "Vue Ville",
+        en: "City View",
       },
       description: {
-        fr: "Détendez-vous dans notre SPA",
-        en: "Relax in our SPA",
+        fr: "Panorama urbain",
+        en: "Urban panorama",
       },
-      panorama: "/assets/Panorama/allphoto-bangkok-GfXqtWmiuDI-unsplash.jpg", // SPA et wellness
-      hotspots: [
-        {
-          x: 0.3,
-          y: 0.2,
-          target: "aerial",
-          label: { fr: "Vue Aérienne", en: "Aerial View" },
-        },
-        {
-          x: 0.7,
-          y: 0.3,
-          target: "villa-interior",
-          label: { fr: "Villa", en: "Villa" },
-        },
-      ],
     },
     {
-      id: "pool-area",
+      id: "node4",
       name: {
-        fr: "Piscine & Espaces Communs",
-        en: "Pool & Common Areas",
+        fr: "Lac 2",
+        en: "Lake 2",
       },
       description: {
-        fr: "Profitez de nos espaces de détente",
-        en: "Enjoy our relaxation spaces",
+        fr: "Deuxième vue sur le lac",
+        en: "Second lake view",
       },
-      panorama: "/assets/Panorama/jose-g-ortega-castro-PYpkPbBCNFw-unsplash.jpg", // Piscine et espaces communs
-      hotspots: [
-        {
-          x: 0.4,
-          y: 0.1,
-          target: "aerial",
-          label: { fr: "Vue Aérienne", en: "Aerial View" },
-        },
-        {
-          x: 0.6,
-          y: 0.4,
-          target: "villa-interior",
-          label: { fr: "Villa", en: "Villa" },
-        },
-      ],
     },
   ];
 
@@ -153,174 +99,114 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const currentContent = content[language];
   const currentScene = vrScenes[activeScene];
 
-  // Préchargement de toutes les images panoramiques
+  // Mappage des indices vers les IDs Pano2VR
+  const getNodeId = (sceneIndex: number) => {
+    return vrScenes[sceneIndex]?.id || 'node1';
+  };
+
+  const getSceneIndexFromNodeId = (nodeId: string) => {
+    return vrScenes.findIndex(scene => scene.id === nodeId);
+  };
+
+  // Initialisation de Pano2VR
   useEffect(() => {
-    const preloadImages = async () => {
-      try {
-        const imagePromises = vrScenes.map((scene) => {
-          return new Promise<void>((resolve, reject) => {
-            if (preloadedImages.current.has(scene.panorama)) {
-              resolve();
-              return;
-            }
-
-            const img = new Image();
-            img.onload = () => {
-              preloadedImages.current.add(scene.panorama);
-              resolve();
-            };
-            img.onerror = reject;
-            img.src = scene.panorama;
-          });
+    const loadPano2VR = () => {
+      // Charger les scripts Pano2VR
+      const loadScript = (src: string): Promise<void> => {
+        return new Promise((resolve, reject) => {
+          if (document.querySelector(`script[src*="${src.split('/').pop()}"]`)) {
+            resolve();
+            return;
+          }
+          const script = document.createElement('script');
+          script.src = src;
+          script.onload = () => resolve();
+          script.onerror = reject;
+          document.head.appendChild(script);
         });
+      };
 
-        await Promise.all(imagePromises);
-        setImagesPreloaded(true);
-        console.log('Toutes les images panoramiques sont préchargées');
-      } catch (error) {
-        console.error('Erreur lors du préchargement:', error);
-        setImagesPreloaded(true); // Continuer même en cas d'erreur
-      }
+      // Charger d'abord Lottie, puis les scripts Pano2VR
+      Promise.all([
+        loadScript('/pano2vr/3rdparty/lottie/lottie.min.js'),
+        loadScript('/pano2vr/pano2vr_player.js'),
+        loadScript('/pano2vr/skin.js')
+      ]).then(() => {
+        initializePano2VR();
+      }).catch((error) => {
+        console.error('Erreur lors du chargement des scripts Pano2VR:', error);
+        setIsLoading(false);
+      });
     };
 
-    preloadImages();
-  }, []);
-
-  // Initialisation de Pannellum une seule fois
-  useEffect(() => {
-    if (!imagesPreloaded) return;
-
-    const loadPannellum = () => {
-      // Charger CSS
-      if (!document.querySelector('link[href*="pannellum"]')) {
-        const cssLink = document.createElement('link');
-        cssLink.rel = 'stylesheet';
-        cssLink.href = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css';
-        document.head.appendChild(cssLink);
-      }
-
-      // Charger JS
-      if (!window.pannellum) {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js';
-        script.onload = () => {
-          initializeBothPanoramas();
-        };
-        document.head.appendChild(script);
-      } else {
-        initializeBothPanoramas();
-      }
-    };
-
-    const initializeBothPanoramas = () => {
-      if (panoramaARef.current && panoramaBRef.current && window.pannellum) {
-        const currentScene = vrScenes[activeScene];
-        
-        // Configuration pour les deux viewers
-        const createSceneConfig = (sceneId: string) => ({
-          default: {
-            firstScene: sceneId,
-            autoLoad: true,
-            showZoomCtrl: true,
-            showFullscreenCtrl: false,
-            showControls: true,
-            compass: true,
-            autoRotate: -2,
-            hfov: 100,
-            minHfov: 50,
-            maxHfov: 120
-          },
-          scenes: vrScenes.reduce((acc, scene) => {
-            acc[scene.id] = {
-              type: 'equirectangular',
-              panorama: scene.panorama,
-              hotSpots: scene.hotspots.map((hotspot) => ({
-                pitch: (0.5 - hotspot.y) * 180,
-                yaw: (hotspot.x - 0.5) * 360,
-                type: 'scene',
-                text: hotspot.label[language],
-                sceneId: hotspot.target,
-                clickHandlerFunc: () => handleHotspotClick(hotspot.target),
-                className: 'vr-hotspot'
-              }))
-            };
-            return acc;
-          }, {} as any)
-        });
-        
-        // Créer le viewer A (visible au démarrage)
-        if (!viewerARef.current) {
-          viewerARef.current = window.pannellum.viewer(
-            panoramaARef.current, 
-            createSceneConfig(currentScene.id)
-          );
+    const initializePano2VR = () => {
+      if (containerRef.current && window.pano2vrPlayer && window.pano2vrSkin) {
+        try {
+          // Créer le player Pano2VR
+          const pano = new window.pano2vrPlayer(containerRef.current);
+          pano.setQueryParameter("ts=90345204");
           
-          viewerARef.current.on('load', () => {
-            setIsInitialized(true);
+          // Créer le skin
+          const skin = new window.pano2vrSkin(pano);
+          
+          // Stocker les références globalement pour compatibilité
+          window.pano = pano;
+          window.skin = skin;
+          panoRef.current = pano;
+          
+          // Écouter les changements de nœud
+          pano.addListener('nodechange', (event: any) => {
+            const newNodeIndex = getSceneIndexFromNodeId(event.target);
+            if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
+              setActiveScene(newNodeIndex);
+            }
           });
-        }
-        
-        // Créer le viewer B (caché au démarrage)
-        if (!viewerBRef.current) {
-          viewerBRef.current = window.pannellum.viewer(
-            panoramaBRef.current, 
-            createSceneConfig(currentScene.id)
-          );
+          
+          // Charger la configuration
+          pano.readConfigUrlAsync('/pano2vr/pano.xml?ts=90345204').then(() => {
+            setIsInitialized(true);
+            setIsLoading(false);
+          }).catch((error: any) => {
+            console.error('Erreur lors du chargement de la configuration:', error);
+            setIsLoading(false);
+          });
+          
+        } catch (error) {
+          console.error('Erreur lors de l\'initialisation de Pano2VR:', error);
+          setIsLoading(false);
         }
       }
     };
 
-    loadPannellum();
+    loadPano2VR();
 
     return () => {
-      if (viewerARef.current) {
-        viewerARef.current.destroy();
-        viewerARef.current = null;
-      }
-      if (viewerBRef.current) {
-        viewerBRef.current.destroy();
-        viewerBRef.current = null;
+      if (panoRef.current) {
+        try {
+          panoRef.current.dispose();
+        } catch (e) {
+          console.warn('Erreur lors de la destruction de Pano2VR:', e);
+        }
+        panoRef.current = null;
       }
     };
-  }, [imagesPreloaded]);
+  }, []);
 
   const handleSceneChange = (sceneIndex: number) => {
-    if (!isInitialized || sceneIndex === activeScene) return;
+    if (!isInitialized || sceneIndex === activeScene || !panoRef.current) return;
 
-    const targetScene = vrScenes[sceneIndex];
+    const targetNodeId = getNodeId(sceneIndex);
     
-    if (activeViewer === 'A') {
-      // Préparer le viewer B avec la nouvelle scène
-      if (viewerBRef.current) {
-        viewerBRef.current.loadScene(targetScene.id);
-      }
-      
-      // Cross-fade : A disparaît, B apparaît
-      setViewerAOpacity(0);
-      setViewerBOpacity(1);
-      setActiveViewer('B');
-      
-    } else {
-      // Préparer le viewer A avec la nouvelle scène  
-      if (viewerARef.current) {
-        viewerARef.current.loadScene(targetScene.id);
-      }
-      
-      // Cross-fade : B disparaît, A apparaît
-      setViewerBOpacity(0);
-      setViewerAOpacity(1);
-      setActiveViewer('A');
-    }
-    
-    setActiveScene(sceneIndex);
-  };
-
-  const handleHotspotClick = (targetId: string) => {
-    const targetIndex = vrScenes.findIndex((scene) => scene.id === targetId);
-    if (targetIndex !== -1) {
-      handleSceneChange(targetIndex);
+    try {
+      // Naviguer vers le nœud avec Pano2VR
+      panoRef.current.openNext(`{${targetNodeId}}`, '');
+      setActiveScene(sceneIndex);
+    } catch (error) {
+      console.error('Erreur lors du changement de scène:', error);
     }
   };
+
+  // Les hotspots sont gérés automatiquement par Pano2VR via pano.xml
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -411,25 +297,18 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         </div>
       </div>
 
-      {/* Viewer VR principal avec Pannellum */}
+      {/* Viewer VR principal avec Pano2VR */}
       <div className="w-full h-screen relative">
-        {/* Container Pannellum A avec transition opacity */}
+        {/* Container Pano2VR */}
         <div 
-          ref={panoramaARef}
-          className="w-full h-full absolute inset-0 transition-opacity duration-500 ease-in-out"
-          style={{ opacity: viewerAOpacity }}
-          id="panorama-container-A"
-        />
-        {/* Container Pannellum B avec transition opacity */}
-        <div 
-          ref={panoramaBRef}
-          className="w-full h-full absolute inset-0 transition-opacity duration-500 ease-in-out"
-          style={{ opacity: viewerBOpacity }}
-          id="panorama-container-B"
+          ref={containerRef}
+          className="w-full h-full"
+          id="pano2vr-container"
+          style={{ background: '#000' }}
         />
 
-        {/* Overlay de chargement initial seulement */}
-        {!isInitialized && (
+        {/* Overlay de chargement */}
+        {isLoading && (
           <div className="absolute inset-0 bg-black flex items-center justify-center z-50">
             <div className="text-center">
               <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mb-4 mx-auto"></div>
