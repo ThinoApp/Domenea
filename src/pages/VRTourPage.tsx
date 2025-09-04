@@ -16,11 +16,15 @@ interface VRTourPageProps {
 const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const { language } = useAppLanguage();
   const [activeScene, setActiveScene] = useState(0);
-  const [viewerOpacity, setViewerOpacity] = useState(0);
+  const [viewerAOpacity, setViewerAOpacity] = useState(1);
+  const [viewerBOpacity, setViewerBOpacity] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const [imagesPreloaded, setImagesPreloaded] = useState(false);
-  const panoramaRef = useRef<HTMLDivElement>(null);
-  const viewerRef = useRef<any>(null);
+  const [activeViewer, setActiveViewer] = useState('A');
+  const panoramaARef = useRef<HTMLDivElement>(null);
+  const panoramaBRef = useRef<HTMLDivElement>(null);
+  const viewerARef = useRef<any>(null);
+  const viewerBRef = useRef<any>(null);
   const preloadedImages = useRef<Set<string>>(new Set());
 
   // Scènes VR avec images panoramiques temporaires
@@ -200,22 +204,22 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js';
         script.onload = () => {
-          initializePanorama();
+          initializeBothPanoramas();
         };
         document.head.appendChild(script);
       } else {
-        initializePanorama();
+        initializeBothPanoramas();
       }
     };
 
-    const initializePanorama = () => {
-      if (panoramaRef.current && window.pannellum && !viewerRef.current) {
+    const initializeBothPanoramas = () => {
+      if (panoramaARef.current && panoramaBRef.current && window.pannellum) {
         const currentScene = vrScenes[activeScene];
         
-        // Configuration avec toutes les scènes
-        const sceneConfig: any = {
+        // Configuration pour les deux viewers
+        const createSceneConfig = (sceneId: string) => ({
           default: {
-            firstScene: currentScene.id,
+            firstScene: sceneId,
             autoLoad: true,
             showZoomCtrl: true,
             showFullscreenCtrl: false,
@@ -226,70 +230,89 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
             minHfov: 50,
             maxHfov: 120
           },
-          scenes: {}
-        };
-
-        // Ajouter toutes les scènes
-        vrScenes.forEach((scene) => {
-          sceneConfig.scenes[scene.id] = {
-            type: 'equirectangular',
-            panorama: scene.panorama,
-            hotSpots: scene.hotspots.map((hotspot) => ({
-              pitch: (0.5 - hotspot.y) * 180,
-              yaw: (hotspot.x - 0.5) * 360,
-              type: 'scene',
-              text: hotspot.label[language],
-              sceneId: hotspot.target,
-              clickHandlerFunc: () => handleHotspotClick(hotspot.target),
-              className: 'vr-hotspot'
-            }))
-          };
+          scenes: vrScenes.reduce((acc, scene) => {
+            acc[scene.id] = {
+              type: 'equirectangular',
+              panorama: scene.panorama,
+              hotSpots: scene.hotspots.map((hotspot) => ({
+                pitch: (0.5 - hotspot.y) * 180,
+                yaw: (hotspot.x - 0.5) * 360,
+                type: 'scene',
+                text: hotspot.label[language],
+                sceneId: hotspot.target,
+                clickHandlerFunc: () => handleHotspotClick(hotspot.target),
+                className: 'vr-hotspot'
+              }))
+            };
+            return acc;
+          }, {} as any)
         });
         
-        // Créer le viewer
-        viewerRef.current = window.pannellum.viewer(panoramaRef.current, sceneConfig);
+        // Créer le viewer A (visible au démarrage)
+        if (!viewerARef.current) {
+          viewerARef.current = window.pannellum.viewer(
+            panoramaARef.current, 
+            createSceneConfig(currentScene.id)
+          );
+          
+          viewerARef.current.on('load', () => {
+            setIsInitialized(true);
+          });
+        }
         
-        // Fade in initial
-        viewerRef.current.on('load', () => {
-          setIsInitialized(true);
-          setViewerOpacity(1);
-        });
+        // Créer le viewer B (caché au démarrage)
+        if (!viewerBRef.current) {
+          viewerBRef.current = window.pannellum.viewer(
+            panoramaBRef.current, 
+            createSceneConfig(currentScene.id)
+          );
+        }
       }
     };
 
     loadPannellum();
 
     return () => {
-      if (viewerRef.current) {
-        viewerRef.current.destroy();
-        viewerRef.current = null;
+      if (viewerARef.current) {
+        viewerARef.current.destroy();
+        viewerARef.current = null;
+      }
+      if (viewerBRef.current) {
+        viewerBRef.current.destroy();
+        viewerBRef.current = null;
       }
     };
   }, [imagesPreloaded]);
 
   const handleSceneChange = (sceneIndex: number) => {
-    if (viewerRef.current && isInitialized && sceneIndex !== activeScene) {
-      const targetScene = vrScenes[sceneIndex];
+    if (!isInitialized || sceneIndex === activeScene) return;
+
+    const targetScene = vrScenes[sceneIndex];
+    
+    if (activeViewer === 'A') {
+      // Préparer le viewer B avec la nouvelle scène
+      if (viewerBRef.current) {
+        viewerBRef.current.loadScene(targetScene.id);
+      }
       
-      // Effet de fade out
-      setViewerOpacity(0);
+      // Cross-fade : A disparaît, B apparaît
+      setViewerAOpacity(0);
+      setViewerBOpacity(1);
+      setActiveViewer('B');
       
-      // Attendre la fin du fade out, puis changer de scène
-      setTimeout(() => {
-        try {
-          viewerRef.current.loadScene(targetScene.id);
-          setActiveScene(sceneIndex);
-          
-          // Fade in après changement
-          setTimeout(() => {
-            setViewerOpacity(1);
-          }, 50);
-        } catch (error) {
-          console.error('Erreur lors du changement de scène:', error);
-          setViewerOpacity(1); // Restore opacity even on error
-        }
-      }, 200); // Durée du fade out
+    } else {
+      // Préparer le viewer A avec la nouvelle scène  
+      if (viewerARef.current) {
+        viewerARef.current.loadScene(targetScene.id);
+      }
+      
+      // Cross-fade : B disparaît, A apparaît
+      setViewerBOpacity(0);
+      setViewerAOpacity(1);
+      setActiveViewer('A');
     }
+    
+    setActiveScene(sceneIndex);
   };
 
   const handleHotspotClick = (targetId: string) => {
@@ -390,12 +413,19 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
 
       {/* Viewer VR principal avec Pannellum */}
       <div className="w-full h-screen relative">
-        {/* Container Pannellum avec transition opacity */}
+        {/* Container Pannellum A avec transition opacity */}
         <div 
-          ref={panoramaRef}
-          className="w-full h-full transition-opacity duration-200 ease-in-out"
-          style={{ opacity: viewerOpacity }}
-          id="panorama-container"
+          ref={panoramaARef}
+          className="w-full h-full absolute inset-0 transition-opacity duration-500 ease-in-out"
+          style={{ opacity: viewerAOpacity }}
+          id="panorama-container-A"
+        />
+        {/* Container Pannellum B avec transition opacity */}
+        <div 
+          ref={panoramaBRef}
+          className="w-full h-full absolute inset-0 transition-opacity duration-500 ease-in-out"
+          style={{ opacity: viewerBOpacity }}
+          id="panorama-container-B"
         />
 
         {/* Overlay de chargement initial seulement */}
