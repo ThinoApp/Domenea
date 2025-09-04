@@ -105,7 +105,9 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   };
 
   const getSceneIndexFromNodeId = (nodeId: string) => {
-    return vrScenes.findIndex(scene => scene.id === nodeId);
+    const index = vrScenes.findIndex(scene => scene.id === nodeId);
+    console.log('getSceneIndexFromNodeId:', nodeId, '->', index);
+    return index;
   };
 
   // Initialisation de Pano2VR
@@ -167,39 +169,38 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         // Créer le player Pano2VR avec l'ID du container (string)
         const pano = new window.pano2vrPlayer("pano2vr-container");
         pano.setQueryParameter("ts=90345204");
-          
-          // Créer le skin
-          const skin = new window.pano2vrSkin(pano);
-          
-          // Stocker les références globalement pour compatibilité
-          window.pano = pano;
-          window.skin = skin;
-          panoRef.current = pano;
-          
-          // Écouter les changements de nœud
-          pano.addListener('nodechange', (event: any) => {
-            console.log('Node change event:', event);
-            if (event && event.target) {
-              const newNodeIndex = getSceneIndexFromNodeId(event.target);
-              if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
-                setActiveScene(newNodeIndex);
-              }
+        
+        // Créer le skin
+        const skin = new window.pano2vrSkin(pano);
+        
+        // Stocker les références globalement pour compatibilité
+        window.pano = pano;
+        window.skin = skin;
+        panoRef.current = pano;
+        
+        // Écouter les changements de nœud
+        pano.addListener('nodechange', (event: any) => {
+          console.log('Node change event:', event);
+          if (event && event.target) {
+            const newNodeIndex = getSceneIndexFromNodeId(event.target);
+            if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
+              setActiveScene(newNodeIndex);
             }
-          });
-          
-          // Charger la configuration
-          pano.readConfigUrlAsync('/pano2vr/pano.xml?ts=90345204').then(() => {
-            setIsInitialized(true);
-            setIsLoading(false);
-          }).catch((error: any) => {
-            console.error('Erreur lors du chargement de la configuration:', error);
-            setIsLoading(false);
-          });
-          
-        } catch (error) {
-          console.error('Erreur lors de l\'initialisation de Pano2VR:', error);
+          }
+        });
+        
+        // Charger la configuration
+        pano.readConfigUrlAsync('/pano2vr/pano.xml?ts=90345204').then(() => {
+          setIsInitialized(true);
           setIsLoading(false);
-        }
+        }).catch((error: any) => {
+          console.error('Erreur lors du chargement de la configuration:', error);
+          setIsLoading(false);
+        });
+        
+      } catch (error) {
+        console.error('Erreur lors de l\'initialisation de Pano2VR:', error);
+        setIsLoading(false);
       }
     };
 
@@ -214,13 +215,24 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         }
         panoRef.current = null;
       }
+      // Nettoyer les références globales
+      if (window.pano) {
+        window.pano = null;
+      }
+      if (window.skin) {
+        window.skin = null;
+      }
     };
   }, []);
 
   const handleSceneChange = (sceneIndex: number) => {
-    if (!isInitialized || sceneIndex === activeScene || !panoRef.current) return;
+    if (!isInitialized || sceneIndex === activeScene || !panoRef.current) {
+      console.log('Changement de scène ignoré:', { isInitialized, sceneIndex, activeScene, hasPano: !!panoRef.current });
+      return;
+    }
 
     const targetNodeId = getNodeId(sceneIndex);
+    console.log('Changement vers la scène:', targetNodeId);
     
     try {
       // Naviguer vers le nœud avec Pano2VR
@@ -334,10 +346,11 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
 
         {/* Overlay de chargement */}
         {isLoading && (
-          <div className="absolute inset-0 bg-black flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black/90 flex items-center justify-center z-50">
             <div className="text-center">
               <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mb-4 mx-auto"></div>
-              <p className="text-white/80">{currentContent.loading}</p>
+              <p className="text-white/80 text-lg">{currentContent.loading}</p>
+              <p className="text-white/60 text-sm mt-2">Initialisation du viewer 360°...</p>
             </div>
           </div>
         )}
