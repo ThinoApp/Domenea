@@ -1,0 +1,144 @@
+/* Styles personnalisés pour Pannellum VR Tour */
+
+/* Hotspots personnalisés */
+.vr-hotspot {
+  width: 32px !important;
+  height: 32px !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 2px solid rgba(255, 255, 255, 0.8) !important;
+  border-radius: 50% !important;
+  backdrop-filter: blur(10px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  animation: pulse 2s infinite !important;
+}
+
+.vr-hotspot:hover {
+  background: rgba(255, 255, 255, 0.4) !important;
+  border-color: rgba(59, 130, 246, 0.8) !important;
+  transform: scale(1.2) !important;
+  animation: none !important;
+}
+
+.vr-hotspot::before {
+  content: '' !important;
+  width: 12px !important;
+  height: 12px !important;
+  background: white !important;
+  border-radius: 50% !important;
+}
+
+/* Animation pulse pour les hotspots */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+/* Tooltips des hotspots */
+.pnlm-hotspot-base .pnlm-tooltip {
+  background: rgba(0, 0, 0, 0.9) !important;
+  color: white !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Contrôles Pannellum personnalisés */
+.pnlm-controls {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.pnlm-zoom-controls {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.pnlm-zoom-in, .pnlm-zoom-out {
+  background: transparent !important;
+  color: white !important;
+  border: none !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.pnlm-zoom-in:hover, .pnlm-zoom-out:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Compass personnalisé */
+.pnlm-compass {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 50% !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Container principal */
+.pnlm-container {
+  border-radius: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Loading personnalisé (si nécessaire) */
+.pnlm-load-box {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.pnlm-lbar {
+  background: rgba(59, 130, 246, 0.8) !important;
+  border-radius: 4px !important;
+}
+
+.pnlm-lbar-fill {
+  background: rgba(59, 130, 246, 1) !important;
+  border-radius: 4px !important;
+}
+
+/* Masquer les contrôles par défaut qu'on ne veut pas */
+.pnlm-orientation-button {
+  display: none !important;
+}
+
+/* Style pour les scènes multiples si nécessaire */
+.pnlm-scene-fade-in {
+  transition: opacity 0.5s ease-in-out !important;
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+  .vr-hotspot {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .vr-hotspot::before {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  .pnlm-tooltip {
+    font-size: 12px !important;
+    padding: 6px 10px !important;
+  }
+}

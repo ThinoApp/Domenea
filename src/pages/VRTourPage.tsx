@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppLanguage } from "../context/AppContext";
+import "../styles/pannellum-custom.css";
+
+// Déclaration des types pour Pannellum
+declare global {
+  interface Window {
+    pannellum: any;
+  }
+}
 
 interface VRTourPageProps {
   onBackToHome: () => void;
@@ -10,6 +18,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const [activeScene, setActiveScene] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const panoramaRef = useRef<HTMLDivElement>(null);
+  const viewerRef = useRef<any>(null);
 
   // Scènes VR avec images panoramiques temporaires
   const vrScenes = [
@@ -137,13 +146,87 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const currentContent = content[language];
   const currentScene = vrScenes[activeScene];
 
-  // Initialisation de Pannellum (simulé pour le moment)
+  // Chargement de Pannellum
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [activeScene]);
+    const loadPannellum = () => {
+      // Charger CSS
+      if (!document.querySelector('link[href*="pannellum"]')) {
+        const cssLink = document.createElement('link');
+        cssLink.rel = 'stylesheet';
+        cssLink.href = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css';
+        document.head.appendChild(cssLink);
+      }
+
+      // Charger JS
+      if (!window.pannellum) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js';
+        script.onload = () => {
+          initializePanorama();
+        };
+        document.head.appendChild(script);
+      } else {
+        initializePanorama();
+      }
+    };
+
+    const initializePanorama = () => {
+      if (panoramaRef.current && window.pannellum) {
+        // Détruire l'ancien viewer s'il existe
+        if (viewerRef.current) {
+          viewerRef.current.destroy();
+        }
+
+        const currentScene = vrScenes[activeScene];
+        
+        // Créer le viewer Pannellum
+        viewerRef.current = window.pannellum.viewer(panoramaRef.current, {
+          type: 'equirectangular',
+          panorama: currentScene.panorama,
+          autoLoad: true,
+          autoRotate: -2, // Rotation automatique lente
+          compass: true,
+          showZoomCtrl: true,
+          showFullscreenCtrl: false,
+          showControls: true,
+          hotSpotDebug: false,
+          hfov: 100,
+          minHfov: 50,
+          maxHfov: 120,
+          hotSpots: currentScene.hotspots.map((hotspot) => ({
+            pitch: (0.5 - hotspot.y) * 180, // Conversion Y vers pitch
+            yaw: (hotspot.x - 0.5) * 360,   // Conversion X vers yaw
+            type: 'scene',
+            text: hotspot.label[language],
+            sceneId: hotspot.target,
+            clickHandlerFunc: () => handleHotspotClick(hotspot.target),
+            className: 'vr-hotspot'
+          }))
+        });
+
+        // Événement de chargement terminé
+        viewerRef.current.on('load', () => {
+          setIsLoading(false);
+        });
+
+        // Événement d'erreur
+        viewerRef.current.on('error', (error: any) => {
+          console.error('Erreur Pannellum:', error);
+          setIsLoading(false);
+        });
+      }
+    };
+
+    loadPannellum();
+
+    // Cleanup
+    return () => {
+      if (viewerRef.current) {
+        viewerRef.current.destroy();
+        viewerRef.current = null;
+      }
+    };
+  }, [activeScene, language]);
 
   const handleSceneChange = (sceneIndex: number) => {
     setIsLoading(true);
@@ -246,16 +329,15 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         </div>
       </div>
 
-      {/* Viewer VR principal */}
-      <div
-        ref={panoramaRef}
-        className="w-full h-screen relative"
-        style={{
-          backgroundImage: `url('${currentScene.panorama}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      {/* Viewer VR principal avec Pannellum */}
+      <div className="w-full h-screen relative">
+        {/* Container Pannellum */}
+        <div 
+          ref={panoramaRef}
+          className="w-full h-full"
+          id="panorama-container"
+        />
+
         {/* Overlay de chargement */}
         {isLoading && (
           <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-40">
@@ -265,34 +347,6 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
             </div>
           </div>
         )}
-
-        {/* Hotspots interactifs */}
-        {!isLoading &&
-          currentScene.hotspots.map((hotspot, index) => (
-            <button
-              key={index}
-              onClick={() => handleHotspotClick(hotspot.target)}
-              className="absolute z-30 transform -translate-x-1/2 -translate-y-1/2"
-              style={{
-                left: `${hotspot.x * 100}%`,
-                top: `${hotspot.y * 100}%`,
-              }}
-            >
-              <div className="relative group">
-                {/* Point d'intérêt animé */}
-                <div className="w-8 h-8 bg-white/20 backdrop-blur-md border-2 border-white rounded-full flex items-center justify-center animate-pulse hover:animate-none hover:scale-110 transition-all duration-300">
-                  <div className="w-3 h-3 bg-white rounded-full"></div>
-                </div>
-
-                {/* Tooltip */}
-                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                  <div className="bg-black/80 backdrop-blur-md px-3 py-2 rounded-lg text-sm whitespace-nowrap border border-white/20">
-                    {hotspot.label[language]}
-                  </div>
-                </div>
-              </div>
-            </button>
-          ))}
 
         {/* Effet de vignette pour l'immersion */}
         <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/30 pointer-events-none"></div>
