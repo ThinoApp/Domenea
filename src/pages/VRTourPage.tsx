@@ -181,8 +181,11 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     preloadImages();
   }, []);
 
-  // Chargement de Pannellum
+  // Chargement de Pannellum - seulement au montage
   useEffect(() => {
+    // Ne rien faire si pas encore préchargé
+    if (!imagesPreloaded) return;
+
     const loadPannellum = () => {
       // Charger CSS
       if (!document.querySelector('link[href*="pannellum"]')) {
@@ -206,33 +209,9 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     };
 
     const initializePanorama = () => {
-      if (panoramaRef.current && window.pannellum && imagesPreloaded) {
-        // Si le viewer existe déjà, juste changer de scène
+      if (panoramaRef.current && window.pannellum) {
+        // Ne pas recréer le viewer s'il existe déjà
         if (viewerRef.current) {
-          const currentScene = vrScenes[activeScene];
-          
-          // Changer de panorama sans recréer le viewer
-          viewerRef.current.loadScene(currentScene.panorama, 
-            (0.5 - currentScene.hotspots[0]?.y || 0) * 180, // pitch initial
-            (currentScene.hotspots[0]?.x - 0.5 || 0) * 360, // yaw initial
-            100 // hfov
-          );
-          
-          // Mettre à jour les hotspots
-          viewerRef.current.removeHotSpot(); // Supprimer tous les hotspots
-          currentScene.hotspots.forEach((hotspot) => {
-            viewerRef.current.addHotSpot({
-              pitch: (0.5 - hotspot.y) * 180,
-              yaw: (hotspot.x - 0.5) * 360,
-              type: 'scene',
-              text: hotspot.label[language],
-              sceneId: hotspot.target,
-              clickHandlerFunc: () => handleHotspotClick(hotspot.target),
-              className: 'vr-hotspot'
-            });
-          });
-          
-          setIsLoading(false);
           return;
         }
 
@@ -272,35 +251,29 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
           };
         });
         
-        // Créer le viewer avec toutes les scènes
+        // Créer le viewer avec toutes les scènes une seule fois
         viewerRef.current = window.pannellum.viewer(panoramaRef.current, sceneConfig);
 
-        // Événements
+        // Supprimer TOUS les loaders
+        setIsLoading(false);
+        
+        // Aucun événement de loading - transitions instantanées
         viewerRef.current.on('scenechange', () => {
-          setIsLoading(false);
-        });
-
-        viewerRef.current.on('load', () => {
-          setIsLoading(false);
-        });
-
-        viewerRef.current.on('error', (error: any) => {
-          console.error('Erreur Pannellum:', error);
-          setIsLoading(false);
+          // Rien - transition instantanée
         });
       }
     };
 
     loadPannellum();
 
-    // Cleanup
+    // Cleanup seulement au démontage du composant
     return () => {
       if (viewerRef.current) {
         viewerRef.current.destroy();
         viewerRef.current = null;
       }
     };
-  }, [activeScene, language, imagesPreloaded]);
+  }, [imagesPreloaded]); // Seulement quand les images sont préchargées
 
   const handleSceneChange = (sceneIndex: number) => {
     if (viewerRef.current && imagesPreloaded) {
@@ -310,16 +283,14 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       try {
         viewerRef.current.loadScene(targetScene.id);
         setActiveScene(sceneIndex);
-        // Pas de setIsLoading(true) car la transition est instantanée
+        // AUCUN setIsLoading - transition totalement instantanée
       } catch (error) {
         console.error('Erreur lors du changement de scène:', error);
-        // Fallback à l'ancienne méthode si erreur
-        setIsLoading(true);
+        // Même en cas d'erreur, pas de loading
         setActiveScene(sceneIndex);
       }
     } else {
-      // Fallback si les images ne sont pas préchargées
-      setIsLoading(true);
+      // Même si pas préchargé, on évite le loading
       setActiveScene(sceneIndex);
     }
   };
