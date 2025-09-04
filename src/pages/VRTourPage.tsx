@@ -17,8 +17,10 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const { language } = useAppLanguage();
   const [activeScene, setActiveScene] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [imagesPreloaded, setImagesPreloaded] = useState(false);
   const panoramaRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<any>(null);
+  const preloadedImages = useRef<Set<string>>(new Set());
 
   // Scènes VR avec images panoramiques temporaires
   const vrScenes = [
@@ -146,6 +148,39 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const currentContent = content[language];
   const currentScene = vrScenes[activeScene];
 
+  // Préchargement de toutes les images panoramiques
+  useEffect(() => {
+    const preloadImages = async () => {
+      try {
+        const imagePromises = vrScenes.map((scene) => {
+          return new Promise<void>((resolve, reject) => {
+            if (preloadedImages.current.has(scene.panorama)) {
+              resolve();
+              return;
+            }
+
+            const img = new Image();
+            img.onload = () => {
+              preloadedImages.current.add(scene.panorama);
+              resolve();
+            };
+            img.onerror = reject;
+            img.src = scene.panorama;
+          });
+        });
+
+        await Promise.all(imagePromises);
+        setImagesPreloaded(true);
+        console.log('Toutes les images panoramiques sont préchargées');
+      } catch (error) {
+        console.error('Erreur lors du préchargement:', error);
+        setImagesPreloaded(true); // Continuer même en cas d'erreur
+      }
+    };
+
+    preloadImages();
+  }, []);
+
   // Chargement de Pannellum
   useEffect(() => {
     const loadPannellum = () => {
@@ -171,45 +206,84 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     };
 
     const initializePanorama = () => {
-      if (panoramaRef.current && window.pannellum) {
-        // Détruire l'ancien viewer s'il existe
+      if (panoramaRef.current && window.pannellum && imagesPreloaded) {
+        // Si le viewer existe déjà, juste changer de scène
         if (viewerRef.current) {
-          viewerRef.current.destroy();
+          const currentScene = vrScenes[activeScene];
+          
+          // Changer de panorama sans recréer le viewer
+          viewerRef.current.loadScene(currentScene.panorama, 
+            (0.5 - currentScene.hotspots[0]?.y || 0) * 180, // pitch initial
+            (currentScene.hotspots[0]?.x - 0.5 || 0) * 360, // yaw initial
+            100 // hfov
+          );
+          
+          // Mettre à jour les hotspots
+          viewerRef.current.removeHotSpot(); // Supprimer tous les hotspots
+          currentScene.hotspots.forEach((hotspot) => {
+            viewerRef.current.addHotSpot({
+              pitch: (0.5 - hotspot.y) * 180,
+              yaw: (hotspot.x - 0.5) * 360,
+              type: 'scene',
+              text: hotspot.label[language],
+              sceneId: hotspot.target,
+              clickHandlerFunc: () => handleHotspotClick(hotspot.target),
+              className: 'vr-hotspot'
+            });
+          });
+          
+          setIsLoading(false);
+          return;
         }
 
         const currentScene = vrScenes[activeScene];
         
-        // Créer le viewer Pannellum
-        viewerRef.current = window.pannellum.viewer(panoramaRef.current, {
-          type: 'equirectangular',
-          panorama: currentScene.panorama,
-          autoLoad: true,
-          autoRotate: -2, // Rotation automatique lente
-          compass: true,
-          showZoomCtrl: true,
-          showFullscreenCtrl: false,
-          showControls: true,
-          hotSpotDebug: false,
-          hfov: 100,
-          minHfov: 50,
-          maxHfov: 120,
-          hotSpots: currentScene.hotspots.map((hotspot) => ({
-            pitch: (0.5 - hotspot.y) * 180, // Conversion Y vers pitch
-            yaw: (hotspot.x - 0.5) * 360,   // Conversion X vers yaw
-            type: 'scene',
-            text: hotspot.label[language],
-            sceneId: hotspot.target,
-            clickHandlerFunc: () => handleHotspotClick(hotspot.target),
-            className: 'vr-hotspot'
-          }))
+        // Configuration multi-scènes pour Pannellum
+        const sceneConfig: any = {
+          default: {
+            firstScene: currentScene.id,
+            autoLoad: true,
+            showZoomCtrl: true,
+            showFullscreenCtrl: false,
+            showControls: true,
+            compass: true,
+            autoRotate: -2,
+            hfov: 100,
+            minHfov: 50,
+            maxHfov: 120
+          },
+          scenes: {}
+        };
+
+        // Ajouter toutes les scènes à la configuration
+        vrScenes.forEach((scene) => {
+          sceneConfig.scenes[scene.id] = {
+            type: 'equirectangular',
+            panorama: scene.panorama,
+            hotSpots: scene.hotspots.map((hotspot) => ({
+              pitch: (0.5 - hotspot.y) * 180,
+              yaw: (hotspot.x - 0.5) * 360,
+              type: 'scene',
+              text: hotspot.label[language],
+              sceneId: hotspot.target,
+              clickHandlerFunc: () => handleHotspotClick(hotspot.target),
+              className: 'vr-hotspot'
+            }))
+          };
+        });
+        
+        // Créer le viewer avec toutes les scènes
+        viewerRef.current = window.pannellum.viewer(panoramaRef.current, sceneConfig);
+
+        // Événements
+        viewerRef.current.on('scenechange', () => {
+          setIsLoading(false);
         });
 
-        // Événement de chargement terminé
         viewerRef.current.on('load', () => {
           setIsLoading(false);
         });
 
-        // Événement d'erreur
         viewerRef.current.on('error', (error: any) => {
           console.error('Erreur Pannellum:', error);
           setIsLoading(false);
@@ -226,11 +300,28 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         viewerRef.current = null;
       }
     };
-  }, [activeScene, language]);
+  }, [activeScene, language, imagesPreloaded]);
 
   const handleSceneChange = (sceneIndex: number) => {
-    setIsLoading(true);
-    setActiveScene(sceneIndex);
+    if (viewerRef.current && imagesPreloaded) {
+      const targetScene = vrScenes[sceneIndex];
+      
+      // Changement de scène instantané avec Pannellum
+      try {
+        viewerRef.current.loadScene(targetScene.id);
+        setActiveScene(sceneIndex);
+        // Pas de setIsLoading(true) car la transition est instantanée
+      } catch (error) {
+        console.error('Erreur lors du changement de scène:', error);
+        // Fallback à l'ancienne méthode si erreur
+        setIsLoading(true);
+        setActiveScene(sceneIndex);
+      }
+    } else {
+      // Fallback si les images ne sont pas préchargées
+      setIsLoading(true);
+      setActiveScene(sceneIndex);
+    }
   };
 
   const handleHotspotClick = (targetId: string) => {
