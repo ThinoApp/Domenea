@@ -32,7 +32,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         fr: "Découvrez la résidence depuis les airs",
         en: "Discover the residence from above",
       },
-      panorama: "https://pannellum.org/images/tocopilla.jpg", // Vue extérieure, adaptée pour une vue aérienne
+      panorama: "/assets/Panorama/marc-markstein-if4wsNq145o-unsplash.jpg", // Vue aérienne panoramique
       hotspots: [
         {
           x: 0.2,
@@ -53,7 +53,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         fr: "Explorez nos villas luxueuses",
         en: "Explore our luxurious villas",
       },
-      panorama: "https://pannellum.org/images/bma-1.jpg", // Intérieur moderne, adapté pour une villa
+      panorama: "/assets/Panorama/alex-bdnr-nrQ86ujBqMs-unsplash.jpg", // Villa intérieur luxueux
       hotspots: [
         {
           x: 0.1,
@@ -74,7 +74,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         fr: "Détendez-vous dans notre SPA",
         en: "Relax in our SPA",
       },
-      panorama: "https://pannellum.org/images/charles-street.jpg", // Intérieur calme, utilisé comme approximation pour un spa
+      panorama: "/assets/Panorama/allphoto-bangkok-GfXqtWmiuDI-unsplash.jpg", // SPA et wellness
       hotspots: [
         {
           x: 0.3,
@@ -100,7 +100,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         fr: "Profitez de nos espaces de détente",
         en: "Enjoy our relaxation spaces",
       },
-      panorama: "https://pannellum.org/images/alma.jpg", // Extérieur ouvert, utilisé comme approximation pour une piscine
+      panorama: "/assets/Panorama/jose-g-ortega-castro-PYpkPbBCNFw-unsplash.jpg", // Piscine et espaces communs
       hotspots: [
         {
           x: 0.4,
