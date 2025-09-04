@@ -120,6 +120,37 @@
   display: none !important;
 }
 
+/* Effet de transition fade pour les changements de scène */
+.vr-transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOut 0.6s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.95);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(1.05);
+  }
+}
+
 /* Style pour les scènes multiples si nécessaire */
 .pnlm-scene-fade-in {
   transition: opacity 0.5s ease-in-out !important;

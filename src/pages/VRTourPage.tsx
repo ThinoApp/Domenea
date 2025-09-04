@@ -17,6 +17,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const { language } = useAppLanguage();
   const [activeScene, setActiveScene] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [imagesPreloaded, setImagesPreloaded] = useState(false);
   const panoramaRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<any>(null);
@@ -229,7 +230,11 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
             autoRotate: -2,
             hfov: 100,
             minHfov: 50,
-            maxHfov: 120
+            maxHfov: 120,
+            // Désactiver TOUS les loaders natifs
+            loadButtonLabel: '',
+            showLoadingBox: false,
+            orientationOnByDefault: false
           },
           scenes: {}
         };
@@ -279,18 +284,25 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     if (viewerRef.current && imagesPreloaded) {
       const targetScene = vrScenes[sceneIndex];
       
+      // Transition personnalisée avec effet fade
+      setIsTransitioning(true);
+      
       // Changement de scène instantané avec Pannellum
       try {
         viewerRef.current.loadScene(targetScene.id);
         setActiveScene(sceneIndex);
-        // AUCUN setIsLoading - transition totalement instantanée
+        
+        // Fin de transition après un court délai pour l'effet visuel
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 300); // 300ms de transition fade
+        
       } catch (error) {
         console.error('Erreur lors du changement de scène:', error);
-        // Même en cas d'erreur, pas de loading
         setActiveScene(sceneIndex);
+        setIsTransitioning(false);
       }
     } else {
-      // Même si pas préchargé, on évite le loading
       setActiveScene(sceneIndex);
     }
   };
@@ -400,9 +412,19 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
           id="panorama-container"
         />
 
-        {/* Overlay de chargement */}
-        {isLoading && (
-          <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-40">
+        {/* Overlay de transition personnalisé */}
+        {isTransitioning && (
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-40 transition-all duration-300">
+            <div className="text-center animate-pulse">
+              <div className="w-16 h-16 border-2 border-white/40 rounded-full mb-4 mx-auto animate-ping"></div>
+              <p className="text-white/90 text-lg font-light tracking-wide">Transition...</p>
+            </div>
+          </div>
+        )}
+
+        {/* Overlay de chargement initial uniquement */}
+        {isLoading && !imagesPreloaded && (
+          <div className="absolute inset-0 bg-black flex items-center justify-center z-50">
             <div className="text-center">
               <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mb-4 mx-auto"></div>
               <p className="text-white/80">{currentContent.loading}</p>
