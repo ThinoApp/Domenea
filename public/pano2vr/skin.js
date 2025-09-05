@@ -2215,9 +2215,9 @@ if (snowOnLoad) {
     });
 };
 		player.addListener('activehotspotchanged', function(event) {
-			if (hotspotTemplates.hasOwnProperty('ht_node_1')) {
-				for(var i = 0; i < hotspotTemplates['ht_node_1'].length; i++) {
-					hotspotTemplates['ht_node_1'][i].ggEvent_activehotspotchanged();
+			if (hotspotTemplates.hasOwnProperty('ht_node')) {
+				for(var i = 0; i < hotspotTemplates['ht_node'].length; i++) {
+					hotspotTemplates['ht_node'][i].ggEvent_activehotspotchanged();
 				}
 			}
 		});
@@ -2228,9 +2228,9 @@ if (snowOnLoad) {
 			for(var i = 0; i < me._node_cloner.ggInstances.length; i++) {
 				me._node_cloner.ggInstances[i].ggEvent_changenode(event);
 			}
-			if (hotspotTemplates.hasOwnProperty('ht_node_1')) {
-				for(var i = 0; i < hotspotTemplates['ht_node_1'].length; i++) {
-					hotspotTemplates['ht_node_1'][i].ggEvent_changenode();
+			if (hotspotTemplates.hasOwnProperty('ht_node')) {
+				for(var i = 0; i < hotspotTemplates['ht_node'].length; i++) {
+					hotspotTemplates['ht_node'][i].ggEvent_changenode();
 				}
 			}
 			me._variable_vis_skin.logicBlock();
@@ -2251,9 +2251,9 @@ if (snowOnLoad) {
 			}
 		});
 		player.addListener('configloaded', function(event) {
-			if (hotspotTemplates.hasOwnProperty('ht_node_1')) {
-				for(var i = 0; i < hotspotTemplates['ht_node_1'].length; i++) {
-					hotspotTemplates['ht_node_1'][i].ggEvent_configloaded();
+			if (hotspotTemplates.hasOwnProperty('ht_node')) {
+				for(var i = 0; i < hotspotTemplates['ht_node'].length; i++) {
+					hotspotTemplates['ht_node'][i].ggEvent_configloaded();
 				}
 			}
 			me._variable_vis_skin.logicBlock();
@@ -2266,9 +2266,9 @@ if (snowOnLoad) {
 			me._thumbnail_scroller_phone.ggUpdatePosition();
 		});
 		player.addListener('hastouch', function(event) {
-			if (hotspotTemplates.hasOwnProperty('ht_node_1')) {
-				for(var i = 0; i < hotspotTemplates['ht_node_1'].length; i++) {
-					hotspotTemplates['ht_node_1'][i].ggEvent_hastouch();
+			if (hotspotTemplates.hasOwnProperty('ht_node')) {
+				for(var i = 0; i < hotspotTemplates['ht_node'].length; i++) {
+					hotspotTemplates['ht_node'][i].ggEvent_hastouch();
 				}
 			}
 		});
@@ -2311,9 +2311,9 @@ if (snowOnLoad) {
 			me._variable_vis_skin.logicBlock();
 		});
 		player.addListener('varchanged_vis_skin', function(event) {
-			if (hotspotTemplates.hasOwnProperty('ht_node_1')) {
-				for(var i = 0; i < hotspotTemplates['ht_node_1'].length; i++) {
-					hotspotTemplates['ht_node_1'][i].ggEvent_varchanged_vis_skin();
+			if (hotspotTemplates.hasOwnProperty('ht_node')) {
+				for(var i = 0; i < hotspotTemplates['ht_node'].length; i++) {
+					hotspotTemplates['ht_node'][i].ggEvent_varchanged_vis_skin();
 				}
 			}
 		});
@@ -2902,7 +2902,7 @@ if (snowOnLoad) {
 				me._thumb_title.logicBlock_textcolor();
 			};
 	};
-	function SkinHotspotClass_ht_node_1(parentScope,hotspot) {
+	function SkinHotspotClass_ht_node(parentScope,hotspot) {
 		var me=this;
 		var flag=false;
 		var hs='';
@@ -2916,8 +2916,8 @@ if (snowOnLoad) {
 		me.findElements=function(id,regex) {
 			return skin.findElements(id,regex);
 		}
-		el=me._ht_node_1=document.createElement('div');
-		el.ggId="ht_node_1";
+		el=me._ht_node=document.createElement('div');
+		el.ggId="ht_node";
 		el.ggParameter={ rx:0,ry:0,a:0,sx:1,sy:1,def:'' };
 		el.ggVisible=true;
 		el.className="ggskin ggskin_hotspot ";
@@ -2933,7 +2933,7 @@ if (snowOnLoad) {
 		hs+='pointer-events:auto;';
 		el.setAttribute('style',hs);
 		el.style.transformOrigin='50% 50%';
-		me._ht_node_1.ggIsActive=function() {
+		me._ht_node.ggIsActive=function() {
 			return player.getCurrentNode()==this.ggElementNodeId();
 		}
 		el.ggElementNodeId=function() {
@@ -2947,7 +2947,7 @@ if (snowOnLoad) {
 				}
 			}
 		}
-		me._ht_node_1.logicBlock_visible = function() {
+		me._ht_node.logicBlock_visible = function() {
 			var newLogicStateVisible;
 			if (
 				((player.getVariableValue('vis_skin') == false))
@@ -2958,38 +2958,38 @@ if (snowOnLoad) {
 			else {
 				newLogicStateVisible = -1;
 			}
-			if (me._ht_node_1.ggCurrentLogicStateVisible != newLogicStateVisible) {
-				me._ht_node_1.ggCurrentLogicStateVisible = newLogicStateVisible;
-				me._ht_node_1.style.transition='';
-				if (me._ht_node_1.ggCurrentLogicStateVisible == 0) {
-					me._ht_node_1.style.visibility="hidden";
-					me._ht_node_1.ggVisible=false;
+			if (me._ht_node.ggCurrentLogicStateVisible != newLogicStateVisible) {
+				me._ht_node.ggCurrentLogicStateVisible = newLogicStateVisible;
+				me._ht_node.style.transition='';
+				if (me._ht_node.ggCurrentLogicStateVisible == 0) {
+					me._ht_node.style.visibility="hidden";
+					me._ht_node.ggVisible=false;
 				}
 				else {
-					me._ht_node_1.style.visibility=(Number(me._ht_node_1.style.opacity)>0||!me._ht_node_1.style.opacity)?'inherit':'hidden';
-					me._ht_node_1.ggVisible=true;
+					me._ht_node.style.visibility=(Number(me._ht_node.style.opacity)>0||!me._ht_node.style.opacity)?'inherit':'hidden';
+					me._ht_node.ggVisible=true;
 				}
 			}
 		}
-		me._ht_node_1.logicBlock_visible();
-		me._ht_node_1.onclick=function (e) {
+		me._ht_node.logicBlock_visible();
+		me._ht_node.onclick=function (e) {
 			player.openNext(player._(me.hotspot.url),player._(me.hotspot.target));
 			player.triggerEvent('hsproxyclick', {'id': me.hotspot.id, 'url': me.hotspot.url});
 		}
-		me._ht_node_1.ondblclick=function (e) {
+		me._ht_node.ondblclick=function (e) {
 			player.triggerEvent('hsproxydblclick', {'id': me.hotspot.id, 'url': me.hotspot.url});
 		}
-		me._ht_node_1.onmouseenter=function (e) {
+		me._ht_node.onmouseenter=function (e) {
 			player.setActiveHotspot(me.hotspot);
-			me.elementMouseOver['ht_node_1']=true;
+			me.elementMouseOver['ht_node']=true;
 			player.triggerEvent('hsproxyover', {'id': me.hotspot.id, 'url': me.hotspot.url});
 		}
-		me._ht_node_1.onmouseleave=function (e) {
+		me._ht_node.onmouseleave=function (e) {
 			player.setActiveHotspot(null);
-			me.elementMouseOver['ht_node_1']=false;
+			me.elementMouseOver['ht_node']=false;
 			player.triggerEvent('hsproxyout', {'id': me.hotspot.id, 'url': me.hotspot.url});
 		}
-		me._ht_node_1.ggUpdatePosition=function (useTransition) {
+		me._ht_node.ggUpdatePosition=function (useTransition) {
 		}
 		el=me._ht_node_bg=document.createElement('div');
 		el.ggId="ht_node_bg";
@@ -3350,7 +3350,7 @@ if (snowOnLoad) {
 		me._ht_node_thumb.ggUpdatePosition=function (useTransition) {
 		}
 		me._ht_node_bg.appendChild(me._ht_node_thumb);
-		me._ht_node_1.appendChild(me._ht_node_bg);
+		me._ht_node.appendChild(me._ht_node_bg);
 		el=me._ht_node_custom_image=document.createElement('div');
 		els=me._ht_node_custom_image__img=document.createElement('img');
 		els.className='ggskin ggskin_external';
@@ -3486,9 +3486,9 @@ if (snowOnLoad) {
 				me._ht_node_custom_image.scrollTop=currentHeight / 2 - me._ht_node_custom_image.clientHeight / 2;
 			}
 		}
-		me._ht_node_1.appendChild(me._ht_node_custom_image);
-		me._ht_node_1.logicBlock_visible();
-		me.elementMouseOver['ht_node_1']=false;
+		me._ht_node.appendChild(me._ht_node_custom_image);
+		me._ht_node.logicBlock_visible();
+		me.elementMouseOver['ht_node']=false;
 		me._ht_node_bg.logicBlock_scaling();
 		me._ht_node_bg.logicBlock_visible();
 		me._ht_node_bg.logicBlock_backgroundcolor();
@@ -3510,12 +3510,12 @@ if (snowOnLoad) {
 				me._ht_node_custom_image.logicBlock_visible();
 			};
 			me.ggEvent_changenode=function() {
-				me._ht_node_1.logicBlock_visible();
+				me._ht_node.logicBlock_visible();
 				me._ht_node_bg.logicBlock_visible();
 				me._ht_node_custom_image.logicBlock_visible();
 			};
 			me.ggEvent_configloaded=function() {
-				me._ht_node_1.logicBlock_visible();
+				me._ht_node.logicBlock_visible();
 				me._ht_node_bg.logicBlock_visible();
 				me._ht_node_title.logicBlock_position();
 				me._ht_node_custom_image.logicBlock_visible();
@@ -3524,9 +3524,9 @@ if (snowOnLoad) {
 				me._ht_node_title.logicBlock_position();
 			};
 			me.ggEvent_varchanged_vis_skin=function() {
-				me._ht_node_1.logicBlock_visible();
+				me._ht_node.logicBlock_visible();
 			};
-			me.__div = me._ht_node_1;
+			me.__div = me._ht_node;
 	};
 	function SkinHotspotClass_ht_node(parentScope,hotspot) {
 		var me=this;
@@ -3655,8 +3655,8 @@ if (snowOnLoad) {
 			hotspotTemplates[hotspot.skinid].push(hsinst);
 		} else
 		{
-				hotspot.skinid = 'ht_node_1';
-				hsinst = new SkinHotspotClass_ht_node_1(me, hotspot);
+				hotspot.skinid = 'ht_node';
+				hsinst = new SkinHotspotClass_ht_node(me, hotspot);
 			if (!hotspotTemplates.hasOwnProperty(hotspot.skinid)) {
 				hotspotTemplates[hotspot.skinid] = [];
 			}
