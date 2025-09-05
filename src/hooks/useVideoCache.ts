@@ -5,12 +5,14 @@ interface VideoCache {
     element: HTMLVideoElement;
     loaded: boolean;
     canPlay: boolean;
+    blobUrl?: string; // URL Blob partagée pour éviter multiples téléchargements
+    blob?: Blob; // Données binaires de la vidéo
   };
 }
 
 interface UseVideoCacheReturn {
-  preloadVideo: (url: string) => Promise<HTMLVideoElement>;
-  getCachedVideo: (url: string) => HTMLVideoElement | null;
+  preloadVideo: (url: string) => Promise<string>; // Retourne Blob URL au lieu d'HTMLVideoElement
+  getCachedBlobUrl: (url: string) => string | null;
   isVideoReady: (url: string) => boolean;
   isVideoLoaded: (url: string) => boolean;
   clearCache: () => void;
@@ -27,19 +29,20 @@ export const useVideoCache = (): UseVideoCacheReturn => {
     setForceUpdate(prev => prev + 1);
   }, []);
 
-  const preloadVideo = useCallback((url: string): Promise<HTMLVideoElement> => {
-    return new Promise((resolve, reject) => {
-      // Si déjà en cache et prête, retourner immédiatement
-      if (videoCache[url] && videoCache[url].canPlay) {
-        resolve(videoCache[url].element);
+  const preloadVideo = useCallback((url: string): Promise<string> => {
+    return new Promise(async (resolve, reject) => {
+      // Si déjà en cache et prête, retourner le Blob URL
+      if (videoCache[url] && videoCache[url].canPlay && videoCache[url].blobUrl) {
+        console.log(`Video already cached: ${url}`);
+        resolve(videoCache[url].blobUrl!);
         return;
       }
 
       // Si déjà en cours de chargement, attendre
       if (videoCache[url]) {
         const checkReady = () => {
-          if (videoCache[url].canPlay) {
-            resolve(videoCache[url].element);
+          if (videoCache[url].canPlay && videoCache[url].blobUrl) {
+            resolve(videoCache[url].blobUrl!);
           } else {
             setTimeout(checkReady, 100);
           }
@@ -48,92 +51,77 @@ export const useVideoCache = (): UseVideoCacheReturn => {
         return;
       }
 
-      // Créer un nouveau élément vidéo
-      const video = document.createElement('video');
-      
-      // Initialiser l'entrée du cache
-      videoCache[url] = {
-        element: video,
-        loaded: false,
-        canPlay: false,
-      };
+      try {
+        console.log(`Starting single download for: ${url}`);
+        
+        // Initialiser l'entrée du cache
+        videoCache[url] = {
+          element: document.createElement('video'),
+          loaded: false,
+          canPlay: false,
+        };
 
-      // Configuration optimisée pour le préchargement
-      video.preload = 'auto';
-      video.muted = true;
-      video.playsInline = true;
-      video.loop = true;
-      
-      // Handlers d'événements
-      const handleLoadedData = () => {
-        videoCache[url].loaded = true;
-        forceUpdate();
-      };
+        // Télécharger une seule fois via fetch
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
 
-      const handleCanPlay = () => {
-        videoCache[url].canPlay = true;
-        forceUpdate();
-        resolve(video);
-      };
+        // Créer le Blob et l'URL Blob
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        
+        // Créer un élément vidéo de test pour valider
+        const testVideo = document.createElement('video');
+        testVideo.preload = 'auto';
+        testVideo.muted = true;
+        testVideo.playsInline = true;
+        
+        const handleCanPlay = () => {
+          videoCache[url] = {
+            element: testVideo,
+            loaded: true,
+            canPlay: true,
+            blob: blob,
+            blobUrl: blobUrl,
+          };
+          
+          forceUpdate();
+          console.log(`Video successfully cached with Blob URL: ${url}`);
+          resolve(blobUrl);
+        };
 
-      const handleError = (error: Event) => {
-        console.warn(`Failed to preload video: ${url}`, error);
-        delete videoCache[url];
-        reject(new Error(`Failed to load video: ${url}`));
-      };
+        const handleError = () => {
+          URL.revokeObjectURL(blobUrl);
+          delete videoCache[url];
+          reject(new Error(`Failed to load video: ${url}`));
+        };
 
-      const handleLoadStart = () => {
-        console.log(`Starting to load video: ${url}`);
-      };
+        testVideo.addEventListener('canplay', handleCanPlay, { once: true });
+        testVideo.addEventListener('error', handleError, { once: true });
+        testVideo.src = blobUrl;
+        testVideo.load();
 
-      const handleProgress = () => {
-        if (video.buffered.length > 0) {
-          const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-          const duration = video.duration;
-          if (duration > 0) {
-            const percentLoaded = (bufferedEnd / duration) * 100;
-            console.log(`Video ${url} buffered: ${percentLoaded.toFixed(1)}%`);
+        // Timeout de sécurité
+        setTimeout(() => {
+          if (!videoCache[url]?.canPlay) {
+            console.warn(`Video preload timeout for: ${url}`);
+            URL.revokeObjectURL(blobUrl);
+            delete videoCache[url];
+            reject(new Error(`Video preload timeout: ${url}`));
           }
-        }
-      };
-
-      // Ajouter les event listeners
-      video.addEventListener('loadeddata', handleLoadedData);
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('error', handleError);
-      video.addEventListener('loadstart', handleLoadStart);
-      video.addEventListener('progress', handleProgress);
-
-      // Cleanup function
-      const cleanup = () => {
-        video.removeEventListener('loadeddata', handleLoadedData);
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('error', handleError);
-        video.removeEventListener('loadstart', handleLoadStart);
-        video.removeEventListener('progress', handleProgress);
-      };
-
-      // Stocker la fonction de cleanup
-      (video as any)._cleanup = cleanup;
-
-      // Commencer le chargement
-      video.src = url;
-      video.load();
-
-      // Timeout de sécurité
-      setTimeout(() => {
-        if (!videoCache[url]?.canPlay) {
-          console.warn(`Video preload timeout for: ${url}`);
-          cleanup();
-          // Ne pas supprimer du cache, laisser le chargement continuer
-          reject(new Error(`Video preload timeout: ${url}`));
-        }
-      }, 15000); // 15 secondes timeout
+        }, 15000);
+        
+      } catch (error) {
+        console.error(`Failed to fetch video: ${url}`, error);
+        delete videoCache[url];
+        reject(error);
+      }
     });
   }, [forceUpdate]);
 
-  const getCachedVideo = useCallback((url: string): HTMLVideoElement | null => {
-    return videoCache[url]?.element || null;
+  const getCachedBlobUrl = useCallback((url: string): string | null => {
+    return videoCache[url]?.blobUrl || null;
   }, []);
 
   const isVideoReady = useCallback((url: string): boolean => {
@@ -147,14 +135,21 @@ export const useVideoCache = (): UseVideoCacheReturn => {
   const clearCache = useCallback(() => {
     Object.keys(videoCache).forEach(url => {
       const cacheEntry = videoCache[url];
+      
+      // Nettoyer l'élément vidéo
       if (cacheEntry.element && (cacheEntry.element as any)._cleanup) {
         (cacheEntry.element as any)._cleanup();
       }
-      // Pause et reset la vidéo
       if (!cacheEntry.element.paused) {
         cacheEntry.element.pause();
       }
       cacheEntry.element.src = '';
+      
+      // Nettoyer le Blob URL
+      if (cacheEntry.blobUrl) {
+        URL.revokeObjectURL(cacheEntry.blobUrl);
+      }
+      
       delete videoCache[url];
     });
     activeVideos.current.clear();
@@ -171,7 +166,7 @@ export const useVideoCache = (): UseVideoCacheReturn => {
 
   return {
     preloadVideo,
-    getCachedVideo,
+    getCachedBlobUrl,
     isVideoReady,
     isVideoLoaded,
     clearCache,

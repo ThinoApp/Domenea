@@ -9,7 +9,7 @@ const HeroSection: React.FC = () => {
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   
-  const { getCachedVideo, isVideoReady: isCachedVideoReady, isVideoLoaded: isCachedVideoLoaded } = useVideoCache();
+  const { getCachedBlobUrl, isVideoReady: isCachedVideoReady, isVideoLoaded: isCachedVideoLoaded } = useVideoCache();
   
   const videoUrl = "/assets/vide_hero.mp4";
 
@@ -27,15 +27,15 @@ const HeroSection: React.FC = () => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Vérifier si la vidéo est déjà en cache
-    const cachedVideo = getCachedVideo(videoUrl);
+    // Vérifier si la vidéo est déjà en cache avec Blob URL
+    const cachedBlobUrl = getCachedBlobUrl(videoUrl);
     
-    if (cachedVideo && isCachedVideoReady(videoUrl)) {
-      // Utiliser la vidéo mise en cache
-      console.log('Using cached video for hero section');
+    if (cachedBlobUrl && isCachedVideoReady(videoUrl)) {
+      // Utiliser le Blob URL mis en cache (pas de nouveau téléchargement)
+      console.log('Using cached Blob URL for hero section - NO additional download');
       
-      // Copier les attributs de la vidéo cachée vers notre élément
-      video.src = cachedVideo.src;
+      // Utiliser l'URL Blob partagée
+      video.src = cachedBlobUrl;
       video.currentTime = 0; // Reset au début
       
       setIsVideoLoaded(isCachedVideoLoaded(videoUrl));
@@ -83,7 +83,7 @@ const HeroSection: React.FC = () => {
         video.removeEventListener("error", handleError);
       };
     }
-  }, [getCachedVideo, isCachedVideoReady, isCachedVideoLoaded, videoUrl]);
+  }, [getCachedBlobUrl, isCachedVideoReady, isCachedVideoLoaded, videoUrl]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">

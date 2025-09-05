@@ -43,15 +43,15 @@ function App() {
     "/assets/Photo 12.jpg", // LifestylePresentationSection - Vue aérienne
   ], []);
 
-  // Préchargement de la vidéo hero en parallèle
+  // Préchargement unique de la vidéo hero avec Blob URL
   useEffect(() => {
     const preloadHeroVideo = async () => {
       try {
-        console.log('Starting hero video preload...');
-        await preloadVideo("/assets/vide_hero.mp4");
-        console.log('Hero video preloaded successfully');
+        console.log('Starting SINGLE hero video download...');
+        const blobUrl = await preloadVideo("/assets/vide_hero.mp4");
+        console.log('Hero video downloaded once and cached as Blob URL:', blobUrl);
       } catch (error) {
-        console.warn('Hero video preload failed, will fallback to normal loading:', error);
+        console.warn('Hero video preload failed, components will fallback to normal loading:', error);
       }
     };
 

@@ -8,7 +8,7 @@ const ProgramsPreviewSection: React.FC = () => {
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
   
-  const { getCachedVideo, isVideoReady } = useVideoCache();
+  const { getCachedBlobUrl, isVideoReady } = useVideoCache();
   const videoUrl = "/assets/vide_hero.mp4";
 
   // Animations au scroll - répétables
@@ -99,15 +99,15 @@ const ProgramsPreviewSection: React.FC = () => {
       videos.forEach((video, index) => {
         if (!video) return;
         
-        // Vérifier si la vidéo est déjà en cache
-        const cachedVideo = getCachedVideo(videoUrl);
+        // Vérifier si la vidéo est déjà en cache avec Blob URL
+        const cachedBlobUrl = getCachedBlobUrl(videoUrl);
         
-        if (cachedVideo && isVideoReady(videoUrl)) {
-          // Utiliser la vidéo mise en cache
-          console.log(`Using cached video for Programs card ${index + 1}`);
+        if (cachedBlobUrl && isVideoReady(videoUrl)) {
+          // Utiliser le Blob URL mis en cache (pas de nouveau téléchargement)
+          console.log(`Using cached Blob URL for Programs card ${index + 1} - NO additional download`);
           
-          // Copier les attributs de la vidéo cachée
-          video.src = cachedVideo.src;
+          // Utiliser l'URL Blob partagée
+          video.src = cachedBlobUrl;
           video.currentTime = 0; // Reset au début
           
           // Jouer immédiatement
@@ -132,7 +132,7 @@ const ProgramsPreviewSection: React.FC = () => {
     };
     
     setupVideos();
-  }, [getCachedVideo, isVideoReady, videoUrl]);
+  }, [getCachedBlobUrl, isVideoReady, videoUrl]);
 
   return (
     <section className="relative py-20 lg:py-32 bg-gradient-to-b from-gray-900 via-slate-800/95 to-gray-900">
