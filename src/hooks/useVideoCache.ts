@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface VideoCache {
   [url: string]: {
@@ -22,12 +22,7 @@ interface UseVideoCacheReturn {
 const videoCache: VideoCache = {};
 
 export const useVideoCache = (): UseVideoCacheReturn => {
-  const [, setForceUpdate] = useState(0);
   const activeVideos = useRef<Set<string>>(new Set());
-
-  const forceUpdate = useCallback(() => {
-    setForceUpdate(prev => prev + 1);
-  }, []);
 
   const preloadVideo = useCallback((url: string): Promise<string> => {
     return new Promise(async (resolve, reject) => {
@@ -86,7 +81,6 @@ export const useVideoCache = (): UseVideoCacheReturn => {
             blobUrl: blobUrl,
           };
           
-          forceUpdate();
           console.log(`Video successfully cached with Blob URL: ${url}`);
           resolve(blobUrl);
         };
@@ -118,7 +112,7 @@ export const useVideoCache = (): UseVideoCacheReturn => {
         reject(error);
       }
     });
-  }, [forceUpdate]);
+  }, []);
 
   const getCachedBlobUrl = useCallback((url: string): string | null => {
     return videoCache[url]?.blobUrl || null;
@@ -153,8 +147,7 @@ export const useVideoCache = (): UseVideoCacheReturn => {
       delete videoCache[url];
     });
     activeVideos.current.clear();
-    forceUpdate();
-  }, [forceUpdate]);
+  }, []);
 
   // Cleanup au démontage du composant
   useEffect(() => {
