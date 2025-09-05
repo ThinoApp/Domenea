@@ -1,11 +1,15 @@
 import React, { useRef, useEffect } from 'react';
 import { useAppLanguage } from '../../context/AppContext';
+import { useVideoCache } from '../../hooks/useVideoCache';
 import { useScrollAnimation, useStaggeredScrollAnimation } from '../../hooks/useScrollAnimation';
 
 const ProgramsPreviewSection: React.FC = () => {
   const { language } = useAppLanguage();
   const video1Ref = useRef<HTMLVideoElement>(null);
   const video2Ref = useRef<HTMLVideoElement>(null);
+  
+  const { getCachedVideo, isVideoReady } = useVideoCache();
+  const videoUrl = "/assets/vide_hero.mp4";
 
   // Animations au scroll - répétables
   const { elementRef: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.3, triggerOnce: false });
@@ -89,13 +93,46 @@ const ProgramsPreviewSection: React.FC = () => {
   };
 
   useEffect(() => {
-    const videos = [video1Ref.current, video2Ref.current];
-    videos.forEach(video => {
-      if (video) {
-        video.play().catch(console.error);
-      }
-    });
-  }, []);
+    const setupVideos = async () => {
+      const videos = [video1Ref.current, video2Ref.current];
+      
+      videos.forEach((video, index) => {
+        if (!video) return;
+        
+        // Vérifier si la vidéo est déjà en cache
+        const cachedVideo = getCachedVideo(videoUrl);
+        
+        if (cachedVideo && isVideoReady(videoUrl)) {
+          // Utiliser la vidéo mise en cache
+          console.log(`Using cached video for Programs card ${index + 1}`);
+          
+          // Copier les attributs de la vidéo cachée
+          video.src = cachedVideo.src;
+          video.currentTime = 0; // Reset au début
+          
+          // Jouer immédiatement
+          video.play().catch(error => {
+            console.warn(`Auto-play failed for card ${index + 1}:`, error);
+          });
+        } else {
+          // Fallback vers le chargement normal
+          console.log(`Fallback loading for Programs card ${index + 1}`);
+          
+          const handleCanPlay = () => {
+            video.play().catch(error => {
+              console.warn(`Auto-play failed for card ${index + 1}:`, error);
+            });
+          };
+          
+          video.addEventListener('canplay', handleCanPlay, { once: true });
+          video.src = videoUrl;
+          video.load();
+        }
+      });
+    };
+    
+    setupVideos();
+  }, [getCachedVideo, isVideoReady, videoUrl]);
 
   return (
     <section className="relative py-20 lg:py-32 bg-gradient-to-b from-gray-900 via-slate-800/95 to-gray-900">
@@ -227,7 +264,7 @@ const ProgramsPreviewSection: React.FC = () => {
                     playsInline
                     preload="metadata"
                   >
-                    <source src="/assets/vide_hero.mp4" type="video/mp4" />
+                    <source src={videoUrl} type="video/mp4" />
                   </video>
                 </div>
 
