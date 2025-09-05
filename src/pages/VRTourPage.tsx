@@ -326,8 +326,8 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
               // Activer les menus de thumbnails par défaut
               setTimeout(() => {
                 if (pano.setVariableValue) {
-                  pano.setVariableValue("vis_thumbnail_menu", true);
-                  pano.setVariableValue("vis_thumbnail_menu_phone", true);
+                  pano.setVariableValue("vis_thumbnail_menu", false);
+                  pano.setVariableValue("vis_thumbnail_menu_phone", false);
                   console.log("Menus thumbnails activés par défaut");
                 }
               }, 500);
@@ -340,8 +340,8 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
             // Activer les menus de thumbnails par défaut
             setTimeout(() => {
               if (pano.setVariableValue) {
-                pano.setVariableValue("vis_thumbnail_menu", true);
-                pano.setVariableValue("vis_thumbnail_menu_phone", true);
+                pano.setVariableValue("vis_thumbnail_menu", false);
+                pano.setVariableValue("vis_thumbnail_menu_phone", false);
                 console.log("Menus thumbnails activés par défaut");
               }
             }, 500);
