@@ -157,7 +157,7 @@ const HeroSection: React.FC = () => {
           {/* Titre principal impact - selon la maquette */}
           <div className="mb-8">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tight leading-none">
-              <span className="bg-gradient-to-r from-white via-blue-100 to-green-100 bg-clip-text text-transparent">
+              <span className="text-white bg-gradient-to-r from-white via-blue-100 to-green-100 [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] supports-[background-clip:text]:bg-clip-text supports-[background-clip:text]:text-transparent">
                 {heroTitle[language]}
               </span>
             </h1>
@@ -211,7 +211,7 @@ const HeroSection: React.FC = () => {
                 className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:border-white/40"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                <div className="text-2xl md:text-3xl font-bold mb-2 text-white bg-gradient-to-r from-white to-blue-100 [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] supports-[background-clip:text]:bg-clip-text supports-[background-clip:text]:text-transparent">
                   {item.value}
                 </div>
                 <div className="text-sm md:text-base opacity-80 font-medium tracking-wide">
