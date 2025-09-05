@@ -117,7 +117,7 @@ const HeroSection: React.FC = () => {
         muted
         playsInline
         preload="auto"
-        poster="/assets/hero-fallback-ocean.jpg"
+        poster="/assets/hero-fallback-ocean.png"
       >
         <source src={videoUrl} type="video/mp4" />
       </video>
@@ -126,7 +126,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-green-800/20" />
       <img
-        src="/assets/hero-fallback-ocean.jpg"
+        src="/assets/hero-fallback-ocean.png"
         alt="Hero"
         className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
       />
