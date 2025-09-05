@@ -29,8 +29,8 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     {
       id: "node1",
       name: {
-        fr: "Lac TAO",
-        en: "TAO Lake",
+        fr: "Lac",
+        en: "Lake",
       },
       description: {
         fr: "Vue panoramique sur le lac",
@@ -40,19 +40,19 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     {
       id: "node2",
       name: {
-        fr: "Espace Vert",
-        en: "Green Space",
+        fr: "Vue Ciel",
+        en: "Sky View",
       },
       description: {
-        fr: "Jardins et espaces verts",
-        en: "Gardens and green areas",
+        fr: "Panorama céleste",
+        en: "Celestial panorama",
       },
     },
     {
       id: "node3",
       name: {
-        fr: "Vue Ville",
-        en: "City View",
+        fr: "Ville",
+        en: "City",
       },
       description: {
         fr: "Panorama urbain",
@@ -303,6 +303,14 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
                   console.log(
                     "Configuration Pano2VR chargée avec succès (async)"
                   );
+                  // Activer les menus de thumbnails par défaut
+                  setTimeout(() => {
+                    if (pano.setVariableValue) {
+                      pano.setVariableValue("vis_thumbnail_menu", true);
+                      pano.setVariableValue("vis_thumbnail_menu_phone", true);
+                      console.log("Menus thumbnails activés par défaut");
+                    }
+                  }, 500);
                   setIsInitialized(true);
                   setIsLoading(false);
                 })
@@ -315,12 +323,28 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
                 });
             } else {
               console.log("readConfigUrlAsync ne retourne pas une promise");
+              // Activer les menus de thumbnails par défaut
+              setTimeout(() => {
+                if (pano.setVariableValue) {
+                  pano.setVariableValue("vis_thumbnail_menu", true);
+                  pano.setVariableValue("vis_thumbnail_menu_phone", true);
+                  console.log("Menus thumbnails activés par défaut");
+                }
+              }, 500);
               setIsInitialized(true);
               setIsLoading(false);
             }
           } else if (typeof pano.readConfigUrl === "function") {
             console.log("Utilisation de readConfigUrl (synchrone)");
             pano.readConfigUrl("/pano2vr/pano.xml?ts=90345204");
+            // Activer les menus de thumbnails par défaut
+            setTimeout(() => {
+              if (pano.setVariableValue) {
+                pano.setVariableValue("vis_thumbnail_menu", true);
+                pano.setVariableValue("vis_thumbnail_menu_phone", true);
+                console.log("Menus thumbnails activés par défaut");
+              }
+            }, 500);
             setIsInitialized(true);
             setIsLoading(false);
           } else {
