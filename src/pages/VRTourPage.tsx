@@ -303,12 +303,13 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
                   console.log(
                     "Configuration Pano2VR chargée avec succès (async)"
                   );
-                  // Activer les menus de thumbnails par défaut
+                  // Activer les menus de thumbnails par défaut et forcer vis_skin
                   setTimeout(() => {
                     if (pano.setVariableValue) {
                       pano.setVariableValue("vis_thumbnail_menu", false);
                       pano.setVariableValue("vis_thumbnail_menu_phone", false);
-                      console.log("Menus thumbnails activés par défaut");
+                      pano.setVariableValue("vis_skin", true);
+                      console.log("Menus thumbnails et hotspots activés par défaut");
                     }
                   }, 500);
                   setIsInitialized(true);
@@ -323,12 +324,13 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
                 });
             } else {
               console.log("readConfigUrlAsync ne retourne pas une promise");
-              // Activer les menus de thumbnails par défaut
+              // Activer les menus de thumbnails par défaut et forcer vis_skin
               setTimeout(() => {
                 if (pano.setVariableValue) {
                   pano.setVariableValue("vis_thumbnail_menu", false);
                   pano.setVariableValue("vis_thumbnail_menu_phone", false);
-                  console.log("Menus thumbnails activés par défaut");
+                  pano.setVariableValue("vis_skin", true);
+                  console.log("Menus thumbnails et hotspots activés par défaut");
                 }
               }, 500);
               setIsInitialized(true);
@@ -337,12 +339,13 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
           } else if (typeof pano.readConfigUrl === "function") {
             console.log("Utilisation de readConfigUrl (synchrone)");
             pano.readConfigUrl("/pano2vr/pano.xml?ts=90345204");
-            // Activer les menus de thumbnails par défaut
+            // Activer les menus de thumbnails par défaut et forcer vis_skin
             setTimeout(() => {
               if (pano.setVariableValue) {
                 pano.setVariableValue("vis_thumbnail_menu", false);
                 pano.setVariableValue("vis_thumbnail_menu_phone", false);
-                console.log("Menus thumbnails activés par défaut");
+                pano.setVariableValue("vis_skin", true);
+                console.log("Menus thumbnails et hotspots activés par défaut");
               }
             }, 500);
             setIsInitialized(true);

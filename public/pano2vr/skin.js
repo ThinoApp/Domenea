@@ -2927,7 +2927,7 @@ if (snowOnLoad) {
 		el.className="ggskin ggskin_hotspot ";
 		el.ggType='hotspot';
 		hs ='';
-		hs+='z-index: -1;';
+		hs+='z-index: 1000;';
 		hs+='height : 0px;';
 		hs+='left : 150px;';
 		hs+='position : absolute;';
