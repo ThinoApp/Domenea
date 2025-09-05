@@ -24,35 +24,44 @@ import "./App.css";
 
 function App() {
   const [isAppLoaded, setIsAppLoaded] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'home' | 'vr-tour'>('home');
+  const [currentPage, setCurrentPage] = useState<"home" | "vr-tour">("home");
 
   // Hook pour la gestion du cache vidéo
   const { preloadVideo } = useVideoCache();
 
   // Assets critiques à précharger (useMemo pour éviter la boucle infinie)
-  const criticalImages = useMemo(() => [
-    "/assets/hero-fallback-ocean.jpg", // Hero fallback PRIORITAIRE - doit être en premier
-    "/assets/Logo 2.png", // INTIMITÉ card
-    "/assets/Logo 1.png", // INTIMITÉ card
-    "/assets/Logo 3.png", // INTIMITÉ card
-    "/assets/Photo 8-3.jpeg", // Hero background (ancien)
-    "/assets/Photo 8-1.jpeg", // HARMONIE card
-    "/assets/Photo 8-2.jpg", // LifestylePresentationSection - Architecture moderne
-    "/assets/Photo 14.jpg", // CONCEPT card
-    "/assets/Photo 16.jpg", // CONCEPT card
-    "/assets/photo-2-plage.jpg", // CONCEPT card
-    "/assets/Photo 12.jpg", // LifestylePresentationSection - Vue aérienne
-  ], []);
+  const criticalImages = useMemo(
+    () => [
+      // "/assets/hero-fallback-ocean.jpg", // Hero fallback PRIORITAIRE - doit être en premier
+      "/assets/Logo 2.png", // INTIMITÉ card
+      "/assets/Logo 1.png", // INTIMITÉ card
+      "/assets/Logo 3.png", // INTIMITÉ card
+      "/assets/Photo 8-3.jpeg", // Hero background (ancien)
+      "/assets/Photo 8-1.jpeg", // HARMONIE card
+      "/assets/Photo 8-2.jpg", // LifestylePresentationSection - Architecture moderne
+      "/assets/Photo 14.jpg", // CONCEPT card
+      "/assets/Photo 16.jpg", // CONCEPT card
+      "/assets/photo-2-plage.jpg", // CONCEPT card
+      "/assets/Photo 12.jpg", // LifestylePresentationSection - Vue aérienne
+    ],
+    []
+  );
 
   // Préchargement unique de la vidéo hero avec Blob URL
   useEffect(() => {
     const preloadHeroVideo = async () => {
       try {
-        console.log('Starting SINGLE hero video download...');
+        console.log("Starting SINGLE hero video download...");
         const blobUrl = await preloadVideo("/assets/vide_hero.mp4");
-        console.log('Hero video downloaded once and cached as Blob URL:', blobUrl);
+        console.log(
+          "Hero video downloaded once and cached as Blob URL:",
+          blobUrl
+        );
       } catch (error) {
-        console.warn('Hero video preload failed, components will fallback to normal loading:', error);
+        console.warn(
+          "Hero video preload failed, components will fallback to normal loading:",
+          error
+        );
       }
     };
 
@@ -71,11 +80,11 @@ function App() {
 
   // Navigation handlers
   const handleOpenVRTour = () => {
-    setCurrentPage('vr-tour');
+    setCurrentPage("vr-tour");
   };
 
   const handleBackToHome = () => {
-    setCurrentPage('home');
+    setCurrentPage("home");
   };
 
   // Afficher le loader pendant le chargement
@@ -89,7 +98,7 @@ function App() {
   }
 
   // Afficher la page VR Tour
-  if (currentPage === 'vr-tour') {
+  if (currentPage === "vr-tour") {
     return (
       <AppProvider>
         <VRTourPage onBackToHome={handleBackToHome} />
