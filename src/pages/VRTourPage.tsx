@@ -102,12 +102,12 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
 
   // Mappage des indices vers les IDs Pano2VR
   const getNodeId = (sceneIndex: number) => {
-    return vrScenes[sceneIndex]?.id || 'node1';
+    return vrScenes[sceneIndex]?.id || "node1";
   };
 
   const getSceneIndexFromNodeId = (nodeId: string) => {
-    const index = vrScenes.findIndex(scene => scene.id === nodeId);
-    console.log('getSceneIndexFromNodeId:', nodeId, '->', index);
+    const index = vrScenes.findIndex((scene) => scene.id === nodeId);
+    console.log("getSceneIndexFromNodeId:", nodeId, "->", index);
     return index;
   };
 
@@ -117,11 +117,13 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       // Charger les scripts Pano2VR
       const loadScript = (src: string): Promise<void> => {
         return new Promise((resolve, reject) => {
-          if (document.querySelector(`script[src*="${src.split('/').pop()}"]`)) {
+          if (
+            document.querySelector(`script[src*="${src.split("/").pop()}"]`)
+          ) {
             resolve();
             return;
           }
-          const script = document.createElement('script');
+          const script = document.createElement("script");
           script.src = src;
           script.onload = () => resolve();
           script.onerror = reject;
@@ -130,48 +132,54 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       };
 
       // Charger les scripts séquentiellement et gérer Lottie
-      loadScript('/pano2vr/3rdparty/lottie/lottie.min.js')
+      loadScript("/pano2vr/3rdparty/lottie/lottie.min.js")
         .then(() => {
-          console.log('Lottie chargé');
+          console.log("Lottie chargé");
           // Configurer Lottie pour éviter les erreurs d'état
           if (window.lottie) {
             window.lottie.setQuality = window.lottie.setQuality || (() => {});
             window.lottie.setSpeed = window.lottie.setSpeed || (() => {});
           }
-          return loadScript('/pano2vr/pano2vr_player.js');
+          return loadScript("/pano2vr/pano2vr_player.js");
         })
         .then(() => {
-          console.log('Pano2VR Player chargé');
-          return loadScript('/pano2vr/skin.js');
+          console.log("Pano2VR Player chargé");
+          return loadScript("/pano2vr/skin.js");
         })
         .then(() => {
-          console.log('Pano2VR Skin chargé');
-          
+          console.log("Pano2VR Skin chargé");
+
           // Patch pour éviter les erreurs Lottie onclick
           if (window.console && window.console.error) {
             const originalError = window.console.error;
-            window.console.error = function(...args) {
-              const message = args.join(' ');
-              if (message.includes('_lottie_10.onclick') || message.includes('InvalidStateError')) {
-                console.warn('Erreur Lottie interceptée et ignorée:', message);
+            window.console.error = function (...args) {
+              const message = args.join(" ");
+              if (
+                message.includes("_lottie_10.onclick") ||
+                message.includes("InvalidStateError")
+              ) {
+                console.warn("Erreur Lottie interceptée et ignorée:", message);
                 return;
               }
               originalError.apply(console, args);
             };
           }
-          
+
           // Attendre un peu après le chargement des scripts
           setTimeout(() => {
-            console.log('Classes disponibles:', {
+            console.log("Classes disponibles:", {
               pano2vrPlayer: typeof window.pano2vrPlayer,
               pano2vrSkin: typeof window.pano2vrSkin,
-              lottie: typeof window.lottie
+              lottie: typeof window.lottie,
             });
             waitForContainer();
           }, 500);
         })
         .catch((error) => {
-          console.error('Erreur lors du chargement des scripts Pano2VR:', error);
+          console.error(
+            "Erreur lors du chargement des scripts Pano2VR:",
+            error
+          );
           setIsLoading(false);
         });
     };
@@ -179,19 +187,30 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     const waitForContainer = () => {
       let attempts = 0;
       const maxAttempts = 50;
-      
+
       const checkContainer = () => {
         attempts++;
-        const container = document.getElementById('pano2vr-container');
-        
-        if (container && containerRef.current && window.pano2vrPlayer && window.pano2vrSkin) {
-          console.log('Container trouvé, initialisation de Pano2VR...');
+        const container = document.getElementById("pano2vr-container");
+
+        if (
+          container &&
+          containerRef.current &&
+          window.pano2vrPlayer &&
+          window.pano2vrSkin
+        ) {
+          console.log("Container trouvé, initialisation de Pano2VR...");
           initializePano2VR();
         } else if (attempts < maxAttempts) {
-          console.log(`Container non trouvé, tentative ${attempts}/${maxAttempts}...`);
+          console.log(
+            `Container non trouvé, tentative ${attempts}/${maxAttempts}...`
+          );
           setTimeout(checkContainer, 100);
         } else {
-          console.error('Timeout: impossible de trouver le container après', maxAttempts, 'tentatives');
+          console.error(
+            "Timeout: impossible de trouver le container après",
+            maxAttempts,
+            "tentatives"
+          );
           setIsLoading(false);
         }
       };
@@ -199,63 +218,63 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     };
 
     const initializePano2VR = () => {
-      const container = document.getElementById('pano2vr-container');
+      const container = document.getElementById("pano2vr-container");
       if (!container) {
-        console.error('Container pano2vr-container introuvable dans le DOM');
+        console.error("Container pano2vr-container introuvable dans le DOM");
         setIsLoading(false);
         return;
       }
 
       try {
-        console.log('Initialisation de Pano2VR avec container:', container);
-        
+        console.log("Initialisation de Pano2VR avec container:", container);
+
         // Vérifier que les classes Pano2VR sont disponibles
         if (!window.pano2vrPlayer || !window.pano2vrSkin) {
-          console.error('Classes Pano2VR non disponibles');
+          console.error("Classes Pano2VR non disponibles");
           setIsLoading(false);
           return;
         }
-        
+
         // Créer le player Pano2VR avec l'ID du container (string)
         const pano = new window.pano2vrPlayer("pano2vr-container");
-        
+
         // Vérifier que le player a été créé correctement
         if (!pano) {
-          console.error('Échec de création du player Pano2VR');
+          console.error("Échec de création du player Pano2VR");
           setIsLoading(false);
           return;
         }
-        
-        console.log('Player Pano2VR créé:', pano);
-        console.log('Méthodes disponibles:', Object.getOwnPropertyNames(pano));
-        
+
+        console.log("Player Pano2VR créé:", pano);
+        console.log("Méthodes disponibles:", Object.getOwnPropertyNames(pano));
+
         // Configuration du player
-        if (typeof pano.setQueryParameter === 'function') {
+        if (typeof pano.setQueryParameter === "function") {
           pano.setQueryParameter("ts=90345204");
         }
-        
+
         // Stocker les références globalement pour compatibilité
         window.pano = pano;
         panoRef.current = pano;
-        
+
         // Attendre que Pano2VR soit complètement prêt avant de créer le skin
         setTimeout(() => {
           try {
-            console.log('Création du skin Pano2VR...');
+            console.log("Création du skin Pano2VR...");
             const skin = new window.pano2vrSkin(pano);
             window.skin = skin;
-            console.log('Skin créé avec succès');
+            console.log("Skin créé avec succès");
           } catch (skinError) {
-            console.error('Erreur lors de la création du skin:', skinError);
+            console.error("Erreur lors de la création du skin:", skinError);
             // Continuer sans le skin si nécessaire
           }
         }, 200);
-        
+
         // Écouter les changements de nœud avec gestion d'erreurs
         try {
-          if (typeof pano.addListener === 'function') {
-            pano.addListener('nodechange', (event: any) => {
-              console.log('Node change event:', event);
+          if (typeof pano.addListener === "function") {
+            pano.addListener("nodechange", (event: any) => {
+              console.log("Node change event:", event);
               if (event && event.target) {
                 const newNodeIndex = getSceneIndexFromNodeId(event.target);
                 if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
@@ -265,45 +284,59 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
             });
           }
         } catch (listenerError) {
-          console.warn('Impossible d\'ajouter le listener nodechange:', listenerError);
+          console.warn(
+            "Impossible d'ajouter le listener nodechange:",
+            listenerError
+          );
         }
-        
+
         // Charger la configuration - essayer avec et sans promise
         const loadConfig = () => {
-          if (typeof pano.readConfigUrlAsync === 'function') {
-            console.log('Utilisation de readConfigUrlAsync');
-            const result = pano.readConfigUrlAsync('/pano2vr/pano.xml?ts=90345204');
-            if (result && typeof result.then === 'function') {
-              result.then(() => {
-                console.log('Configuration Pano2VR chargée avec succès (async)');
-                setIsInitialized(true);
-                setIsLoading(false);
-              }).catch((error: any) => {
-                console.error('Erreur lors du chargement de la configuration (async):', error);
-                setIsLoading(false);
-              });
+          if (typeof pano.readConfigUrlAsync === "function") {
+            console.log("Utilisation de readConfigUrlAsync");
+            const result = pano.readConfigUrlAsync(
+              "/pano2vr/pano.xml?ts=90345204"
+            );
+            if (result && typeof result.then === "function") {
+              result
+                .then(() => {
+                  console.log(
+                    "Configuration Pano2VR chargée avec succès (async)"
+                  );
+                  setIsInitialized(true);
+                  setIsLoading(false);
+                })
+                .catch((error: any) => {
+                  console.error(
+                    "Erreur lors du chargement de la configuration (async):",
+                    error
+                  );
+                  setIsLoading(false);
+                });
             } else {
-              console.log('readConfigUrlAsync ne retourne pas une promise');
+              console.log("readConfigUrlAsync ne retourne pas une promise");
               setIsInitialized(true);
               setIsLoading(false);
             }
-          } else if (typeof pano.readConfigUrl === 'function') {
-            console.log('Utilisation de readConfigUrl (synchrone)');
-            pano.readConfigUrl('/pano2vr/pano.xml?ts=90345204');
+          } else if (typeof pano.readConfigUrl === "function") {
+            console.log("Utilisation de readConfigUrl (synchrone)");
+            pano.readConfigUrl("/pano2vr/pano.xml?ts=90345204");
             setIsInitialized(true);
             setIsLoading(false);
           } else {
-            console.error('Aucune méthode de chargement de config disponible');
-            console.log('Méthodes disponibles sur pano:', Object.getOwnPropertyNames(pano));
+            console.error("Aucune méthode de chargement de config disponible");
+            console.log(
+              "Méthodes disponibles sur pano:",
+              Object.getOwnPropertyNames(pano)
+            );
             setIsLoading(false);
           }
         };
-        
+
         // Attendre un peu que tout soit initialisé
         setTimeout(loadConfig, 1000);
-        
       } catch (error) {
-        console.error('Erreur lors de l\'initialisation de Pano2VR:', error);
+        console.error("Erreur lors de l'initialisation de Pano2VR:", error);
         setIsLoading(false);
       }
     };
@@ -315,7 +348,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         try {
           panoRef.current.dispose();
         } catch (e) {
-          console.warn('Erreur lors de la destruction de Pano2VR:', e);
+          console.warn("Erreur lors de la destruction de Pano2VR:", e);
         }
         panoRef.current = null;
       }
@@ -331,23 +364,28 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
 
   const handleSceneChange = (sceneIndex: number) => {
     if (!isInitialized || sceneIndex === activeScene || !panoRef.current) {
-      console.log('Changement de scène ignoré:', { isInitialized, sceneIndex, activeScene, hasPano: !!panoRef.current });
+      console.log("Changement de scène ignoré:", {
+        isInitialized,
+        sceneIndex,
+        activeScene,
+        hasPano: !!panoRef.current,
+      });
       return;
     }
 
     const targetNodeId = getNodeId(sceneIndex);
-    console.log('Changement vers la scène:', targetNodeId);
-    
+    console.log("Changement vers la scène:", targetNodeId);
+
     try {
       // Vérifier que la méthode existe avant de l'appeler
-      if (typeof panoRef.current.openNext === 'function') {
-        panoRef.current.openNext(`{${targetNodeId}}`, '');
+      if (typeof panoRef.current.openNext === "function") {
+        panoRef.current.openNext(`{${targetNodeId}}`, "");
         setActiveScene(sceneIndex);
       } else {
-        console.error('Méthode openNext non disponible sur le player Pano2VR');
+        console.error("Méthode openNext non disponible sur le player Pano2VR");
       }
     } catch (error) {
-      console.error('Erreur lors du changement de scène:', error);
+      console.error("Erreur lors du changement de scène:", error);
     }
   };
 
@@ -445,11 +483,11 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       {/* Viewer VR principal avec Pano2VR */}
       <div className="w-full h-screen relative">
         {/* Container Pano2VR */}
-        <div 
+        <div
           ref={containerRef}
           className="w-full h-full"
           id="pano2vr-container"
-          style={{ background: '#000' }}
+          style={{ background: "#000" }}
         />
 
         {/* Overlay de chargement */}
@@ -458,7 +496,9 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
             <div className="text-center">
               <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mb-4 mx-auto"></div>
               <p className="text-white/80 text-lg">{currentContent.loading}</p>
-              <p className="text-white/60 text-sm mt-2">Initialisation du viewer 360°...</p>
+              <p className="text-white/60 text-sm mt-2">
+                Initialisation du viewer 360°...
+              </p>
             </div>
           </div>
         )}
@@ -468,7 +508,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       </div>
 
       {/* Footer VR */}
-      <footer className="absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 to-transparent p-4">
+      <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 to-transparent p-4">
         <div className="container mx-auto text-center">
           <p className="text-white/60 text-sm">{currentContent.experience}</p>
           <div className="mt-2 text-xs text-white/40">
