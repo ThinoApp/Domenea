@@ -143,14 +143,22 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     };
 
     const waitForContainer = () => {
+      let attempts = 0;
+      const maxAttempts = 50;
+      
       const checkContainer = () => {
+        attempts++;
         const container = document.getElementById('pano2vr-container');
+        
         if (container && containerRef.current && window.pano2vrPlayer && window.pano2vrSkin) {
           console.log('Container trouvé, initialisation de Pano2VR...');
           initializePano2VR();
-        } else {
-          console.log('Container non trouvé, nouvelle tentative...');
+        } else if (attempts < maxAttempts) {
+          console.log(`Container non trouvé, tentative ${attempts}/${maxAttempts}...`);
           setTimeout(checkContainer, 100);
+        } else {
+          console.error('Timeout: impossible de trouver le container après', maxAttempts, 'tentatives');
+          setIsLoading(false);
         }
       };
       checkContainer();
@@ -178,25 +186,38 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         window.skin = skin;
         panoRef.current = pano;
         
-        // Écouter les changements de nœud
-        pano.addListener('nodechange', (event: any) => {
-          console.log('Node change event:', event);
-          if (event && event.target) {
-            const newNodeIndex = getSceneIndexFromNodeId(event.target);
-            if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
-              setActiveScene(newNodeIndex);
+        // Écouter les changements de nœud avec gestion d'erreurs
+        try {
+          pano.addListener('nodechange', (event: any) => {
+            console.log('Node change event:', event);
+            if (event && event.target) {
+              const newNodeIndex = getSceneIndexFromNodeId(event.target);
+              if (newNodeIndex !== -1 && newNodeIndex !== activeScene) {
+                setActiveScene(newNodeIndex);
+              }
             }
-          }
-        });
+          });
+        } catch (listenerError) {
+          console.warn('Impossible d\'ajouter le listener nodechange:', listenerError);
+        }
         
-        // Charger la configuration
-        pano.readConfigUrlAsync('/pano2vr/pano.xml?ts=90345204').then(() => {
-          setIsInitialized(true);
-          setIsLoading(false);
-        }).catch((error: any) => {
-          console.error('Erreur lors du chargement de la configuration:', error);
-          setIsLoading(false);
-        });
+        // Attendre que le player soit complètement initialisé
+        setTimeout(() => {
+          if (pano && typeof pano.readConfigUrlAsync === 'function') {
+            // Charger la configuration avec le chemin correct
+            pano.readConfigUrlAsync('/pano2vr/pano.xml?ts=90345204').then(() => {
+              console.log('Configuration Pano2VR chargée avec succès');
+              setIsInitialized(true);
+              setIsLoading(false);
+            }).catch((error: any) => {
+              console.error('Erreur lors du chargement de la configuration:', error);
+              setIsLoading(false);
+            });
+          } else {
+            console.error('readConfigUrlAsync non disponible sur le player');
+            setIsLoading(false);
+          }
+        }, 500);
         
       } catch (error) {
         console.error('Erreur lors de l\'initialisation de Pano2VR:', error);
@@ -235,9 +256,13 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     console.log('Changement vers la scène:', targetNodeId);
     
     try {
-      // Naviguer vers le nœud avec Pano2VR
-      panoRef.current.openNext(`{${targetNodeId}}`, '');
-      setActiveScene(sceneIndex);
+      // Vérifier que la méthode existe avant de l'appeler
+      if (typeof panoRef.current.openNext === 'function') {
+        panoRef.current.openNext(`{${targetNodeId}}`, '');
+        setActiveScene(sceneIndex);
+      } else {
+        console.error('Méthode openNext non disponible sur le player Pano2VR');
+      }
     } catch (error) {
       console.error('Erreur lors du changement de scène:', error);
     }
