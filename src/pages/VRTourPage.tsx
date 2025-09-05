@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useAppLanguage } from "../context/AppContext";
+import VRLoader from "../components/ui/VRLoader";
 
 interface VRTourPageProps {
   onBackToHome: () => void;
@@ -8,6 +9,8 @@ interface VRTourPageProps {
 const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const { language } = useAppLanguage();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // URL vers le projet Pano2VR autonome
   const pano2vrUrl = "https://vr.domenea.com";
@@ -43,10 +46,30 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     }
   };
 
+  const handleIframeLoad = () => {
+    // Délai minimum pour montrer le loader et éviter un flash
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500); // 1.5s minimum pour l'expérience
+  };
+
+  const handleIframeError = () => {
+    console.warn('Erreur lors du chargement de la visite virtuelle');
+    // Continuer même en cas d'erreur après un délai
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  };
+
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      {/* Loader VR */}
+      <VRLoader isVisible={isLoading} />
+      
       {/* Header VR */}
-      <header className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/80 to-transparent p-6">
+      <header className={`absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/80 to-transparent p-6 transition-opacity duration-500 ${
+        isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}>
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             {/* Bouton retour */}
@@ -91,18 +114,25 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       </header>
 
       {/* Viewer VR principal avec iframe Pano2VR */}
-      <div className="w-full h-screen relative">
+      <div className={`w-full h-screen relative transition-opacity duration-500 ${
+        isLoading ? 'opacity-0' : 'opacity-100'
+      }`}>
         <iframe
+          ref={iframeRef}
           src={pano2vrUrl}
           className="w-full h-full border-0"
           title="TAO Virtual Tour"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
+          onLoad={handleIframeLoad}
+          onError={handleIframeError}
         />
       </div>
 
       {/* Footer VR */}
-      <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 to-transparent p-4">
+      <footer className={`pointer-events-none absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-500 ${
+        isLoading ? 'opacity-0' : 'opacity-100'
+      }`}>
         <div className="container mx-auto text-center">
           <p className="text-white/60 text-sm">{currentContent.experience}</p>
           <div className="mt-2 text-xs text-white/40">
