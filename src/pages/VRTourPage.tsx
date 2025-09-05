@@ -8,6 +8,7 @@ declare global {
     pano2vrSkin: any;
     pano: any;
     skin: any;
+    lottie: any;
   }
 }
 
