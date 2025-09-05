@@ -93,7 +93,7 @@ const HeroSection: React.FC = () => {
           isVideoReady && isVideoLoaded ? "opacity-0" : "opacity-100"
         }`}
         style={{
-          backgroundImage: "url(/assets/Photo 8-3.jpeg)",
+          backgroundImage: "url(/assets/hero-fallback-ocean.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -111,7 +111,7 @@ const HeroSection: React.FC = () => {
         muted
         playsInline
         preload="auto"
-        poster="/assets/Photo 8-3.jpeg"
+        poster="/assets/hero-fallback-ocean.jpg"
       >
         <source src={videoUrl} type="video/mp4" />
       </video>
