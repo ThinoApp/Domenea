@@ -14,7 +14,8 @@ import BrochureRequestSection from "./components/sections/BrochureRequestSection
 import GlobalLoader from "./components/ui/GlobalLoader";
 import VRTourPage from "./pages/VRTourPage";
 import { useAssetLoader } from "./hooks/useAssetLoader";
-import { useState, useMemo } from "react";
+import { useVideoCache } from "./hooks/useVideoCache";
+import { useState, useMemo, useEffect } from "react";
 // import VillasSection from "./components/sections/VillasSection";
 // import ContactSection from "./components/sections/ContactSection";
 // import ROICalculatorWidget from "./components/roi/ROICalculatorWidget";
@@ -24,6 +25,9 @@ import "./App.css";
 function App() {
   const [isAppLoaded, setIsAppLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState<'home' | 'vr-tour'>('home');
+
+  // Hook pour la gestion du cache vidéo
+  const { preloadVideo } = useVideoCache();
 
   // Assets critiques à précharger (useMemo pour éviter la boucle infinie)
   const criticalImages = useMemo(() => [
@@ -39,7 +43,22 @@ function App() {
     "/assets/Photo 12.jpg", // LifestylePresentationSection - Vue aérienne
   ], []);
 
-  // Pas de vidéos dans le loader global - HeroSection gère son propre chargement
+  // Préchargement de la vidéo hero en parallèle
+  useEffect(() => {
+    const preloadHeroVideo = async () => {
+      try {
+        console.log('Starting hero video preload...');
+        await preloadVideo("/assets/vide_hero.mp4");
+        console.log('Hero video preloaded successfully');
+      } catch (error) {
+        console.warn('Hero video preload failed, will fallback to normal loading:', error);
+      }
+    };
+
+    preloadHeroVideo();
+  }, [preloadVideo]);
+
+  // Assets loader pour les images critiques
   const { isLoading } = useAssetLoader({
     images: criticalImages,
     minimumLoadTime: 2500, // 2.5s minimum pour l'expérience

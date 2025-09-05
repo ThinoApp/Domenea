@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppLanguage } from "../../context/AppContext";
+import { useVideoCache } from "../../hooks/useVideoCache";
 import { emotionalMessages, callToActions } from "../../data/mockData";
 
 const HeroSection: React.FC = () => {
@@ -7,6 +8,10 @@ const HeroSection: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  
+  const { getCachedVideo, isVideoReady: isCachedVideoReady, isVideoLoaded: isCachedVideoLoaded } = useVideoCache();
+  
+  const videoUrl = "/assets/vide_hero.mp4";
 
   const heroTitle = {
     fr: "OÙ LA VIE TROUVE SON RYTHME",
@@ -20,19 +25,45 @@ const HeroSection: React.FC = () => {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      // Gérer le chargement des données vidéo
+    if (!video) return;
+
+    // Vérifier si la vidéo est déjà en cache
+    const cachedVideo = getCachedVideo(videoUrl);
+    
+    if (cachedVideo && isCachedVideoReady(videoUrl)) {
+      // Utiliser la vidéo mise en cache
+      console.log('Using cached video for hero section');
+      
+      // Copier les attributs de la vidéo cachée vers notre élément
+      video.src = cachedVideo.src;
+      video.currentTime = 0; // Reset au début
+      
+      setIsVideoLoaded(isCachedVideoLoaded(videoUrl));
+      setIsVideoReady(true);
+      
+      // Jouer immédiatement si possible
+      const playVideo = async () => {
+        try {
+          await video.play();
+        } catch (error) {
+          console.warn('Auto-play failed:', error);
+        }
+      };
+      
+      playVideo();
+    } else {
+      // Fallback vers le chargement normal si pas de cache
+      console.log('Fallback to normal video loading');
+      
       const handleLoadedData = () => {
         setIsVideoLoaded(true);
       };
 
-      // Gérer quand la vidéo peut commencer à jouer
       const handleCanPlay = () => {
         setIsVideoReady(true);
         video.play().catch(console.error);
       };
 
-      // Gérer les erreurs de chargement
       const handleError = () => {
         console.warn("Video failed to load, using fallback");
         setIsVideoLoaded(true);
@@ -43,7 +74,7 @@ const HeroSection: React.FC = () => {
       video.addEventListener("canplay", handleCanPlay);
       video.addEventListener("error", handleError);
 
-      // Force load
+      video.src = videoUrl;
       video.load();
 
       return () => {
@@ -52,7 +83,7 @@ const HeroSection: React.FC = () => {
         video.removeEventListener("error", handleError);
       };
     }
-  }, []);
+  }, [getCachedVideo, isCachedVideoReady, isCachedVideoLoaded, videoUrl]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -82,7 +113,7 @@ const HeroSection: React.FC = () => {
         preload="auto"
         poster="/assets/Photo 8-3.jpeg"
       >
-        <source src="/assets/vide_hero.mp4" type="video/mp4" />
+        <source src={videoUrl} type="video/mp4" />
       </video>
 
       {/* Overlay moderne avec gradient sophistiqué */}
