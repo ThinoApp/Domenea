@@ -99,7 +99,7 @@ const HeroSection: React.FC = () => {
           isVideoReady && isVideoLoaded ? "opacity-0" : "opacity-100"
         }`}
         style={{
-          backgroundImage: "url(/assets/hero-fallback-ocean.jpg)",
+          backgroundImage: "url(/assets/hero-fallback-ocean.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
