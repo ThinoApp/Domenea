@@ -31,10 +31,11 @@ function App() {
 
   // Assets critiques à précharger (useMemo pour éviter la boucle infinie)
   const criticalImages = useMemo(() => [
+    "/assets/hero-fallback-ocean.jpg", // Hero fallback PRIORITAIRE - doit être en premier
     "/assets/Logo 2.png", // INTIMITÉ card
     "/assets/Logo 1.png", // INTIMITÉ card
     "/assets/Logo 3.png", // INTIMITÉ card
-    "/assets/Photo 8-3.jpeg", // Hero background
+    "/assets/Photo 8-3.jpeg", // Hero background (ancien)
     "/assets/Photo 8-1.jpeg", // HARMONIE card
     "/assets/Photo 8-2.jpg", // LifestylePresentationSection - Architecture moderne
     "/assets/Photo 14.jpg", // CONCEPT card

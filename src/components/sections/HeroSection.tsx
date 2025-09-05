@@ -8,9 +8,13 @@ const HeroSection: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  
-  const { getCachedBlobUrl, isVideoReady: isCachedVideoReady, isVideoLoaded: isCachedVideoLoaded } = useVideoCache();
-  
+
+  const {
+    getCachedBlobUrl,
+    isVideoReady: isCachedVideoReady,
+    isVideoLoaded: isCachedVideoLoaded,
+  } = useVideoCache();
+
   const videoUrl = "/assets/vide_hero.mp4";
 
   const heroTitle = {
@@ -29,32 +33,34 @@ const HeroSection: React.FC = () => {
 
     // Vérifier si la vidéo est déjà en cache avec Blob URL
     const cachedBlobUrl = getCachedBlobUrl(videoUrl);
-    
+
     if (cachedBlobUrl && isCachedVideoReady(videoUrl)) {
       // Utiliser le Blob URL mis en cache (pas de nouveau téléchargement)
-      console.log('Using cached Blob URL for hero section - NO additional download');
-      
+      console.log(
+        "Using cached Blob URL for hero section - NO additional download"
+      );
+
       // Utiliser l'URL Blob partagée
       video.src = cachedBlobUrl;
       video.currentTime = 0; // Reset au début
-      
+
       setIsVideoLoaded(isCachedVideoLoaded(videoUrl));
       setIsVideoReady(true);
-      
+
       // Jouer immédiatement si possible
       const playVideo = async () => {
         try {
           await video.play();
         } catch (error) {
-          console.warn('Auto-play failed:', error);
+          console.warn("Auto-play failed:", error);
         }
       };
-      
+
       playVideo();
     } else {
       // Fallback vers le chargement normal si pas de cache
-      console.log('Fallback to normal video loading');
-      
+      console.log("Fallback to normal video loading");
+
       const handleLoadedData = () => {
         setIsVideoLoaded(true);
       };
@@ -119,7 +125,11 @@ const HeroSection: React.FC = () => {
       {/* Overlay moderne avec gradient sophistiqué */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-green-800/20" />
-
+      <img
+        src="/assets/hero-fallback-ocean.jpg"
+        alt="Hero"
+        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+      />
       {/* Contenu principal avec design moderne */}
       <div className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto">
         {/* Animation d'entrée progressive */}
