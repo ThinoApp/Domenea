@@ -10,7 +10,8 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // URL vers le projet Pano2VR autonome
-  const pano2vrUrl = "http://localhost:63327/nWyxHYz7~1ja9kxk/index.html";
+  const pano2vrUrl = "http://vr.domenea.com";
+  //   const pano2vrUrl = "http://localhost:63327/nWyxHYz7~1ja9kxk/index.html";
 
   const content = {
     fr: {
