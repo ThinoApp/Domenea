@@ -128,10 +128,15 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         });
       };
 
-      // Charger les scripts séquentiellement pour éviter les conflits
+      // Charger les scripts séquentiellement et gérer Lottie
       loadScript('/pano2vr/3rdparty/lottie/lottie.min.js')
         .then(() => {
           console.log('Lottie chargé');
+          // Configurer Lottie pour éviter les erreurs d'état
+          if (window.lottie) {
+            window.lottie.setQuality = window.lottie.setQuality || (() => {});
+            window.lottie.setSpeed = window.lottie.setSpeed || (() => {});
+          }
           return loadScript('/pano2vr/pano2vr_player.js');
         })
         .then(() => {
@@ -140,11 +145,26 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
         })
         .then(() => {
           console.log('Pano2VR Skin chargé');
+          
+          // Patch pour éviter les erreurs Lottie onclick
+          if (window.console && window.console.error) {
+            const originalError = window.console.error;
+            window.console.error = function(...args) {
+              const message = args.join(' ');
+              if (message.includes('_lottie_10.onclick') || message.includes('InvalidStateError')) {
+                console.warn('Erreur Lottie interceptée et ignorée:', message);
+                return;
+              }
+              originalError.apply(console, args);
+            };
+          }
+          
           // Attendre un peu après le chargement des scripts
           setTimeout(() => {
             console.log('Classes disponibles:', {
               pano2vrPlayer: typeof window.pano2vrPlayer,
-              pano2vrSkin: typeof window.pano2vrSkin
+              pano2vrSkin: typeof window.pano2vrSkin,
+              lottie: typeof window.lottie
             });
             waitForContainer();
           }, 500);
@@ -213,13 +233,22 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
           pano.setQueryParameter("ts=90345204");
         }
         
-        // Créer le skin
-        const skin = new window.pano2vrSkin(pano);
-        
         // Stocker les références globalement pour compatibilité
         window.pano = pano;
-        window.skin = skin;
         panoRef.current = pano;
+        
+        // Attendre que Pano2VR soit complètement prêt avant de créer le skin
+        setTimeout(() => {
+          try {
+            console.log('Création du skin Pano2VR...');
+            const skin = new window.pano2vrSkin(pano);
+            window.skin = skin;
+            console.log('Skin créé avec succès');
+          } catch (skinError) {
+            console.error('Erreur lors de la création du skin:', skinError);
+            // Continuer sans le skin si nécessaire
+          }
+        }, 200);
         
         // Écouter les changements de nœud avec gestion d'erreurs
         try {
