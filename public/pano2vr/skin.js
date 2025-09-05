@@ -1,4 +1,4 @@
-// Garden Gnome Software - Skin
+﻿// Garden Gnome Software - Skin
 // Pano2VR 7.1.9/20995
 // Filename: DOMENEA.ggsk
 // Generated 2025-09-05T11:40:55
@@ -3587,7 +3587,7 @@ if (snowOnLoad) {
 		}
 		me._ht_node.onmouseenter=function (e) {
 			player.setActiveHotspot(me.hotspot);
-			me._lottie_10.onclick.call(me._lottie_10);
+			if (me._lottie_10 && me._lottie_10.onclick) { me._lottie_10.onclick.call(me._lottie_10); }
 			me.elementMouseOver['ht_node']=true;
 			player.triggerEvent('hsproxyover', {'id': me.hotspot.id, 'url': me.hotspot.url});
 		}
