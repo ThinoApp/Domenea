@@ -135,7 +135,7 @@ function App() {
           {/* Section Hover Cards */}
           <HoverCardsSection />
           <LifestylePresentationSection />
-          <InvestmentOpportunitySection />
+          {/* <InvestmentOpportunitySection /> */}
           <BrochureRequestSection />
 
           {/* Calculateur ROI */}

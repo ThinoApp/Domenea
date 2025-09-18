@@ -18,14 +18,14 @@ const FeaturesGridSection: React.FC = () => {
       features: [
         {
           id: "feature-1",
-          image: "/assets/Photo 2.jpg",
+          image: "/assets/Photo 8-1.jpeg",
           title: "INSPIRATION DE LA COMPOSITION DES COULEURS",
           description: `Utilisant des nuances botaniques luxuriantes et des couleurs élémentaires de blanc, de marron et de gris, cette fusion design apporte vie, émotion et sens à la maison, créant une connexion harmonieuse avec l'environnement.`,
           subtitle: "TAO se fond avec art dans la nature.",
         },
         {
           id: "feature-2",
-          image: "/assets/Photo 8-1.jpeg",
+          image: "/assets/Photo 8-2.jpg",
           title: "CONCEPT",
           description:
             "TAO intègre le paysage époustouflant des collines et des forêts tropicales dans sa conception architecturale.",
@@ -33,7 +33,7 @@ const FeaturesGridSection: React.FC = () => {
         },
         {
           id: "feature-3",
-          image: "/assets/Photo 13.jpg",
+          image: "/assets/Photo 8-3.jpeg",
           title: "AMBIANCE ET ART DE VIVRE",
           description: `
           Chez DOMENEA, chaque villa que nous construisons est bien plus qu'un lieu de vie : c'est un véritable cocon de sérénité. Nous concevons nos intérieurs pour offrir à nos clients un quotidien apaisant, où chaque détail contribue à leur bien-être.
@@ -53,7 +53,7 @@ naturellement
       features: [
         {
           id: "feature-1",
-          image: "/assets/Photo 2.jpg",
+          image: "/assets/Photo 8-1.jpeg",
           title: "INSPIRATION OF THE COLOR COMPOSITION",
           description:
             "Using lush botanical shades and elemental colors of white, brown, and gray, this design fusion brings life, emotion, and meaning to the home, creating a harmonious connection with the environment.",
@@ -61,7 +61,7 @@ naturellement
         },
         {
           id: "feature-2",
-          image: "/assets/Photo 8-1.jpeg",
+          image: "/assets/Photo 8-2.jpg",
           title: "CONCEPT",
           description:
             "TAO integrates the breathtaking landscape of the mountains and tropical forests into its architectural design.",
@@ -69,7 +69,7 @@ naturellement
         },
         {
           id: "feature-3",
-          image: "/assets/Photo 13.jpg",
+          image: "/assets/Photo 8-3.jpeg",
           title: "ATMOSPHERE AND ART OF LIVING",
           description: `At DOMENEA, each villa we build is much more than a place to live: it's a true cocoon of serenity. We design our interiors to offer our clients a peaceful daily life, where every detail contributes to their well-being.
             

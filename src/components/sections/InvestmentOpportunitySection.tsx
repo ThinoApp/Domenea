@@ -82,14 +82,14 @@ const InvestmentOpportunitySection: React.FC = () => {
 
   const content = {
     fr: {
-      spaTitle: "SPA/SAUNA",
-      spaSubtitle: "Élégance",
+      spaTitle: "Style de vie",
+      spaSubtitle: "et Élégance",
       spaText:
-        "Le bien-être est au cœur de la SPA.\nUn espace dédié aux Français reconceptualisé\nel gratifie l'esprit harmonieux du\nmouvement et de la détente.",
+        "Le bien-être n’est pas un simple luxe, c’est \n un mode de vie. Matériaux, espaces privés \n et partagés favorisent la connexion, le \n mouvement et la quiétude.",
       investmentTitle: "Investissement",
-      investmentSubtitle: "Intérieur",
+      investmentSubtitle: "Intemporel",
       investmentText:
-        "Avec des accès sur l'architecture,\nvous créez des opportunités\nd'impôt-revenu et de\npluralisation d'architecture sur deux.",
+        "Construite pour durer.\n Les propriétés TAO  sont plus que \n de simples maison :ce sont des actifs \n générationnels ancrés dans l'artisanat, \n la qualité et la durabilité tournée vers l'avenir",
       opportunityMainTitle: "OPPORTUNITÉS D'INVESTISSEMENT",
       opportunitySubtitle: "ACCEPTEZ LES AVANTAGES DE COMPAGNIE",
       opportunityDescription: "DE LA NOBLE NATURE À VOTRE PORTE",
@@ -97,14 +97,14 @@ const InvestmentOpportunitySection: React.FC = () => {
       taoLabel: "TAO",
     },
     en: {
-      spaTitle: "SPA/SAUNA",
+      spaTitle: "Lifestyle",
       spaSubtitle: "Elegance",
       spaText:
-        "Wellness is at the heart of the SPA.\nA dedicated space for French reconceptualized\nand gratifies the harmonious spirit of\nmovement and relaxation.",
+        "Well-being is not a mere luxury, it is \n a way of life. Materials, private and shared spaces \n promote connection, movement, and tranquility.",
       investmentTitle: "Investment",
-      investmentSubtitle: "Interior",
+      investmentSubtitle: "Timeless",
       investmentText:
-        "With access to architecture,\nyou create opportunities\nfor tax-income and\narchitectural pluralization on two.",
+        "Built to last. TAO properties are more than \n just houses: they are generational assets rooted \n in craftsmanship, quality, and future-oriented \n durability.",
       opportunityMainTitle: "INVESTMENT OPPORTUNITIES",
       opportunitySubtitle: "ACCEPT THE COMPANY ADVANTAGES",
       opportunityDescription: "FROM NOBLE NATURE TO YOUR DOOR",
@@ -317,7 +317,7 @@ const InvestmentOpportunitySection: React.FC = () => {
             </div> */}
 
             {/* Badge "TAO" en bas à droite */}
-            <div
+            {/* <div
               className={`absolute bottom-12 right-8 transition-all duration-800 delay-700 ${
                 investmentVisible
                   ? "translate-y-0 opacity-100"
@@ -332,7 +332,7 @@ const InvestmentOpportunitySection: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Contenu principal à droite avec animation */}
             <div

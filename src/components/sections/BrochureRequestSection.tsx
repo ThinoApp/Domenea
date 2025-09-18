@@ -184,11 +184,11 @@ const BrochureRequestSection: React.FC = () => {
                   className="w-full h-[500px] object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
                 />
                 {/* Badge indication */}
-                <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-lg shadow-lg">
+                {/* <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-lg shadow-lg">
                   <span className="text-sm font-medium text-slate-800 tracking-wider">
                     TAO RESIDENCE
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

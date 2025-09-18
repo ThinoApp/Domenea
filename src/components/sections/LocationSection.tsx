@@ -1,67 +1,89 @@
-import React from 'react';
-import { useAppLanguage } from '../../context/AppContext';
-import { useScrollAnimation, useStaggeredScrollAnimation } from '../../hooks/useScrollAnimation';
+import React from "react";
+import { useAppLanguage } from "../../context/AppContext";
+import {
+  useScrollAnimation,
+  useStaggeredScrollAnimation,
+} from "../../hooks/useScrollAnimation";
 
 const LocationSection: React.FC = () => {
   const { language } = useAppLanguage();
-  
+
   // Animations au scroll - répétables
-  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation({ threshold: 0.3, triggerOnce: false });
-  const { elementRef: textRef, isVisible: textVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
-  const { elementRef: mapRef, isVisible: mapVisible } = useScrollAnimation({ threshold: 0.2, triggerOnce: false });
-  const { containerRef: statsRef, visibleItems: statsVisible } = useStaggeredScrollAnimation(4, 150, false);
-  const { elementRef: backgroundRef, isVisible: backgroundVisible } = useScrollAnimation({ 
-    threshold: 0.1, 
-    rootMargin: '0px 0px -5% 0px',
-    triggerOnce: false 
+  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation({
+    threshold: 0.3,
+    triggerOnce: false,
   });
+  const { elementRef: textRef, isVisible: textVisible } = useScrollAnimation({
+    threshold: 0.2,
+    triggerOnce: false,
+  });
+  const { elementRef: mapRef, isVisible: mapVisible } = useScrollAnimation({
+    threshold: 0.2,
+    triggerOnce: false,
+  });
+  const { containerRef: statsRef, visibleItems: statsVisible } =
+    useStaggeredScrollAnimation(4, 150, false);
+  const { elementRef: backgroundRef, isVisible: backgroundVisible } =
+    useScrollAnimation({
+      threshold: 0.1,
+      rootMargin: "0px 0px -5% 0px",
+      triggerOnce: false,
+    });
 
   const sectionData = {
     fr: {
       title: "Là où la vie insulaire semble sans effort",
-      description: "À l'abri du bruit, mais parfaitement relié aux sites les plus extraordinaires, aux plages, aux restaurants, aux masseuses et aux lieux nocturnes, les emplacements résidentiels TAO équilibrent le calme avec l'accès.",
-      secondDescription: "Le cadre à flanc de colline garantit des températures plus fraîches, des vues durables et une valeur à long terme, ce qui en fait l'une des enclaves d'investissement les plus prisées de Nosy Be.",
+      description:
+        "À l'abri du bruit, mais parfaitement relié aux sites les plus extraordinaires, aux plages, aux restaurants, aux masseuses et aux lieux nocturnes, les emplacements résidentiels TAO équilibrent le calme avec l'accès.",
+      secondDescription:
+        "Le cadre à flanc de colline garantit des températures plus fraîches, des vues durables et une valeur à long terme, ce qui en fait l'une des enclaves d'investissement les plus prisées de Nosy Be.",
       stats: [
-        { value: "5", label: "Aquaplanes privées de la résidence" },
+        { value: "5", label: "À quelques minutes de la plage" },
         { value: "3", label: "Minutes du Mont Passot et de ses lacs" },
-        { value: "15", label: "À quelques centaines d'autres aéroports" },
-        { value: "25", label: "À quelques centaines fabriquées" }
-      ]
+        { value: "15", label: "À quelques minutes des centres commerciaux" },
+        { value: "25", label: "À quelques de l'aéroport" },
+      ],
     },
     en: {
       title: "Where island life seems effortless",
-      description: "Away from the noise, but perfectly connected to the most extraordinary sites, beaches, restaurants, masseuses and nightlife venues, TAO residential locations balance calm with access.",
-      secondDescription: "The hillside setting guarantees cooler temperatures, lasting views and long-term value, making it one of the most sought-after investment enclaves in Nosy Be.",
+      description:
+        "Away from the noise, but perfectly connected to the most extraordinary sites, beaches, restaurants, masseuses and nightlife venues, TAO residential locations balance calm with access.",
+      secondDescription:
+        "The hillside setting guarantees cooler temperatures, lasting views and long-term value, making it one of the most sought-after investment enclaves in Nosy Be.",
       stats: [
-        { value: "5", label: "Private residence aquaplanes" },
+        { value: "5", label: "A few minutes from the beach" },
         { value: "3", label: "Minutes from Mont Passot and its lakes" },
-        { value: "15", label: "A few hundred other airports" },
-        { value: "25", label: "A few hundred manufactured" }
-      ]
-    }
+        { value: "15", label: "A few minutes from the shopping centers" },
+        { value: "25", label: "A few minutes from the airport" },
+      ],
+    },
   };
 
   return (
-    <section 
+    <section
       ref={backgroundRef as React.RefObject<HTMLElement>}
       className="relative py-20 lg:py-32 overflow-hidden"
     >
       {/* Background Image avec animation */}
       <div className="absolute inset-0">
-        <img 
-          src="/assets/photo-2-plage.jpg" 
+        <img
+          src="/assets/photo-2-plage.jpg"
           alt="Plage paradisiaque de Nosy Be"
           className={`w-full h-full object-cover transition-all duration-1500 ease-out ${
-            backgroundVisible ? 'bg-slide-up visible' : 'bg-slide-up'
+            backgroundVisible ? "bg-slide-up visible" : "bg-slide-up"
           }`}
         />
         {/* Overlay pour lisibilité avec animation légère */}
-        <div className={`absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/50 transition-opacity duration-1000 ${
-          backgroundVisible ? 'opacity-100' : 'opacity-70'
-        }`} />
-        <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 transition-opacity duration-1200 delay-300 ${
-          backgroundVisible ? 'opacity-100' : 'opacity-80'
-        }`} />
+        <div
+          className={`absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/50 transition-opacity duration-1000 ${
+            backgroundVisible ? "opacity-100" : "opacity-70"
+          }`}
+        />
+        <div
+          className={`absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 transition-opacity duration-1200 delay-300 ${
+            backgroundVisible ? "opacity-100" : "opacity-80"
+          }`}
+        />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -69,21 +91,23 @@ const LocationSection: React.FC = () => {
           {/* Contenu textuel */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <h2 
+              <h2
                 ref={titleRef as React.RefObject<HTMLHeadingElement>}
                 className={`text-4xl lg:text-6xl font-bold leading-tight transition-all duration-800 ${
-                  titleVisible ? 'scroll-slide-left visible' : 'scroll-slide-left'
+                  titleVisible
+                    ? "scroll-slide-left visible"
+                    : "scroll-slide-left"
                 }`}
               >
                 <span className="bg-gradient-to-r from-white via-blue-100 to-green-100 bg-clip-text text-transparent drop-shadow-lg">
                   {sectionData[language].title}
                 </span>
               </h2>
-              
-              <div 
+
+              <div
                 ref={textRef as React.RefObject<HTMLDivElement>}
                 className={`space-y-6 text-white/95 text-lg lg:text-xl leading-relaxed transition-all duration-800 delay-200 ${
-                  textVisible ? 'scroll-hidden scroll-visible' : 'scroll-hidden'
+                  textVisible ? "scroll-hidden scroll-visible" : "scroll-hidden"
                 }`}
               >
                 <p className="drop-shadow-md">
@@ -96,15 +120,15 @@ const LocationSection: React.FC = () => {
             </div>
 
             {/* Statistiques avec design moderne adaptées au background */}
-            <div 
+            <div
               ref={statsRef as React.RefObject<HTMLDivElement>}
               className="grid grid-cols-2 gap-6 pt-8"
             >
               {sectionData[language].stats.map((stat, index) => (
-                <div 
+                <div
                   key={index}
                   className={`group relative glass-effect rounded-2xl p-6 border border-white/30 hover:border-white/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl ${
-                    statsVisible[index] ? 'scroll-zoom visible' : 'scroll-zoom'
+                    statsVisible[index] ? "scroll-zoom visible" : "scroll-zoom"
                   }`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-blue-100/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -116,7 +140,7 @@ const LocationSection: React.FC = () => {
                       {stat.label}
                     </div>
                   </div>
-                  
+
                   {/* Subtle shimmer effect */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                     <div className="absolute inset-0 animate-shimmer rounded-2xl" />
@@ -127,10 +151,10 @@ const LocationSection: React.FC = () => {
           </div>
 
           {/* Carte interactive avec fond adapté */}
-          <div 
+          <div
             ref={mapRef as React.RefObject<HTMLDivElement>}
             className={`relative transition-all duration-1000 ${
-              mapVisible ? 'scroll-slide-right visible' : 'scroll-slide-right'
+              mapVisible ? "scroll-slide-right visible" : "scroll-slide-right"
             }`}
           >
             <div className="relative group">
@@ -138,15 +162,15 @@ const LocationSection: React.FC = () => {
               <div className="relative glass-effect rounded-3xl p-8 lg:p-12 shadow-2xl border border-white/40 backdrop-blur-2xl">
                 {/* Carte avec effets hover */}
                 <div className="relative overflow-hidden rounded-2xl group bg-white/10 backdrop-blur-sm">
-                  <img 
-                    src="/assets/carte_sans_fond.png" 
+                  <img
+                    src="/assets/carte_sans_fond.png"
                     alt="Carte de Nosy Be - TAO Passot Location"
                     className="w-full h-auto transform transition-all duration-700 group-hover:scale-110 mix-blend-multiply"
                   />
-                  
+
                   {/* Overlay interactif subtil */}
                   <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
+
                   {/* Markers de localisation animés */}
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <div className="relative">
@@ -154,10 +178,12 @@ const LocationSection: React.FC = () => {
                       <div className="w-6 h-6 bg-yellow-400 rounded-full animate-pulse shadow-2xl border-2 border-white">
                         <div className="absolute inset-0 bg-yellow-300 rounded-full animate-ping" />
                       </div>
-                      
+
                       {/* Label TAO avec meilleur contraste */}
                       <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl shadow-xl border border-white/50">
-                        <span className="text-sm font-bold text-gray-900 whitespace-nowrap">TAO PASSOT</span>
+                        <span className="text-sm font-bold text-gray-900 whitespace-nowrap">
+                          TAO PASSOT
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -168,7 +194,9 @@ const LocationSection: React.FC = () => {
                   <div className="inline-flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full border border-white/50 shadow-lg">
                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                     <span className="font-semibold text-gray-900">
-                      {language === 'fr' ? 'Localisation Premium' : 'Premium Location'}
+                      {language === "fr"
+                        ? "Localisation Premium"
+                        : "Premium Location"}
                     </span>
                   </div>
                 </div>
@@ -181,16 +209,29 @@ const LocationSection: React.FC = () => {
             {/* Call-to-action pour la carte avec meilleur contraste */}
             <div className="mt-8 text-center">
               <button className="group inline-flex items-center space-x-2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl border border-white/50">
-                <span>{language === 'fr' ? 'Explorer la Localisation' : 'Explore Location'}</span>
-                <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <span>
+                  {language === "fr"
+                    ? "Explorer la Localisation"
+                    : "Explore Location"}
+                </span>
+                <svg
+                  className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
                 </svg>
               </button>
             </div>
           </div>
         </div>
       </div>
-
     </section>
   );
 };

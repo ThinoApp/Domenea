@@ -27,14 +27,17 @@ const ResidenceShowcaseSection: React.FC = () => {
       highlight: "20 000",
       unit: "SQM",
       subtitle: "with Green spaces",
+      // description:
+      //   "Une résidence d'exception où l'architecture contemporaine s'harmonise parfaitement avec la nature luxuriante de Nosy Be.",
+      // features: [
+      //   "Architecture bioclimatique",
+      //   "Espaces verts préservés",
+      //   "Sécurité 24h/24",
+      //   "Piscines privatives",
+      // ],
       description:
-        "Une résidence d'exception où l'architecture contemporaine s'harmonise parfaitement avec la nature luxuriante de Nosy Be.",
-      features: [
-        "Architecture bioclimatique",
-        "Espaces verts préservés",
-        "Sécurité 24h/24",
-        "Piscines privatives",
-      ],
+        "Résidence TAO Passot Sécurisée sur 20 000 m2 avec Espaces Verts ",
+      features: [],
     },
     en: {
       title: "SECURE TAO PASSOT RESIDENCE",

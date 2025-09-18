@@ -163,7 +163,7 @@ const LifestylePresentationSection: React.FC = () => {
         <div className="absolute inset-0 flex items-center">
           <div className="container mx-auto px-4">
             {/* Badge "TAO" en haut à droite avec animation */}
-            <div
+            {/* <div
               className={`absolute top-12 right-8 transition-all duration-800 delay-500 ${
                 serenityVisible
                   ? "translate-x-0 opacity-100"
@@ -178,7 +178,7 @@ const LifestylePresentationSection: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Contenu principal à gauche avec animation */}
             <div
@@ -229,7 +229,7 @@ const LifestylePresentationSection: React.FC = () => {
         <div className="absolute inset-0 flex items-center">
           <div className="container mx-auto px-4">
             {/* Badge "Nosy Be" en bas à droite avec animation */}
-            <div
+            {/* <div
               className={`absolute bottom-12 right-8 transition-all duration-800 delay-500 ${
                 eleganceVisible
                   ? "translate-y-0 opacity-100"
@@ -244,7 +244,7 @@ const LifestylePresentationSection: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Contenu principal à droite avec animation */}
             <div
