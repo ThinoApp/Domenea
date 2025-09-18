@@ -9,7 +9,7 @@ import VillasShowcaseSection from "./components/sections/VillasShowcaseSection";
 import FeaturesGridSection from "./components/sections/FeaturesGridSection";
 import HoverCardsSection from "./components/sections/HoverCardsSection";
 import LifestylePresentationSection from "./components/sections/LifestylePresentationSection";
-//import InvestmentOpportunitySection from "./components/sections/InvestmentOpportunitySection";
+import InvestmentOpportunitySection from "./components/sections/InvestmentOpportunitySection";
 import BrochureRequestSection from "./components/sections/BrochureRequestSection";
 import GlobalLoader from "./components/ui/GlobalLoader";
 import VRTourPage from "./pages/VRTourPage";
@@ -135,7 +135,7 @@ function App() {
           {/* Section Hover Cards */}
           <HoverCardsSection />
           <LifestylePresentationSection />
-          {/* <InvestmentOpportunitySection /> */}
+          <InvestmentOpportunitySection />
           <BrochureRequestSection />
 
           {/* Calculateur ROI */}

@@ -12,7 +12,7 @@ const InvestmentOpportunitySection: React.FC = () => {
   // States pour les animations
   const [spaVisible, setSpaVisible] = useState(false);
   const [investmentVisible, setInvestmentVisible] = useState(false);
-  const [opportunityVisible, setOpportunityVisible] = useState(false);
+  // const [opportunityVisible, setOpportunityVisible] = useState(false);
   const [diamondHovered, setDiamondHovered] = useState(false);
 
   // Carousel d'images
@@ -38,9 +38,10 @@ const InvestmentOpportunitySection: React.FC = () => {
             setTimeout(() => setSpaVisible(true), 100);
           } else if (entry.target === investmentRef.current) {
             setTimeout(() => setInvestmentVisible(true), 200);
-          } else if (entry.target === opportunityRef.current) {
-            setTimeout(() => setOpportunityVisible(true), 300);
           }
+          // else if (entry.target === opportunityRef.current) {
+          //   setTimeout(() => setOpportunityVisible(true), 300);
+          // }
         }
       });
     }, observerOptions);
@@ -352,112 +353,6 @@ const InvestmentOpportunitySection: React.FC = () => {
                 <div className="ml-auto w-20 h-0.5 bg-gradient-to-l from-slate-400 to-blue-400 mb-8 opacity-80"></div>
                 <p className="text-white/90 text-xl leading-relaxed whitespace-pre-line font-light tracking-wide">
                   {currentContent.investmentText}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Section Opportunités - Fond vert avec grand X */}
-      <div
-        ref={opportunityRef}
-        className="relative h-screen bg-gradient-to-br from-emerald-700 via-teal-600 to-emerald-800 overflow-hidden"
-      >
-        {/* Bandes décoratives modernes */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div
-            className={`transition-all duration-1500 ease-out ${
-              opportunityVisible
-                ? "scale-100 opacity-20 translate-y-0"
-                : "scale-110 opacity-0 translate-y-8"
-            }`}
-          >
-            <div className="relative w-full h-full flex flex-col justify-center items-center space-y-16">
-              {/* Bande principale horizontale */}
-              <div className="relative w-[600px] h-1 bg-gradient-to-r from-transparent via-white/60 to-transparent rounded-full">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/40 via-blue-500/60 to-teal-400/40 rounded-full animate-pulse"></div>
-              </div>
-
-              {/* Bandes secondaires décalées */}
-              <div className="relative flex flex-col space-y-8">
-                <div className="w-[400px] h-0.5 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full transform -translate-x-12">
-                  <div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-300/30 via-cyan-400/50 to-blue-300/30 rounded-full"
-                    style={{ animation: "pulse 3s ease-in-out infinite" }}
-                  ></div>
-                </div>
-                <div className="w-[450px] h-0.5 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full transform translate-x-8">
-                  <div
-                    className="absolute inset-0 bg-gradient-to-r from-teal-300/30 via-blue-400/50 to-teal-300/30 rounded-full"
-                    style={{
-                      animation: "pulse 4s ease-in-out infinite",
-                      animationDelay: "1s",
-                    }}
-                  ></div>
-                </div>
-              </div>
-
-              {/* Éléments géométriques modernes */}
-              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-                <div
-                  className="w-3 h-3 bg-white/60 rounded-full animate-pulse"
-                  style={{ animationDelay: "0.5s" }}
-                ></div>
-              </div>
-              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
-                <div
-                  className="w-2 h-2 bg-white/40 rounded-full animate-pulse"
-                  style={{ animationDelay: "1.5s" }}
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Effets de particules */}
-        <div className="absolute inset-0 opacity-20">
-          <div
-            className="absolute top-1/4 left-1/4 w-3 h-3 bg-white rounded-full animate-ping"
-            style={{ animationDelay: "0s" }}
-          ></div>
-          <div
-            className="absolute top-3/4 right-1/4 w-2 h-2 bg-white rounded-full animate-ping"
-            style={{ animationDelay: "1s" }}
-          ></div>
-          <div
-            className="absolute bottom-1/4 left-3/4 w-2.5 h-2.5 bg-white rounded-full animate-ping"
-            style={{ animationDelay: "2s" }}
-          ></div>
-        </div>
-
-        {/* Contenu textuel */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
-          <div
-            className={`max-w-4xl transition-all duration-1000 ease-out ${
-              opportunityVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-12 opacity-0"
-            }`}
-          >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extralight text-white mb-8 leading-tight tracking-[0.1em]">
-              {currentContent.opportunityMainTitle}
-            </h1>
-
-            <div className="space-y-6 text-white/90">
-              <p className="text-2xl md:text-3xl font-light tracking-wide">
-                {currentContent.opportunitySubtitle}
-              </p>
-
-              <div className="w-32 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 mx-auto opacity-80"></div>
-
-              <p className="text-xl md:text-2xl font-light tracking-wide">
-                {currentContent.opportunityDescription}
-              </p>
-
-              <div className="mt-12 pt-8 border-t border-white/20">
-                <p className="text-lg md:text-xl font-light tracking-wider text-white/80">
-                  {currentContent.opportunityFooter}
                 </p>
               </div>
             </div>
