@@ -41,7 +41,7 @@ const LocationSection: React.FC = () => {
         { value: "5", label: "À quelques minutes de la plage" },
         { value: "3", label: "Minutes du Mont Passot et de ses lacs" },
         { value: "15", label: "À quelques minutes des centres commerciaux" },
-        { value: "25", label: "À quelques de l'aéroport" },
+        { value: "25", label: "À quelques minutes de l'aéroport" },
       ],
     },
     en: {
