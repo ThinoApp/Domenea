@@ -22,9 +22,13 @@ const HeroSection: React.FC = () => {
     en: "WHERE LIFE FINDS ITS RHYTHM",
   };
 
+  // const heroSubtitle = {
+  //   fr: "Mont Passot, Nosy Be, Madagascar",
+  //   en: "Mont Passot, Nosy Be, Madagascar",
+  // };
   const heroSubtitle = {
-    fr: "Mont Passot, Nosy Be, Madagascar",
-    en: "Mont Passot, Nosy Be, Madagascar",
+    fr: "",
+    en: "",
   };
 
   useEffect(() => {

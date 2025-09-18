@@ -11,7 +11,7 @@ export interface ProjectInfo {
 
 export interface Villa {
   id: string;
-  type: 'A' | 'B' | 'C';
+  type: "A" | "B" | "C";
   name: string;
   title: string;
   bedrooms: number;
@@ -59,8 +59,8 @@ export const projectInfo: ProjectInfo = {
     "Lacs sacrés de Mont Passot",
     "Restaurants gastronomiques",
     "Sites naturels préservés",
-    "Marchés locaux authentiques"
-  ]
+    "Marchés locaux authentiques",
+  ],
 };
 
 // Données des villas
@@ -75,7 +75,7 @@ export const villas: Villa[] = [
     price: "À partir de 180 000€",
     description: {
       fr: "Un havre de paix conçu pour les couples ou petites familles. Cette villa allie intimité et confort avec une piscine privée et vue panoramique sur les lacs sacrés.",
-      en: "A peaceful haven designed for couples or small families. This villa combines intimacy and comfort with a private pool and panoramic views of the sacred lakes."
+      en: "A peaceful haven designed for couples or small families. This villa combines intimacy and comfort with a private pool and panoramic views of the sacred lakes.",
     },
     features: [
       "2 chambres avec climatisation",
@@ -83,18 +83,18 @@ export const villas: Villa[] = [
       "Terrasse panoramique 30m²",
       "Cuisine équipée premium",
       "Parking privé",
-      "Jardin tropical privatif"
+      "Jardin tropical privatif",
     ],
     images: [
       "/images/villa-intimite-1.jpg",
       "/images/villa-intimite-2.jpg",
-      "/images/villa-intimite-3.jpg"
+      "/images/villa-intimite-3.jpg",
     ],
     floorPlan: "/plans/villa-intimite-plan.pdf",
     roi: {
       annualReturn: "8-12%",
-      rentabilityRate: "10.5%"
-    }
+      rentabilityRate: "10.5%",
+    },
   },
   {
     id: "villa-harmonie",
@@ -106,7 +106,7 @@ export const villas: Villa[] = [
     price: "À partir de 235 000€",
     description: {
       fr: "L'équilibre parfait entre espace de vie et intimité familiale. Cette villa offre des volumes généreux et une connexion harmonieuse avec la nature environnante.",
-      en: "The perfect balance between living space and family intimacy. This villa offers generous volumes and a harmonious connection with the surrounding nature."
+      en: "The perfect balance between living space and family intimacy. This villa offers generous volumes and a harmonious connection with the surrounding nature.",
     },
     features: [
       "3 chambres dont suite parentale",
@@ -115,18 +115,18 @@ export const villas: Villa[] = [
       "Cuisine américaine équipée",
       "Bureau/espace de travail",
       "2 parkings couverts",
-      "Jardin paysager 200m²"
+      "Jardin paysager 200m²",
     ],
     images: [
       "/images/villa-harmonie-1.jpg",
       "/images/villa-harmonie-2.jpg",
-      "/images/villa-harmonie-3.jpg"
+      "/images/villa-harmonie-3.jpg",
     ],
     floorPlan: "/plans/villa-harmonie-plan.pdf",
     roi: {
       annualReturn: "9-13%",
-      rentabilityRate: "11.2%"
-    }
+      rentabilityRate: "11.2%",
+    },
   },
   {
     id: "villa-prestige",
@@ -138,7 +138,7 @@ export const villas: Villa[] = [
     price: "À partir de 320 000€",
     description: {
       fr: "Le summum du raffinement et de l'art de vivre à Madagascar. Cette villa d'exception offre des prestations haut de gamme et une vue imprenable sur l'océan.",
-      en: "The pinnacle of refinement and lifestyle in Madagascar. This exceptional villa offers high-end services and breathtaking ocean views."
+      en: "The pinnacle of refinement and lifestyle in Madagascar. This exceptional villa offers high-end services and breathtaking ocean views.",
     },
     features: [
       "4 chambres avec salles de bain privatives",
@@ -150,20 +150,20 @@ export const villas: Villa[] = [
       "Bureau et bibliothèque",
       "Garage 2 voitures",
       "Jardin tropical 300m²",
-      "Vue mer panoramique 180°"
+      "Vue mer panoramique 180°",
     ],
     images: [
       "/images/villa-prestige-1.jpg",
       "/images/villa-prestige-2.jpg",
       "/images/villa-prestige-3.jpg",
-      "/images/villa-prestige-4.jpg"
+      "/images/villa-prestige-4.jpg",
     ],
     floorPlan: "/plans/villa-prestige-plan.pdf",
     roi: {
       annualReturn: "10-15%",
-      rentabilityRate: "12.8%"
-    }
-  }
+      rentabilityRate: "12.8%",
+    },
+  },
 ];
 
 // Informations de contact
@@ -175,36 +175,41 @@ export const contactInfo: ContactInfo = {
   hours: {
     weekdays: "9h-18h (GMT+3, heure Madagascar)",
     weekends: "Sur rendez-vous",
-    emergency: "WhatsApp 24h/24"
+    emergency: "WhatsApp 24h/24",
   },
   socialMedia: {
     instagram: "https://www.instagram.com/domenea_invest",
-    facebook: "https://www.facebook.com/profile.php?id=61579184197302"
-  }
+    facebook: "https://www.facebook.com/profile.php?id=61579184197302",
+  },
 };
 
 // Messages émotionnels
+// export const emotionalMessages = {
+//   fr: [
+//     "À l'abri du bruit, face à l'extraordinaire",
+//     "Réveillez-vous au murmure des lacs sacrés",
+//     "Partagez des couchers de soleil inoubliables avec ceux que vous aimez"
+//   ],
+//   en: [
+//     "Away from the noise, facing the extraordinary",
+//     "Wake up to the whispers of sacred lakes",
+//     "Share unforgettable sunsets with those you love"
+//   ]
+// };
+
 export const emotionalMessages = {
-  fr: [
-    "À l'abri du bruit, face à l'extraordinaire",
-    "Réveillez-vous au murmure des lacs sacrés",
-    "Partagez des couchers de soleil inoubliables avec ceux que vous aimez"
-  ],
-  en: [
-    "Away from the noise, facing the extraordinary",
-    "Wake up to the whispers of sacred lakes",
-    "Share unforgettable sunsets with those you love"
-  ]
+  fr: ["", "", ""],
+  en: ["", "", ""],
 };
 
 // Call-to-actions
 export const callToActions = {
   primary: {
     fr: "Obtenez la brochure complète, plans & projections ROI (en un clic)",
-    en: "Get the complete brochure, plans & ROI projections (in one click)"
+    en: "Get the complete brochure, plans & ROI projections (in one click)",
   },
   secondary: {
     fr: "Réservez votre visite privée de TAO Passot",
-    en: "Book your private visit to TAO Passot"
-  }
+    en: "Book your private visit to TAO Passot",
+  },
 };
