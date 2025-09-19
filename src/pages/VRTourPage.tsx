@@ -54,7 +54,7 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
   };
 
   const handleIframeError = () => {
-    console.warn('Erreur lors du chargement de la visite virtuelle');
+    console.warn("Erreur lors du chargement de la visite virtuelle");
     // Continuer même en cas d'erreur après un délai
     setTimeout(() => {
       setIsLoading(false);
@@ -65,11 +65,13 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Loader VR */}
       <VRLoader isVisible={isLoading} />
-      
+
       {/* Header VR */}
-      <header className={`absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/80 to-transparent p-6 transition-opacity duration-500 ${
-        isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}>
+      <header
+        className={`absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/80 to-transparent p-6 transition-opacity duration-500 ${
+          isLoading ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             {/* Bouton retour */}
@@ -114,9 +116,11 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       </header>
 
       {/* Viewer VR principal avec iframe Pano2VR */}
-      <div className={`w-full h-screen relative transition-opacity duration-500 ${
-        isLoading ? 'opacity-0' : 'opacity-100'
-      }`}>
+      <div
+        className={`w-full h-screen relative transition-opacity duration-500 ${
+          isLoading ? "opacity-0" : "opacity-100"
+        }`}
+      >
         <iframe
           ref={iframeRef}
           src={pano2vrUrl}
@@ -130,9 +134,11 @@ const VRTourPage: React.FC<VRTourPageProps> = ({ onBackToHome }) => {
       </div>
 
       {/* Footer VR */}
-      <footer className={`pointer-events-none absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-500 ${
-        isLoading ? 'opacity-0' : 'opacity-100'
-      }`}>
+      <footer
+        className={`pointer-events-none absolute bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-500 ${
+          isLoading ? "opacity-0" : "opacity-100"
+        }`}
+      >
         <div className="container mx-auto text-center">
           <p className="text-white/60 text-sm">{currentContent.experience}</p>
           <div className="mt-2 text-xs text-white/40">
