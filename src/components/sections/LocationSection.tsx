@@ -176,16 +176,16 @@ const LocationSection: React.FC = () => {
                   {/* Marqueur 1 - Logo 2.png - Position centrale */}
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <div className="relative group">
-                      {/* Container moderne avec glassmorphism */}
-                      <div className="relative w-12 h-12 glass-effect rounded-2xl border border-white/30 shadow-2xl backdrop-blur-lg hover:scale-110 transition-all duration-500 hover:border-white/50 hover:shadow-3xl">
-                        {/* Logo avec effet hover */}
+                      {/* Container moderne avec meilleur contraste */}
+                      <div className="relative w-12 h-12 bg-white/95 backdrop-blur-lg rounded-2xl border-2 border-white shadow-2xl hover:scale-110 transition-all duration-500 hover:border-blue-200 hover:shadow-3xl hover:bg-white">
+                        {/* Logo avec meilleur contraste */}
                         <img
                           src="/assets/Logo 2.png"
                           alt="TAO Location 1"
-                          className="w-full h-full object-contain p-2 rounded-2xl filter brightness-110 group-hover:brightness-125 transition-all duration-300"
+                          className="w-full h-full object-contain p-1.5 rounded-2xl filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
                         />
-                        {/* Effet de pulse subtil */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-2xl animate-pulse opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+                        {/* Effet de pulse subtil avec meilleur contraste */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 to-purple-100/30 rounded-2xl animate-pulse opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
                       </div>
 
                       {/* Label moderne avec design amélioré */}
@@ -203,16 +203,16 @@ const LocationSection: React.FC = () => {
                   {/* Marqueur 2 - Logo 3.png - Position nord-est */}
                   <div className="absolute top-1/3 right-1/3 transform -translate-x-1/2 -translate-y-1/2">
                     <div className="relative group">
-                      {/* Container moderne avec glassmorphism */}
-                      <div className="relative w-10 h-10 glass-effect rounded-2xl border border-white/30 shadow-2xl backdrop-blur-lg hover:scale-110 transition-all duration-500 hover:border-white/50 hover:shadow-3xl">
-                        {/* Logo avec effet hover */}
+                      {/* Container moderne avec meilleur contraste */}
+                      <div className="relative w-10 h-10 bg-white/95 backdrop-blur-lg rounded-2xl border-2 border-white shadow-2xl hover:scale-110 transition-all duration-500 hover:border-green-200 hover:shadow-3xl hover:bg-white">
+                        {/* Logo avec meilleur contraste */}
                         <img
                           src="/assets/Logo 3.png"
                           alt="TAO Location 2"
-                          className="w-full h-full object-contain p-2 rounded-2xl filter brightness-110 group-hover:brightness-125 transition-all duration-300"
+                          className="w-full h-full object-contain p-1.5 rounded-2xl filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
                         />
                         {/* Effet de pulse subtil avec délai */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-teal-400/20 rounded-2xl animate-pulse opacity-50 group-hover:opacity-80 transition-opacity duration-500" style={{animationDelay: '0.5s'}} />
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-100/30 to-teal-100/30 rounded-2xl animate-pulse opacity-30 group-hover:opacity-50 transition-opacity duration-500" style={{animationDelay: '0.5s'}} />
                       </div>
 
                       {/* Label moderne */}
@@ -230,16 +230,16 @@ const LocationSection: React.FC = () => {
                   {/* Marqueur 3 - Logo 4.png - Position sud-ouest */}
                   <div className="absolute bottom-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2">
                     <div className="relative group">
-                      {/* Container moderne avec glassmorphism */}
-                      <div className="relative w-10 h-10 glass-effect rounded-2xl border border-white/30 shadow-2xl backdrop-blur-lg hover:scale-110 transition-all duration-500 hover:border-white/50 hover:shadow-3xl">
-                        {/* Logo avec effet hover */}
+                      {/* Container moderne avec meilleur contraste */}
+                      <div className="relative w-10 h-10 bg-white/95 backdrop-blur-lg rounded-2xl border-2 border-white shadow-2xl hover:scale-110 transition-all duration-500 hover:border-orange-200 hover:shadow-3xl hover:bg-white">
+                        {/* Logo avec meilleur contraste */}
                         <img
                           src="/assets/Logo 4.png"
                           alt="TAO Location 3"
-                          className="w-full h-full object-contain p-2 rounded-2xl filter brightness-110 group-hover:brightness-125 transition-all duration-300"
+                          className="w-full h-full object-contain p-1.5 rounded-2xl filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
                         />
                         {/* Effet de pulse subtil avec délai différent */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-red-400/20 rounded-2xl animate-pulse opacity-50 group-hover:opacity-80 transition-opacity duration-500" style={{animationDelay: '1s'}} />
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-100/30 to-red-100/30 rounded-2xl animate-pulse opacity-30 group-hover:opacity-50 transition-opacity duration-500" style={{animationDelay: '1s'}} />
                       </div>
 
                       {/* Label moderne */}
@@ -254,74 +254,6 @@ const LocationSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Lignes de connexion animées entre les marqueurs */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-70">
-                    <defs>
-                      <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.9"/>
-                        <stop offset="50%" stopColor="#A78BFA" stopOpacity="0.7"/>
-                        <stop offset="100%" stopColor="#34D399" stopOpacity="0.9"/>
-                      </linearGradient>
-                      
-                      {/* Effet de glow pour les lignes */}
-                      <filter id="glow">
-                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                        <feMerge> 
-                          <feMergeNode in="coloredBlur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                    </defs>
-                    
-                    {/* Ligne Centre vers Nord-Est (Marqueur 1 vers 2) */}
-                    <line
-                      x1="50%"
-                      y1="50%"
-                      x2="66.67%"
-                      y2="33.33%"
-                      stroke="url(#connectionGradient)"
-                      strokeWidth="3"
-                      strokeDasharray="8,4"
-                      filter="url(#glow)"
-                      className="animate-pulse"
-                      opacity="0.8"
-                    />
-                    
-                    {/* Ligne Centre vers Sud-Ouest (Marqueur 1 vers 3) */}
-                    <line
-                      x1="50%"
-                      y1="50%"
-                      x2="25%"
-                      y2="66.67%"
-                      stroke="url(#connectionGradient)"
-                      strokeWidth="3"
-                      strokeDasharray="8,4"
-                      filter="url(#glow)"
-                      className="animate-pulse"
-                      style={{animationDelay: '0.7s'}}
-                      opacity="0.8"
-                    />
-                    
-                    {/* Ligne Nord-Est vers Sud-Ouest (Marqueur 2 vers 3) */}
-                    <line
-                      x1="66.67%"
-                      y1="33.33%"
-                      x2="25%"
-                      y2="66.67%"
-                      stroke="url(#connectionGradient)"
-                      strokeWidth="2"
-                      strokeDasharray="6,3"
-                      filter="url(#glow)"
-                      className="animate-pulse"
-                      style={{animationDelay: '1.4s'}}
-                      opacity="0.6"
-                    />
-                    
-                    {/* Points de connexion lumineux */}
-                    <circle cx="50%" cy="50%" r="2" fill="#60A5FA" className="animate-ping" opacity="0.8"/>
-                    <circle cx="66.67%" cy="33.33%" r="1.5" fill="#A78BFA" className="animate-ping" style={{animationDelay: '0.5s'}} opacity="0.8"/>
-                    <circle cx="25%" cy="66.67%" r="1.5" fill="#34D399" className="animate-ping" style={{animationDelay: '1s'}} opacity="0.8"/>
-                  </svg>
                 </div>
 
                 {/* Label moderne pour la carte avec contraste */}
