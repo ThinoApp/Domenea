@@ -35,16 +35,20 @@ const FeaturesGridSection: React.FC = () => {
           id: "feature-3",
           image: "/assets/Photo 8-3.jpeg",
           title: "AMBIANCE ET ART DE VIVRE",
-          description: `
-          Chez DOMENEA, chaque villa que nous construisons est bien plus qu'un lieu de vie : c'est un véritable cocon de sérénité. Nous concevons nos intérieurs pour offrir à nos clients un quotidien apaisant, où chaque détail contribue à leur bien-être.
-            
-            Lumière naturelle généreuse, volumes ouverts, matériaux nobles et couleurs douces. nos espaces sont pensés pour respirer, pour apaiser, pour inspirer. Le choix d'aménagements épurés, alliés à une circulation fluide et intuitive, crée une atmosphère harmonieuse, idéale pour se ressourcer
-
-            Parce que le bien-vivre commence chez soi, nous placons le
-confort, l'élégance et la sérénité au cœur de chaque projet. Vivre
-dans une villa TAO, c'est choisir un intérieur où il fait bon vivre
-naturellement
-            `,
+          keyPoints: [
+            {
+              title: "Un cocon de sérénité",
+              description: "Chez DOMENEA, chaque villa que nous construisons est bien plus qu'un lieu de vie : c'est un véritable cocon de sérénité."
+            },
+            {
+              title: "Design harmonieux",
+              description: "Lumière naturelle généreuse, volumes ouverts, matériaux nobles et couleurs douces pour respirer, apaiser et inspirer."
+            },
+            {
+              title: "Art de vivre",
+              description: "Confort, élégance et sérénité au cœur de chaque projet pour un intérieur où il fait bon vivre naturellement."
+            }
+          ]
         },
       ],
     },
@@ -71,12 +75,20 @@ naturellement
           id: "feature-3",
           image: "/assets/Photo 8-3.jpeg",
           title: "ATMOSPHERE AND ART OF LIVING",
-          description: `At DOMENEA, each villa we build is much more than a place to live: it's a true cocoon of serenity. We design our interiors to offer our clients a peaceful daily life, where every detail contributes to their well-being.
-            
-          Generous natural light, open spaces, high-quality materials, and soft colors. Our spaces are designed to breathe, to soothe, to inspire. The choice of refined layouts, combined with a fluid and intuitive flow, creates a harmonious atmosphere, ideal for recharging your batteries.
-            
-          Because well-being begins at home, we place comfort, elegance, and serenity at the heart of every project. Living in a TAO villa means choosing a home where life is naturally good.
-            `,
+          keyPoints: [
+            {
+              title: "A cocoon of serenity",
+              description: "At DOMENEA, each villa we build is much more than a place to live: it's a true cocoon of serenity."
+            },
+            {
+              title: "Harmonious design",
+              description: "Generous natural light, open spaces, high-quality materials and soft colors to breathe, soothe and inspire."
+            },
+            {
+              title: "Art of living",
+              description: "Comfort, elegance and serenity at the heart of every project for a home where life is naturally good."
+            }
+          ]
         },
       ],
     },
@@ -189,44 +201,22 @@ naturellement
 
                   {/* Key Points */}
                   <div className="space-y-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-3 h-3 bg-sky-400 rounded-full mt-2"></div>
-                      <div>
-                        <h4 className="font-semibold text-white mb-2">
-                          Un cocon de sérénité
-                        </h4>
-                        <p className="text-white/90 leading-relaxed">
-                          Chaque villa est bien plus qu'un lieu de vie, c'est un
-                          véritable havre de paix.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-3 h-3 bg-blue-400 rounded-full mt-2"></div>
-                      <div>
-                        <h4 className="font-semibold text-white mb-2">
-                          Design harmonieux
-                        </h4>
-                        <p className="text-white/90 leading-relaxed">
-                          Lumière naturelle, volumes ouverts, matériaux nobles
-                          pour respirer et apaiser.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-3 h-3 bg-sky-500 rounded-full mt-2"></div>
-                      <div>
-                        <h4 className="font-semibold text-white mb-2">
-                          Art de vivre
-                        </h4>
-                        <p className="text-white/90 leading-relaxed">
-                          Confort, élégance et sérénité au cœur de chaque projet
-                          pour un intérieur où il fait bon vivre.
-                        </p>
-                      </div>
-                    </div>
+                    {sectionData[language].features[2].keyPoints?.map((point, index) => {
+                      const colors = ['bg-sky-400', 'bg-blue-400', 'bg-sky-500'];
+                      return (
+                        <div key={index} className="flex items-start space-x-4">
+                          <div className={`flex-shrink-0 w-3 h-3 ${colors[index]} rounded-full mt-2`}></div>
+                          <div>
+                            <h4 className="font-semibold text-white mb-2">
+                              {point.title}
+                            </h4>
+                            <p className="text-white/90 leading-relaxed">
+                              {point.description}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
 
                   {/* Decorative Element */}
