@@ -83,7 +83,7 @@ naturellement
   };
 
   return (
-    <section className="py-20 lg:py-32 bg-gradient-to-b from-gray-50 to-white">
+    <section id="concept" className="py-20 lg:py-32 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
         {/* Section Title */}
         <div

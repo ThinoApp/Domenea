@@ -92,6 +92,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer 
+    id="contact"
       ref={footerRef}
       className="relative bg-slate-900 overflow-hidden"
     >

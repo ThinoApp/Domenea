@@ -135,7 +135,7 @@ const ProgramsPreviewSection: React.FC = () => {
   }, [getCachedBlobUrl, isVideoReady, videoUrl]);
 
   return (
-    <section className="relative py-20 lg:py-32 bg-gradient-to-b from-gray-900 via-slate-800/95 to-gray-900">
+    <section id="programs" className="relative py-20 lg:py-32 bg-gradient-to-b from-gray-900 via-slate-800/95 to-gray-900">
       <div className="container mx-auto px-4">
         {/* Header de section */}
         <div 

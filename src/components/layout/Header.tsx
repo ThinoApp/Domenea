@@ -16,6 +16,8 @@ const Header: React.FC<HeaderProps> = ({ onOpenVRTour }) => {
     en: ["PROGRAMS", "CONCEPT", "CONTACT"],
   };
 
+  const link = ["programs", "concept", "contact"];
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-effect-dark border-0 shadow-lg/20">
       <div className="container mx-auto px-4">
@@ -31,10 +33,10 @@ const Header: React.FC<HeaderProps> = ({ onOpenVRTour }) => {
 
           {/* Navigation principale */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navigation[language].map((item) => (
+            {navigation[language].map((item, index) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={`#${link[index]}`}
                 className="text-white/90 hover:text-white font-medium transition-all duration-300 hover:scale-105 drop-shadow-sm"
               >
                 {item}
