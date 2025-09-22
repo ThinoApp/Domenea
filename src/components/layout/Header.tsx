@@ -24,11 +24,20 @@ const Header: React.FC<HeaderProps> = ({ onOpenVRTour }) => {
         <div className="flex items-center justify-between h-16 sm:h-18 md:h-20">
           {/* Logo - Responsive sizing */}
           <div className="flex items-center flex-shrink-0">
-            <img
-              src="/assets/Logo 1.png"
-              alt="TAO PASSOT - Domenea"
-              className="h-8 sm:h-10 md:h-12 w-auto drop-shadow-lg hover:scale-105 transition-transform duration-300"
-            />
+            <a
+              href="#"
+              className="inline-block"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
+              <img
+                src="/assets/Logo 1.png"
+                alt="TAO PASSOT - Domenea"
+                className="h-8 sm:h-10 md:h-12 w-auto drop-shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+              />
+            </a>
           </div>
 
           {/* Navigation principale */}
