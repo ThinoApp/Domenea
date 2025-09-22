@@ -171,22 +171,131 @@ const LocationSection: React.FC = () => {
                   {/* Overlay interactif subtil */}
                   <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  {/* Markers de localisation animés */}
+                  {/* Markers de localisation modernes avec logos */}
+                  
+                  {/* Marqueur 1 - Logo 2.png - Position centrale */}
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="relative">
-                      {/* Pulse marker principal - plus visible */}
-                      <div className="w-6 h-6 bg-yellow-400 rounded-full animate-pulse shadow-2xl border-2 border-white">
-                        <div className="absolute inset-0 bg-yellow-300 rounded-full animate-ping" />
+                    <div className="relative group">
+                      {/* Container moderne avec glassmorphism */}
+                      <div className="relative w-12 h-12 glass-effect rounded-2xl border border-white/30 shadow-2xl backdrop-blur-lg hover:scale-110 transition-all duration-500 hover:border-white/50 hover:shadow-3xl">
+                        {/* Logo avec effet hover */}
+                        <img
+                          src="/assets/Logo 2.png"
+                          alt="TAO Location 1"
+                          className="w-full h-full object-contain p-2 rounded-2xl filter brightness-110 group-hover:brightness-125 transition-all duration-300"
+                        />
+                        {/* Effet de pulse subtil */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-2xl animate-pulse opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
                       </div>
 
-                      {/* Label TAO avec meilleur contraste */}
-                      <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl shadow-xl border border-white/50">
+                      {/* Label moderne avec design amélioré */}
+                      <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl shadow-xl border border-white/40 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-105">
                         <span className="text-sm font-bold text-gray-900 whitespace-nowrap">
-                          TAO PASSOT
+                          TAO RESORT
                         </span>
+                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                          <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white/95"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* Marqueur 2 - Logo 3.png - Position nord-est */}
+                  <div className="absolute top-1/3 right-1/3 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="relative group">
+                      {/* Container moderne avec glassmorphism */}
+                      <div className="relative w-10 h-10 glass-effect rounded-2xl border border-white/30 shadow-2xl backdrop-blur-lg hover:scale-110 transition-all duration-500 hover:border-white/50 hover:shadow-3xl">
+                        {/* Logo avec effet hover */}
+                        <img
+                          src="/assets/Logo 3.png"
+                          alt="TAO Location 2"
+                          className="w-full h-full object-contain p-2 rounded-2xl filter brightness-110 group-hover:brightness-125 transition-all duration-300"
+                        />
+                        {/* Effet de pulse subtil avec délai */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-teal-400/20 rounded-2xl animate-pulse opacity-50 group-hover:opacity-80 transition-opacity duration-500" style={{animationDelay: '0.5s'}} />
+                      </div>
+
+                      {/* Label moderne */}
+                      <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-xl border border-white/40 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-105">
+                        <span className="text-xs font-bold text-gray-900 whitespace-nowrap">
+                          TAO VILLAGE
+                        </span>
+                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                          <div className="w-0 h-0 border-l-3 border-r-3 border-t-3 border-transparent border-t-white/95"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Marqueur 3 - Logo 4.png - Position sud-ouest */}
+                  <div className="absolute bottom-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="relative group">
+                      {/* Container moderne avec glassmorphism */}
+                      <div className="relative w-10 h-10 glass-effect rounded-2xl border border-white/30 shadow-2xl backdrop-blur-lg hover:scale-110 transition-all duration-500 hover:border-white/50 hover:shadow-3xl">
+                        {/* Logo avec effet hover */}
+                        <img
+                          src="/assets/Logo 4.png"
+                          alt="TAO Location 3"
+                          className="w-full h-full object-contain p-2 rounded-2xl filter brightness-110 group-hover:brightness-125 transition-all duration-300"
+                        />
+                        {/* Effet de pulse subtil avec délai différent */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-red-400/20 rounded-2xl animate-pulse opacity-50 group-hover:opacity-80 transition-opacity duration-500" style={{animationDelay: '1s'}} />
+                      </div>
+
+                      {/* Label moderne */}
+                      <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-xl border border-white/40 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-105">
+                        <span className="text-xs font-bold text-gray-900 whitespace-nowrap">
+                          TAO BEACH
+                        </span>
+                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                          <div className="w-0 h-0 border-l-3 border-r-3 border-t-3 border-transparent border-t-white/95"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Lignes de connexion animées entre les marqueurs */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+                    <defs>
+                      <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.6"/>
+                        <stop offset="50%" stopColor="#A78BFA" stopOpacity="0.4"/>
+                        <stop offset="100%" stopColor="#34D399" stopOpacity="0.6"/>
+                      </linearGradient>
+                    </defs>
+                    
+                    {/* Ligne 1-2 */}
+                    <path
+                      d="M 50% 50% Q 60% 35% 66.67% 33.33%"
+                      stroke="url(#connectionGradient)"
+                      strokeWidth="2"
+                      strokeDasharray="5,5"
+                      fill="none"
+                      className="animate-pulse"
+                    />
+                    
+                    {/* Ligne 1-3 */}
+                    <path
+                      d="M 50% 50% Q 35% 60% 25% 66.67%"
+                      stroke="url(#connectionGradient)"
+                      strokeWidth="2"
+                      strokeDasharray="5,5"
+                      fill="none"
+                      className="animate-pulse"
+                      style={{animationDelay: '0.5s'}}
+                    />
+                    
+                    {/* Ligne 2-3 */}
+                    <path
+                      d="M 66.67% 33.33% Q 45% 50% 25% 66.67%"
+                      stroke="url(#connectionGradient)"
+                      strokeWidth="2"
+                      strokeDasharray="5,5"
+                      fill="none"
+                      className="animate-pulse"
+                      style={{animationDelay: '1s'}}
+                    />
+                  </svg>
                 </div>
 
                 {/* Label moderne pour la carte avec contraste */}
