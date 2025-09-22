@@ -255,46 +255,72 @@ const LocationSection: React.FC = () => {
                   </div>
 
                   {/* Lignes de connexion animées entre les marqueurs */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-70">
                     <defs>
                       <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.6"/>
-                        <stop offset="50%" stopColor="#A78BFA" stopOpacity="0.4"/>
-                        <stop offset="100%" stopColor="#34D399" stopOpacity="0.6"/>
+                        <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.9"/>
+                        <stop offset="50%" stopColor="#A78BFA" stopOpacity="0.7"/>
+                        <stop offset="100%" stopColor="#34D399" stopOpacity="0.9"/>
                       </linearGradient>
+                      
+                      {/* Effet de glow pour les lignes */}
+                      <filter id="glow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge> 
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
                     </defs>
                     
-                    {/* Ligne 1-2 */}
-                    <path
-                      d="M 50% 50% Q 60% 35% 66.67% 33.33%"
+                    {/* Ligne Centre vers Nord-Est (Marqueur 1 vers 2) */}
+                    <line
+                      x1="50%"
+                      y1="50%"
+                      x2="66.67%"
+                      y2="33.33%"
                       stroke="url(#connectionGradient)"
-                      strokeWidth="2"
-                      strokeDasharray="5,5"
-                      fill="none"
+                      strokeWidth="3"
+                      strokeDasharray="8,4"
+                      filter="url(#glow)"
                       className="animate-pulse"
+                      opacity="0.8"
                     />
                     
-                    {/* Ligne 1-3 */}
-                    <path
-                      d="M 50% 50% Q 35% 60% 25% 66.67%"
+                    {/* Ligne Centre vers Sud-Ouest (Marqueur 1 vers 3) */}
+                    <line
+                      x1="50%"
+                      y1="50%"
+                      x2="25%"
+                      y2="66.67%"
                       stroke="url(#connectionGradient)"
-                      strokeWidth="2"
-                      strokeDasharray="5,5"
-                      fill="none"
+                      strokeWidth="3"
+                      strokeDasharray="8,4"
+                      filter="url(#glow)"
                       className="animate-pulse"
-                      style={{animationDelay: '0.5s'}}
+                      style={{animationDelay: '0.7s'}}
+                      opacity="0.8"
                     />
                     
-                    {/* Ligne 2-3 */}
-                    <path
-                      d="M 66.67% 33.33% Q 45% 50% 25% 66.67%"
+                    {/* Ligne Nord-Est vers Sud-Ouest (Marqueur 2 vers 3) */}
+                    <line
+                      x1="66.67%"
+                      y1="33.33%"
+                      x2="25%"
+                      y2="66.67%"
                       stroke="url(#connectionGradient)"
                       strokeWidth="2"
-                      strokeDasharray="5,5"
-                      fill="none"
+                      strokeDasharray="6,3"
+                      filter="url(#glow)"
                       className="animate-pulse"
-                      style={{animationDelay: '1s'}}
+                      style={{animationDelay: '1.4s'}}
+                      opacity="0.6"
                     />
+                    
+                    {/* Points de connexion lumineux */}
+                    <circle cx="50%" cy="50%" r="2" fill="#60A5FA" className="animate-ping" opacity="0.8"/>
+                    <circle cx="66.67%" cy="33.33%" r="1.5" fill="#A78BFA" className="animate-ping" style={{animationDelay: '0.5s'}} opacity="0.8"/>
+                    <circle cx="25%" cy="66.67%" r="1.5" fill="#34D399" className="animate-ping" style={{animationDelay: '1s'}} opacity="0.8"/>
                   </svg>
                 </div>
 
