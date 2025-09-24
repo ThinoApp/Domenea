@@ -1,10 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppLanguage } from "../../context/AppContext";
+import { useEmailForm } from "../../hooks/useEmailForm";
+import { emailjsConfig } from "../../config/emailjs";
 
 const BrochureRequestSection: React.FC = () => {
   const { language } = useAppLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  
+  // Configuration EmailJS
+  const emailForm = useEmailForm(
+    emailjsConfig.serviceId,
+    emailjsConfig.templateId,
+    emailjsConfig.publicKey
+  );
 
   // Form state
   const [formData, setFormData] = useState({
@@ -80,6 +89,11 @@ const BrochureRequestSection: React.FC = () => {
         { value: "custom", label: "Offre sur mesure" },
       ],
       button: "Demander la Brochure",
+      sending: "Envoi en cours...",
+      success: "Brochure envoyée avec succès !",
+      successMessage: "Nous vous avons envoyé la brochure par email. Vérifiez votre boîte de réception.",
+      newRequest: "Nouvelle demande",
+      errorMessage: "Une erreur est survenue. Veuillez réessayer.",
     },
     en: {
       title: "SURROUNDED BY AMENITIES",
@@ -116,6 +130,11 @@ const BrochureRequestSection: React.FC = () => {
         { value: "custom", label: "Custom Offer" },
       ],
       button: "Request Sales Brochure",
+      sending: "Sending...",
+      success: "Brochure sent successfully!",
+      successMessage: "We have sent you the brochure by email. Please check your inbox.",
+      newRequest: "New request",
+      errorMessage: "An error occurred. Please try again.",
     },
   };
 
@@ -131,10 +150,34 @@ const BrochureRequestSection: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // TODO: Implement form submission logic
+    
+    // Validation basique
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.project) {
+      return;
+    }
+    
+    try {
+      await emailForm.sendEmail(formData);
+      // Le formulaire sera réinitialisé après un délai si l'envoi est réussi
+    } catch (error) {
+      console.error("Erreur lors de l'envoi:", error);
+    }
+  };
+
+  const handleNewRequest = () => {
+    emailForm.resetStatus();
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      company: "",
+      number: "",
+      project: "",
+      budget: "",
+      offer: "",
+    });
   };
 
   return (
@@ -202,16 +245,44 @@ const BrochureRequestSection: React.FC = () => {
             }`}
           >
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-2xl">
-              <div className="mb-8">
-                <h2 className="text-2xl md:text-3xl font-light text-white mb-4 leading-tight">
-                  {currentContent.brochureTitle}
-                </h2>
-                <p className="text-white/70 text-lg italic">
-                  {currentContent.oneClick}
-                </p>
-              </div>
+              {/* Success State */}
+              {emailForm.isSuccess ? (
+                <div className="text-center">
+                  <div className="text-6xl mb-4">✅</div>
+                  <h3 className="text-2xl font-bold text-green-400 mb-4">
+                    {currentContent.success}
+                  </h3>
+                  <p className="text-white/70 mb-6">
+                    {currentContent.successMessage}
+                  </p>
+                  <button
+                    onClick={handleNewRequest}
+                    className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  >
+                    {currentContent.newRequest}
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-8">
+                    <h2 className="text-2xl md:text-3xl font-light text-white mb-4 leading-tight">
+                      {currentContent.brochureTitle}
+                    </h2>
+                    <p className="text-white/70 text-lg italic">
+                      {currentContent.oneClick}
+                    </p>
+                  </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Error Message */}
+                  {emailForm.error && (
+                    <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg">
+                      <p className="text-red-300 text-center">
+                        {currentContent.errorMessage}
+                      </p>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -388,12 +459,15 @@ const BrochureRequestSection: React.FC = () => {
                 <div className="pt-4">
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-cyan-400/50"
+                    disabled={emailForm.isLoading}
+                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-medium py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-cyan-400/50 disabled:bg-gray-600 disabled:cursor-not-allowed"
                   >
-                    {currentContent.button}
+                    {emailForm.isLoading ? currentContent.sending : currentContent.button}
                   </button>
                 </div>
               </form>
+                </>
+              )}
             </div>
           </div>
         </div>
